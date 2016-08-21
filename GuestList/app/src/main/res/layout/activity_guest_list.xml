@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="com.clara.guestlist.GuestListActivity">
+
+    <TextView
+        android:id="@+id/instruction_textview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Enter gues name and click save to add to the list"/>
+
+    <EditText
+        android:id="@+id/guest_name_edit_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/instruction_textview"/>
+
+    <Button
+        android:id="@+id/save_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Save"
+        android:layout_below="@+id/guest_name_edit_text"/>
+
+    <TextView
+        android:id="@+id/guest_list_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/save_button"
+        android:text="Guest list will be here..."/>
+
+
+</RelativeLayout>
