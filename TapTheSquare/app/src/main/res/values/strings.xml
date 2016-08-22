@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">TapTheSquare</string>
+    <string name="display_square">Display a square</string>
+    <string name="title_activity_square">SquareActivity</string>
+    <string name="tap_square_instructions">Try to tap inside the square</string>
+</resources>
