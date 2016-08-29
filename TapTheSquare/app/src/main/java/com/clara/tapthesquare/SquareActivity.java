@@ -2,11 +2,13 @@ package com.clara.tapthesquare;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.Point;
 import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.shapes.RectShape;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Display;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -29,6 +31,7 @@ public class SquareActivity extends AppCompatActivity {
 		ImageView squareView = (ImageView) findViewById(R.id.square);
 
 		ShapeDrawable square = new ShapeDrawable(new RectShape());
+
 		square.setIntrinsicHeight(squareSize);
 		square.setIntrinsicWidth(squareSize);
 
