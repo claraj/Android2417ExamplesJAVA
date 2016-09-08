@@ -30,12 +30,21 @@ public class MainActivity extends AppCompatActivity {
 
 		listView.setAdapter(arrayAdapter);
 
-		//Chsnges to the data - the ArrayList - are picked up by the ArrayAdapter and
-		//the ListView will update
+		//Add data to the ArrayList
 		androidVersions.add("Marshmallow");
-		androidVersions.add("Nougat");
+		androidVersions.add(0, "Ice cream sandwich");
+		//And tell the ArrayAdapter to notify the ListView that the data has changed
+		arrayAdapter.notifyDataSetChanged();
 
 	}
 }
+
+
+
+
+
+
+
+
 
 
