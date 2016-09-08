@@ -30,8 +30,7 @@ public class MainActivity extends AppCompatActivity {
 		ListView todoListView = (ListView) findViewById(R.id.todo_listview);
 
 		//Create ArrayAdapter
-		final ToDoListAdapter todoListAdapter =
-				new ToDoListAdapter(this, R.layout.todo_list_item);
+		final ToDoListAdapter todoListAdapter = new ToDoListAdapter(this, R.layout.todo_list_item);
 
 		//Configure the ListView to use this Adapter for data
 		todoListView.setAdapter(todoListAdapter);
@@ -51,7 +50,6 @@ public class MainActivity extends AppCompatActivity {
 				}
 
 				//Else, create a new ToDoIem from the text, and add to the ArrayAdapter
-
 				ToDoItem newItem = new ToDoItem(newItemText);
 				todoListAdapter.add(new ToDoItem(newItemText));
 
@@ -63,6 +61,7 @@ public class MainActivity extends AppCompatActivity {
 
 			}
 		});
+
 
 		//This listener responds to long presses on individual list items
 		todoListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {

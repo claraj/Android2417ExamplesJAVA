@@ -8,41 +8,34 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class ToDoListAdapter extends ArrayAdapter<ToDoItem> {
 
-	Context context;
-
-	//ArrayList<ToDoItem> toDoItemArrayList;
+	Context context;    //Usually the Activity that this ListView belongs to
 
 	public ToDoListAdapter(Context context, int resource) {
 		super(context, resource);
 		this.context = context;
-		//toDoItemArrayList = new ArrayList<ToDoItem>();
 	}
 
-	/* This method is used to create a view for a given list item. It's a convenient
-	* place to insert the data about one particular list item into the its own view.
-	* */
+	// This method is used to create a view for a given list item. It's a convenient
+	// place to insert the data about one particular list item into the its own view.
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 
 		View rowView = convertView;
 
-		//Android recycles views as the list scrolls. If the view is shown for the first
-		//time, or if Android can't find it for some reason,
-		//it needs to be inflated from the layout.
-		//If Android already has a reference to the View, it's provided as the convertView parameter
-		//so you don't need to inflate it again
+		// Android recycles views as the list scrolls. If the view is shown for the first
+		// time, or if Android can't find it for some reason it needs to be inflated from the layout.
+		// If Android already has a reference to the View, it's provided as convertView parameter
+		// so you don't need to inflate it again
 		if (rowView == null) {
 			LayoutInflater inflater = ((Activity) context).getLayoutInflater();
 			rowView = inflater.inflate(R.layout.todo_list_item, parent, false);
 		}
 
-		//In either case, you have a view for one list item, and you need to add your data to it
+		// In either case, you have a View to display information for one list item,
+		// and you need to add your data to it
 
 		//Get the correct ToDoItem
 		ToDoItem item = getItem(position);
@@ -60,3 +53,7 @@ public class ToDoListAdapter extends ArrayAdapter<ToDoItem> {
 
 	}
 }
+
+
+
+

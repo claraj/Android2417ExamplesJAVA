@@ -1,6 +1,5 @@
 package com.clara.listview_todo_list;
 
-
 import java.util.Date;
 
 public class ToDoItem {
@@ -9,11 +8,17 @@ public class ToDoItem {
 
 	public ToDoItem(String text) {
 		this.text = text;
-		this.created = new Date();   //Default is current date and time
+		this.created = new Date();   //Defaults to right now
 	}
 
-	public Date getCreated(){ return created; }
-	public String getText() {return text; }
+	public Date getCreated(){
+		return created;
+	}
+
+	public String getText() {
+		return text;
+	}
 }
+
 
 
