@@ -1,5 +1,7 @@
 package com.clara.listview_todo_list;
 
+import android.content.DialogInterface;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -14,6 +16,8 @@ import android.widget.Toast;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
+
+	final static String TAG = "com.clara.listview_todo_list.MainActivity";
 
 	ArrayList<String> todoListItems = new ArrayList<String>();  //To store the to do items
 
@@ -55,19 +59,46 @@ public class MainActivity extends AppCompatActivity {
 			}
 		});
 
+		todoListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+				Log.d(TAG, "single click");
+			}
+		});
+
 		//This listener responds to long presses on individual list items
 		todoListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
 			//The position of the list item pressed is provided in the event handler
 			@Override
 			public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-				//Remove the item at position in ArrayList
-				todoListItems.remove(position);
-				//And notify Adapter of changes
-				todoListAdapter.notifyDataSetChanged();
+				//Remove the item at position in ArrayList, but first ask user if they are sure
+
+				Log.d(TAG, "On long click listener");
+				final int indexPosition = position;    //Copy position clicked into final variable so it can be used inside the Dialog's event handler
+				final String todoItemText = todoListItems.get(position);
+
+				AlertDialog areYouSureDialog = new AlertDialog.Builder(MainActivity.this)
+						.setTitle("Delete this item?")
+						.setMessage(todoItemText)
+						.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+							@Override
+							public void onClick(DialogInterface dialog, int which) {
+								//remove item from ArrayList
+								todoListItems.remove(indexPosition);
+								//And notify Adapter of changes
+								todoListAdapter.notifyDataSetChanged();
+							}
+						})
+						.setNegativeButton(R.string.no, null) /* no listener needed, if user presses this button the dialog will just close and nothing will happen */
+						.create();
+
+				areYouSureDialog.show();
 
 				return true; //Does this event handler completely handle this event?
-						//Would return false if you wanted this event to then be passed onto other listeners on the ListView such as the OnClick listener
+				//Would return false if you wanted this event to then be passed onto other listeners that may receive this event
+
 			}
+
 		});
 	}
 }
