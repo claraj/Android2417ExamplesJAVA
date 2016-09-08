@@ -59,12 +59,6 @@ public class MainActivity extends AppCompatActivity {
 			}
 		});
 
-		todoListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-			@Override
-			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-				Log.d(TAG, "single click");
-			}
-		});
 
 		//This listener responds to long presses on individual list items
 		todoListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
