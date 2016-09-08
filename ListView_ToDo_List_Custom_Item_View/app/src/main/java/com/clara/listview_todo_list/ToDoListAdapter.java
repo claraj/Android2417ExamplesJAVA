@@ -9,6 +9,7 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class ToDoListAdapter extends ArrayAdapter<ToDoItem> {
 
@@ -16,31 +17,46 @@ public class ToDoListAdapter extends ArrayAdapter<ToDoItem> {
 
 	//ArrayList<ToDoItem> toDoItemArrayList;
 
-	public ToDoListAdapter(Context context, int resource, List<ToDoItem> data) {
+	public ToDoListAdapter(Context context, int resource) {
 		super(context, resource);
 		this.context = context;
 		//toDoItemArrayList = new ArrayList<ToDoItem>();
 	}
 
+	/* This method is used to create a view for a given list item. It's a convenient
+	* place to insert the data about one particular list item into the its own view.
+	* */
+
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 
-		if (convertView == null) {
+		View rowView = convertView;
+
+		//Android recycles views as the list scrolls. If the view is shown for the first
+		//time, or if Android can't find it for some reason,
+		//it needs to be inflated from the layout.
+		//If Android already has a reference to the View, it's provided as the convertView parameter
+		//so you don't need to inflate it again
+		if (rowView == null) {
 			LayoutInflater inflater = ((Activity) context).getLayoutInflater();
-			View row = inflater.inflate(R.layout.todo_list_item, parent, false);
+			rowView = inflater.inflate(R.layout.todo_list_item, parent, false);
 		}
 
+		//In either case, you have a view for one list item, and you need to add your data to it
+
+		//Get the correct ToDoItem
 		ToDoItem item = getItem(position);
 
-		// = toDoItemArrayList.get(position);
+		//Find the UI elements in the view
+		TextView todoText = (TextView) rowView.findViewById(R.id.todo_item_text);
+		TextView todoDate = (TextView) rowView.findViewById(R.id.todo_item_created_date);
 
-		TextView todoText = (TextView) convertView.findViewById(R.id.todo_item_text);
-		TextView todoDate = (TextView) convertView.findViewById(R.id.todo_item_created_date);
-
+		//And set their values
 		todoText.setText(item.getText());
 		todoDate.setText(item.getCreated().toString());
 
-		return convertView;
+		//Return the row, to be displayed in the ListView.
+		return rowView;
 
 	}
 }

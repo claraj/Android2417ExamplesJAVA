@@ -19,8 +19,6 @@ public class MainActivity extends AppCompatActivity {
 
 	final static String TAG = "com.clara.listview_todo_list.MainActivity";
 
-	ArrayList<ToDoItem> todoListItems = new ArrayList<ToDoItem>();  //To store the to do items
-
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -31,10 +29,11 @@ public class MainActivity extends AppCompatActivity {
 
 		ListView todoListView = (ListView) findViewById(R.id.todo_listview);
 
-		//Create  ArrayAdapter, with the todoListItems ArrayList as the data source
+		//Create ArrayAdapter
 		final ToDoListAdapter todoListAdapter =
 				new ToDoListAdapter(this, R.layout.todo_list_item);
 
+		//Configure the ListView to use this Adapter for data
 		todoListView.setAdapter(todoListAdapter);
 
 		//Add listener to the button, to add items to the ListView
@@ -45,17 +44,20 @@ public class MainActivity extends AppCompatActivity {
 				//Read whatever user has typed into newToDoEditText
 				String newItemText = newToDoEditText.getText().toString();
 
-				//Make sure some data was entered, show error toast and return if not
+				//Make sure some data was entered. Show error Toast and return if not
 				if (newItemText.length() == 0) {
 					Toast.makeText(MainActivity.this, "Enter a todo item", Toast.LENGTH_SHORT).show();
 					return;
 				}
 
-				//Else, create a new ToDoIem and add to the ArrayList *ADAPTER*
+				//Else, create a new ToDoIem from the text, and add to the ArrayAdapter
+
+				ToDoItem newItem = new ToDoItem(newItemText);
 				todoListAdapter.add(new ToDoItem(newItemText));
 
 				//And notify the ArrayAdapter that the data set has changed, to request UI update
 				todoListAdapter.notifyDataSetChanged();
+
 				//Clear EditText, ready to type in next item
 				newToDoEditText.getText().clear();
 
@@ -70,16 +72,16 @@ public class MainActivity extends AppCompatActivity {
 
 				Log.d(TAG, "On long click listener");
 				final int indexPosition = position;    //Copy position clicked into final variable so it can be used inside the Dialog's event handler
-				final String todoItemText = todoListItems.get(position).getText();
+				final ToDoItem item = todoListAdapter.getItem(position);
 
 				AlertDialog areYouSureDialog = new AlertDialog.Builder(MainActivity.this)
 					.setTitle("Delete this item?")
-					.setMessage(todoItemText)
+					.setMessage(item.getText())
 					.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
 						@Override
 						public void onClick(DialogInterface dialog, int which) {
 							//remove item from ArrayList
-							todoListItems.remove(indexPosition);
+							todoListAdapter.remove(item);
 							//And notify Adapter of changes
 							todoListAdapter.notifyDataSetChanged();
 						}
