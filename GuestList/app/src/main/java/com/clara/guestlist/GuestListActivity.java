@@ -41,6 +41,8 @@ public class GuestListActivity extends AppCompatActivity {
 		mSaveGuestButton = (Button) findViewById(R.id.save_button);
 		mGuestListTV = (TextView) findViewById(R.id.guest_list_text_view);
 
+		updateGuestList();   //Update guest list, so data from Bundle is displayed
+
 		mSaveGuestButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
