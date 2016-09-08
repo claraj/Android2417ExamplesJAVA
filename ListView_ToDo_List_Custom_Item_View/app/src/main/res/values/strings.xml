@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">ListView_ToDo_List</string>
+    <string name="ok">Ok</string>
+    <string name="no">No!!!</string>
+</resources>

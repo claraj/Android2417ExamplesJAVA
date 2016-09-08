@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Hello Clara!</string>
+    <string name="true_button">True</string>
+    <string name="false_button">False</string>
+    <string name="next_button">next</string>
+    <string name="previous_button">prev</string>
+</resources>
