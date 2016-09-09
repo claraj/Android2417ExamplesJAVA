@@ -1,0 +1,38 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             xmlns:tools="http://schemas.android.com/tools"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+             tools:context="com.clara.simple_todo_list_with_fragments.AddToDoItemFragment">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/instructions"
+        android:id="@+id/instructions_textview"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/submit"
+        android:id="@+id/add_item_button"
+        android:layout_gravity="right|bottom"/>
+
+    <CheckBox
+        android:layout_width="wrap_content"
+        android:text="@string/urgent"
+        android:id="@+id/urgent_checkbox"
+        android:layout_gravity="left|bottom"
+        android:checked="false"
+        android:layout_height="wrap_content"/>
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/new_todo_item_edittext"
+        android:layout_gravity="center"
+        android:lines="3"
+        android:inputType="text"/>
+
+</FrameLayout>
+
+
