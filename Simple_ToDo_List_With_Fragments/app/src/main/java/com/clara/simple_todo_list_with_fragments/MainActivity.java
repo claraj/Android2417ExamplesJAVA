@@ -25,22 +25,19 @@ public class MainActivity extends AppCompatActivity implements
 	private static final String TAG = "MAIN ACTIVITY";
 
 
-
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
-		Log.d(TAG, "onCreate instance state as follows:" + savedInstanceState);
 
 		setContentView(R.layout.activity_main);
 
 		if (savedInstanceState == null) {
 			//no saved instance state - first time Activity been created
-			//Create new arraylist, add fragments.
+			//Create new ArrayList, and add Add and List fragments.
+
+			Log.d(TAG, "onCreate has no instance state. Set up ArrayList, add List Fragment and Add fragment");
 
 			mTodoItems = new ArrayList<>();
-
-			Log.d(TAG, "onCreate, array list is = " + mTodoItems);
 
 			AddToDoItemFragment addNewFragment = AddToDoItemFragment.newInstance();
 			ToDoListFragment listFragment = ToDoListFragment.newInstance(mTodoItems);
@@ -56,15 +53,11 @@ public class MainActivity extends AppCompatActivity implements
 		} else {
 
 			//There is saved instance state, so the app has already run,
-			// and the Activity should already have fragments.
-
-			Log.d(TAG, "onCreate saved instance state is " + savedInstanceState);
-
+			//and the Activity should already have fragments.
 			//Restore saved instance state, the ArrayList
+
 			mTodoItems = savedInstanceState.getParcelableArrayList(TODO_ITEMS_KEY);
-			Log.d(TAG, "onCreate arraylist =  " + mTodoItems);
-
-
+			Log.d(TAG, "onCreate has saved instance state ArrayList =  " + mTodoItems);
 		}
 
 	}
@@ -73,33 +66,37 @@ public class MainActivity extends AppCompatActivity implements
 	public void onSaveInstanceState(Bundle outBundle) {
 		super.onSaveInstanceState(outBundle);
 		outBundle.putParcelableArrayList(TODO_ITEMS_KEY, mTodoItems);
-
 	}
 
 	@Override
 	public void newItemCreated(ToDoItem newItem) {
 
-		//Send item to list
+		//Add item to the ArrayList
 		mTodoItems.add(newItem);
 
-		//get reference to list fragment and tell it that the data set has changed
-		FragmentManager fm = getFragmentManager();
-		ToDoListFragment listFrag = (ToDoListFragment) fm.findFragmentByTag(LIST_FRAG_TAG);  //TODO error handling
-		listFrag.notifyItemsChanged();
 
+		Log.d(TAG, "newItemCreated =  " + mTodoItems);
+
+
+		//get reference to list Fragment from the FragmentMananger,
+		// and tell this Fragment that the data set has changed
+		FragmentManager fm = getFragmentManager();
+		ToDoListFragment listFrag = (ToDoListFragment) fm.findFragmentByTag(LIST_FRAG_TAG);
+		listFrag.notifyItemsChanged();
 	}
+
 
 	@Override
 	public void itemSelected(ToDoItem selected) {
 
+		//Create a new Detail fragment. Add it to the Activity.
 		FragmentTransaction ft = getFragmentManager().beginTransaction();
-		//ft.replace(R.id.todo_manager_view, ToDoItemDetailFragment.newInstance(selected));
-		ft.replace(android.R.id.content, ToDoItemDetailFragment.newInstance(selected));
-
+		ft.add(android.R.id.content, ToDoItemDetailFragment.newInstance(selected));
 		ft.addToBackStack(DETAIL_FRAG_TAG);
 		ft.commit();
 
 	}
+
 
 	@Override
 	public void todoItemDone(ToDoItem doneItem) {
@@ -107,16 +104,19 @@ public class MainActivity extends AppCompatActivity implements
 		//Remove item from list
 		mTodoItems.remove(doneItem);
 
-		//Find list fragment and tell it that the list data has changed
-		FragmentTransaction ft = getFragmentManager().beginTransaction();
+		Log.d(TAG, "newItemRemoved list is now  =  " + mTodoItems);
+
+		//Find List fragment and tell it that the  data has changed
 		FragmentManager fm = getFragmentManager();
 
-		ToDoListFragment listFrag = (ToDoListFragment) fm.findFragmentByTag(LIST_FRAG_TAG);
-		listFrag.notifyItemsChanged();
+		ToDoListFragment listFragment = (ToDoListFragment) fm.findFragmentByTag(LIST_FRAG_TAG);
 
-		Log.d(TAG, " backstack count = " + fm.getBackStackEntryCount());
+		listFragment.notifyItemsChanged();
 
-		//Go back to prev Fragment - the add+list view
+		// Revert the last fragment transaction on the backstack.
+		// This removes the Detail fragment, which leaves the Add+List fragments.
+
+		FragmentTransaction ft = fm.beginTransaction();
 		fm.popBackStack();
 		ft.commit();
 

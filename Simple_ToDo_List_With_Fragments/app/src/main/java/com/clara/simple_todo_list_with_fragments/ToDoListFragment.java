@@ -23,12 +23,10 @@ public class ToDoListFragment extends Fragment {
 
 	private static final String TAG = "TODO LIST FRAGMENT" ;
 	private static final String TODO_LIST_ARGS = "to do list arguments";
-	private ListItemSelectedListener mListener;
+	private ListItemSelectedListener mItemSelectedListener;
 
 	private ListView mListView;
 	private ToDoListArrayAdapter mListAdapter;
-	private ArrayList<ToDoItem> mListItems;
-
 
 	public static ToDoListFragment newInstance(ArrayList todoItems) {
 		final Bundle args = new Bundle();
@@ -38,26 +36,18 @@ public class ToDoListFragment extends Fragment {
 		return fragment;
 	}
 
-//	@Override
-//	public void onCreate(Bundle savedInstanceState) {
-//		super.onCreate(savedInstanceState);
-//	}
 
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-							 Bundle savedInstanceState) {
-		// Inflate the layout for this fragment
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
 		View view = inflater.inflate(R.layout.fragment_to_do_list, container, false);
 
-
 		mListView = (ListView) view.findViewById(R.id.to_do_listview);
-		mListItems = getArguments().getParcelableArrayList(TODO_LIST_ARGS);
+		ArrayList<ToDoItem> listItems = getArguments().getParcelableArrayList(TODO_LIST_ARGS);
 
-		Log.d(TAG, "ArrayList: " + mListItems);
+		Log.d(TAG, "onCreateView, ArrayList: " + listItems);
 
-
-		mListAdapter = new ToDoListArrayAdapter(getActivity(), R.layout.todo_list_item_list_element, mListItems);
+		mListAdapter = new ToDoListArrayAdapter(getActivity(), R.layout.todo_list_item_list_element, listItems);
 
 		mListView.setAdapter(mListAdapter);
 		mListAdapter.notifyDataSetChanged();
@@ -65,13 +55,13 @@ public class ToDoListFragment extends Fragment {
 		mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-				Log.d(TAG, "List item " + position + " clicked");
-				mListener.itemSelected(mListAdapter.getItem(position));
+				//Notify the listener that the user has clicked on a list item. Send the item clicked on.
+				Log.d(TAG, "List item " + position + " clicked, the todo item is " + mListAdapter.getItem(position) );
+				mItemSelectedListener.itemSelected(mListAdapter.getItem(position));
 			}
 		});
 
 		return view;
-
 	}
 
 
@@ -79,10 +69,9 @@ public class ToDoListFragment extends Fragment {
 	public void onAttach(Context context) {
 		super.onAttach(context);
 		if (context instanceof ListItemSelectedListener) {
-			mListener = (ListItemSelectedListener) context;
+			mItemSelectedListener = (ListItemSelectedListener) context;
 		} else {
-			throw new RuntimeException(context.toString()
-					+ " must implement OnFragmentInteractionListener");
+			throw new RuntimeException(context.toString() + " must implement OnFragmentInteractionListener");
 		}
 	}
 
@@ -90,18 +79,15 @@ public class ToDoListFragment extends Fragment {
 	@Override
 	public void onDetach() {
 		super.onDetach();
-		mListener = null;
+		mItemSelectedListener = null;
 	}
 
 	public void notifyItemsChanged() {
-		Log.d(TAG, "data set updated item message, there are " + mListAdapter.getCount());
 
-		for(int i = 0 ; i < mListAdapter.getCount() ; i++) {
-			Log.d(TAG, "adapter item " + i + " is " + mListAdapter.getItem(i));
-		}
-
-
+		Log.d(TAG, "data set updated item message, there are this many items in list: " + mListAdapter.getCount());
+		//Tell the list to update.
 		mListAdapter.notifyDataSetChanged();
+
 	}
 
 

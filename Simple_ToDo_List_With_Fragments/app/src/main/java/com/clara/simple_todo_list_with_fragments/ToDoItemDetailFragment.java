@@ -24,7 +24,6 @@ public class ToDoItemDetailFragment extends Fragment {
 
 	MarkItemAsDoneListener mItemDoneListener;
 
-
 	@Override
 	public void onAttach(Context context) {
 		super.onAttach(context);
@@ -36,7 +35,7 @@ public class ToDoItemDetailFragment extends Fragment {
 		}
 	}
 
-	//Use in place of a constructor
+	//Use in place of a constructor. Set arguments for this Fragment. onCreateView will be able to get this data.
 	public static ToDoItemDetailFragment newInstance(ToDoItem item) {
 		final Bundle args = new Bundle();
 		args.putParcelable(TODO_ITEM_ARGUMENT, item);
@@ -49,22 +48,23 @@ public class ToDoItemDetailFragment extends Fragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-		// Inflate the layout for this fragment
 		View view = inflater.inflate(R.layout.fragment_to_do_item_detail, container, false);
 
+		//Get the To Do item from the arguments passed in when this Fragment was created.
+		final ToDoItem item = getArguments().getParcelable(TODO_ITEM_ARGUMENT);
+		Log.d(TAG, "onCreateView received the following item: " + item);
+
+		//Set up the view
 		TextView detailTextText = (TextView) view.findViewById(R.id.to_do_detail_text_textview);
 		TextView detailDateText = (TextView) view.findViewById(R.id.to_do_detail_date_created_textview);
 		CheckBox detailUrgentCheckBox = (CheckBox) view.findViewById(R.id.to_do_detail_urgent_checkbox);
 		Button doneButton = (Button) view.findViewById(R.id.to_do_detail_done_button);
 
-		final ToDoItem item = getArguments().getParcelable(TODO_ITEM_ARGUMENT);
-
-		Log.d(TAG, "Detail view received the following item: " + item);
-
 		detailTextText.setText(item.getText());
 		detailDateText.setText(item.getDateCreated().toString());
 		detailUrgentCheckBox.setChecked(item.isUrgent());
 
+		//Event handler
 		doneButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -75,7 +75,6 @@ public class ToDoItemDetailFragment extends Fragment {
 
 		return view;
 	}
-
 
 
 	@Override

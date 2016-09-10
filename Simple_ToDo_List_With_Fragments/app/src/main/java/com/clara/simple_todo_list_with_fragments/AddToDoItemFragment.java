@@ -26,14 +26,16 @@ public class AddToDoItemFragment extends Fragment {
 
 	private NewItemCreatedListener mNewItemlistener;
 
+	//Nothing happens here except creating a new Fragment
+	//but this is nice in case we did need to send any data to this Fragment
 	public static AddToDoItemFragment newInstance() {
 		return new AddToDoItemFragment();
 	}
 
+
 	@Override
 	public void onAttach(Context context) {
 		super.onAttach(context);
-
 		if (context instanceof NewItemCreatedListener){
 			mNewItemlistener = (NewItemCreatedListener) context;
 		} else  {
@@ -41,9 +43,9 @@ public class AddToDoItemFragment extends Fragment {
 		}
 	}
 
+
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-							 Bundle savedInstanceState) {
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
 		View view = inflater.inflate(R.layout.fragment_add_to_do_item, container, false);
 
@@ -54,7 +56,6 @@ public class AddToDoItemFragment extends Fragment {
 		addItem.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				Log.d(TAG, "clicked add new button");
 
 				//Validate user has entered some text
 				if (newItemText.getText().length() > 0) {
@@ -90,7 +91,7 @@ public class AddToDoItemFragment extends Fragment {
 	}
 
 
-
+	//Use to notify hosting Activity that a new To Do item has been created.
 	public interface NewItemCreatedListener {
 		void newItemCreated(ToDoItem newItem);
 	}
