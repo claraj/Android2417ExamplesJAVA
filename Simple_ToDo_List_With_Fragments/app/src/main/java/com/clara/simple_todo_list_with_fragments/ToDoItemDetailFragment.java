@@ -35,7 +35,8 @@ public class ToDoItemDetailFragment extends Fragment {
 		}
 	}
 
-	//Use in place of a constructor. Set arguments for this Fragment. onCreateView will be able to get this data.
+	//Use in place of a constructor. Set arguments for this Fragment.
+	// onCreateView will be able to get this data.
 	public static ToDoItemDetailFragment newInstance(ToDoItem item) {
 		final Bundle args = new Bundle();
 		args.putParcelable(TODO_ITEM_ARGUMENT, item);

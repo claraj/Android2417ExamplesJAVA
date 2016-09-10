@@ -25,7 +25,6 @@ public class ToDoListFragment extends Fragment {
 	private static final String TODO_LIST_ARGS = "to do list arguments";
 	private ListItemSelectedListener mItemSelectedListener;
 
-	private ListView mListView;
 	private ToDoListArrayAdapter mListAdapter;
 
 	public static ToDoListFragment newInstance(ArrayList todoItems) {
@@ -42,7 +41,7 @@ public class ToDoListFragment extends Fragment {
 
 		View view = inflater.inflate(R.layout.fragment_to_do_list, container, false);
 
-		mListView = (ListView) view.findViewById(R.id.to_do_listview);
+		ListView mListView = (ListView) view.findViewById(R.id.to_do_listview);
 		ArrayList<ToDoItem> listItems = getArguments().getParcelableArrayList(TODO_LIST_ARGS);
 
 		Log.d(TAG, "onCreateView, ArrayList: " + listItems);
@@ -83,11 +82,9 @@ public class ToDoListFragment extends Fragment {
 	}
 
 	public void notifyItemsChanged() {
-
-		Log.d(TAG, "data set updated item message, there are this many items in list: " + mListAdapter.getCount());
+		Log.d(TAG, "Notified that the list of to do items has changed, update view");
 		//Tell the list to update.
 		mListAdapter.notifyDataSetChanged();
-
 	}
 
 

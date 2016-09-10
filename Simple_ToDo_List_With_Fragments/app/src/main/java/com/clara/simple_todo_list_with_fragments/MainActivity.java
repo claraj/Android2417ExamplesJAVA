@@ -34,7 +34,6 @@ public class MainActivity extends AppCompatActivity implements
 		if (savedInstanceState == null) {
 			//no saved instance state - first time Activity been created
 			//Create new ArrayList, and add Add and List fragments.
-
 			Log.d(TAG, "onCreate has no instance state. Set up ArrayList, add List Fragment and Add fragment");
 
 			mTodoItems = new ArrayList<>();
@@ -51,7 +50,6 @@ public class MainActivity extends AppCompatActivity implements
 			ft.commit();
 
 		} else {
-
 			//There is saved instance state, so the app has already run,
 			//and the Activity should already have fragments.
 			//Restore saved instance state, the ArrayList
@@ -68,33 +66,39 @@ public class MainActivity extends AppCompatActivity implements
 		outBundle.putParcelableArrayList(TODO_ITEMS_KEY, mTodoItems);
 	}
 
+
+
 	@Override
 	public void newItemCreated(ToDoItem newItem) {
 
 		//Add item to the ArrayList
 		mTodoItems.add(newItem);
 
-
 		Log.d(TAG, "newItemCreated =  " + mTodoItems);
-
 
 		//get reference to list Fragment from the FragmentMananger,
 		// and tell this Fragment that the data set has changed
 		FragmentManager fm = getFragmentManager();
-		ToDoListFragment listFrag = (ToDoListFragment) fm.findFragmentByTag(LIST_FRAG_TAG);
-		listFrag.notifyItemsChanged();
+		ToDoListFragment listFragment = (ToDoListFragment) fm.findFragmentByTag(LIST_FRAG_TAG);
+		listFragment.notifyItemsChanged();
 	}
+
+
 
 
 	@Override
 	public void itemSelected(ToDoItem selected) {
 
-		//Create a new Detail fragment. Add it to the Activity.
 		FragmentTransaction ft = getFragmentManager().beginTransaction();
-		ft.add(android.R.id.content, ToDoItemDetailFragment.newInstance(selected));
-		ft.addToBackStack(DETAIL_FRAG_TAG);
-		ft.commit();
 
+		//Create a new Detail fragment. Add it to the Activity.
+		ToDoItemDetailFragment detailFragment = ToDoItemDetailFragment.newInstance(selected);
+		ft.add(android.R.id.content, detailFragment);
+		// Add to the back stack, so if user presses back button from the Detail
+		// fragment, it will revert this transaction - Activity will go back to the Add+List fragments
+		ft.addToBackStack(DETAIL_FRAG_TAG);
+
+		ft.commit();
 	}
 
 
@@ -108,17 +112,16 @@ public class MainActivity extends AppCompatActivity implements
 
 		//Find List fragment and tell it that the  data has changed
 		FragmentManager fm = getFragmentManager();
-
 		ToDoListFragment listFragment = (ToDoListFragment) fm.findFragmentByTag(LIST_FRAG_TAG);
-
 		listFragment.notifyItemsChanged();
 
-		// Revert the last fragment transaction on the backstack.
-		// This removes the Detail fragment, which leaves the Add+List fragments.
+		// Revert the last fragment transaction on the back stack.
+		// This removes the Detail fragment from the Activity, which leaves the Add+List fragments.
 
 		FragmentTransaction ft = fm.beginTransaction();
 		fm.popBackStack();
 		ft.commit();
-
 	}
+
+
 }
