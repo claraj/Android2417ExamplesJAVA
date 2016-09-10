@@ -8,9 +8,9 @@ import java.util.Date;
 
 public class ToDoItem implements Parcelable {
 
-	String text;
-	Date dateCreated;
-	boolean urgent;
+	private String text;
+	private Date dateCreated;
+	private boolean urgent;
 
 	public ToDoItem(Parcel in) {
 		text = in.readString();

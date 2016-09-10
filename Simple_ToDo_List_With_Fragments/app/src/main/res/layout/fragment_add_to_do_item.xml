@@ -2,7 +2,8 @@
              xmlns:tools="http://schemas.android.com/tools"
              android:layout_width="match_parent"
              android:layout_height="match_parent"
-             tools:context="com.clara.simple_todo_list_with_fragments.AddToDoItemFragment">
+             tools:context="com.clara.simple_todo_list_with_fragments.AddToDoItemFragment"
+    android:background="#7DA6DB">
 
     <TextView
         android:layout_width="wrap_content"
