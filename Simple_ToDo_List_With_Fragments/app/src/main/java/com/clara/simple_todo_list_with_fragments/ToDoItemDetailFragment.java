@@ -12,11 +12,10 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.TextView;
 
-import org.w3c.dom.Text;
 
 
 /**
- * A simple {@link Fragment} subclass.
+ * Fragment to show detail about one To Do item. Has 'Done' button to mark item as done.
  */
 public class ToDoItemDetailFragment extends Fragment {
 
@@ -60,7 +59,7 @@ public class ToDoItemDetailFragment extends Fragment {
 
 		final ToDoItem item = getArguments().getParcelable(TODO_ITEM_ARGUMENT);
 
-		Log.d(TAG, "Detail view recived the following item: " + item);
+		Log.d(TAG, "Detail view received the following item: " + item);
 
 		detailTextText.setText(item.getText());
 		detailDateText.setText(item.getDateCreated().toString());

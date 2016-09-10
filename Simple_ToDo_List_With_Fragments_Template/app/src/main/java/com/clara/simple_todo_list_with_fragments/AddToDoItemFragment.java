@@ -9,18 +9,16 @@ import android.view.ViewGroup;
 
 
 /**
- * A simple {@link Fragment} subclass.
+ * A Fragment for adding a new To Do item to the list
  */
+
 public class AddToDoItemFragment extends Fragment {
 
 	private static final String TAG = "Add To Do Item Fragment";
 
 	private NewItemCreatedListener mNewItemlistener;
 
-	//Factory method for creating new Fragments. Useful place to add arguments for data sent to fragments
-	AddToDoItemFragment newInstance() {
-		return new AddToDoItemFragment();
-	}
+	//todo create newInstance method to send arguments to this Fragment
 
 	@Override
 	public void onAttach(Context context) {
@@ -38,6 +36,10 @@ public class AddToDoItemFragment extends Fragment {
 							 Bundle savedInstanceState) {
 		// Inflate the layout for this fragment
 		View view = inflater.inflate(R.layout.fragment_add_to_do_item, container, false);
+
+		//TODO set up event handler for button, validation,
+		//TODO send NewIntemCreatedListener information when user creates new item
+
 		return view;
 	}
 
@@ -53,3 +55,4 @@ public class AddToDoItemFragment extends Fragment {
 	}
 
 }
+

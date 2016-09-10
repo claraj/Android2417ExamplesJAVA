@@ -5,22 +5,22 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.clara.simple_todo_list_with_fragments.MainActivity"
-    android:orientation="vertical"
-    android:id="@+id/todo_manager_view">
+    android:orientation="vertical">
 
 
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="3"
-            android:id="@+id/add_todo_fragment_container">
+            android:id="@+id/add_todo_view_container">
+
         </FrameLayout>
 
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:id="@+id/todo_list_fragment_container">
+            android:id="@+id/todo_list_view_container">
         </FrameLayout>
 
 </LinearLayout>

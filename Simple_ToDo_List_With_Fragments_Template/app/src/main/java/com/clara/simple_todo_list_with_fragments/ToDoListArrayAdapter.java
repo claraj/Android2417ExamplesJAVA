@@ -11,6 +11,9 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
+
+/** Custom list element views */
+
 public class ToDoListArrayAdapter extends ArrayAdapter<ToDoItem> {
 
 	Activity mActivity;

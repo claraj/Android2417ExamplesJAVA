@@ -9,37 +9,34 @@ import android.view.ViewGroup;
 
 
 /**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link ToDoListFragment.ListItemSelectedListener} interface
- * to handle interaction events.
-  */
+ * Displays a list of to do items. Responds to list updates.
+ */
 
 public class ToDoListFragment extends Fragment {
 
 	private ListItemSelectedListener mListener;
 
-	//Factory method for creating new Fragments. Useful place to add arguments for data sent to fragments
-	ToDoListFragment newInstance() {
-		return new ToDoListFragment();
-	}
+	private static final String TAG = "TODO LIST FRAGMENT" ;
 
+	//todo create newInstance method to send arguments to this Fragment
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
-
 	}
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 							 Bundle savedInstanceState) {
-		// Inflate the layout for this fragment
 		View view = inflater.inflate(R.layout.fragment_to_do_list, container, false);
+
+		//todo Configure ListView with list of ToDo items
+		//todo Use custom ToDoListArrayAdapter
+
 		return view;
 	}
 
+	//todo create a method for notifying this Fragment about list updates
 
 	@Override
 	public void onAttach(Context context) {
@@ -57,7 +54,6 @@ public class ToDoListFragment extends Fragment {
 		super.onDetach();
 		mListener = null;
 	}
-
 
 	public interface ListItemSelectedListener {
 		void itemSelected(ToDoItem selected);

@@ -6,6 +6,8 @@ import android.os.Parcelable;
 
 import java.util.Date;
 
+
+
 public class ToDoItem implements Parcelable {
 
 	private String text;
@@ -46,6 +48,11 @@ public class ToDoItem implements Parcelable {
 
 	public void setUrgent(boolean urgent) {
 		this.urgent = urgent;
+	}
+
+	@Override
+	public String toString() {
+		return text + " " + dateCreated.toString() + " is urgent? " + urgent;
 	}
 
 	//Code required by the Parcelable interface. If ToDoItem is parcelable, can send as an Extra between Fragments/Activities

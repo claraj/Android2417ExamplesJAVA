@@ -10,16 +10,18 @@ import android.view.ViewGroup;
 
 
 /**
- * A simple {@link Fragment} subclass.
+ * Fragment to show detail about one To Do item. Has 'Done' button to mark item as done.
  */
+
+
 public class ToDoItemDetailFragment extends Fragment {
+
+	private static final String TODO_ITEM_ARGUMENT = "todo item argument";
+	private static final String TAG = "TODO ITEM DETAIL FRAG";
 
 	MarkItemAsDoneListener mItemDoneListener;
 
-	//Factory method for creating new Fragments. Useful place to add arguments for data sent to fragments
-	ToDoItemDetailFragment newInstance() {
-		return new ToDoItemDetailFragment();
-	}
+	//todo create newInstance method to send arguments to this Fragment
 
 	@Override
 	public void onAttach(Context context) {
@@ -35,8 +37,11 @@ public class ToDoItemDetailFragment extends Fragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 							 Bundle savedInstanceState) {
-		// Inflate the layout for this fragment
 		View view = inflater.inflate(R.layout.fragment_to_do_item_detail, container, false);
+
+		//TODO set up this Fragment to display the correct data for one ToDo item
+		//TODO event handler for Done button
+
 		return view;
 	}
 
@@ -50,7 +55,7 @@ public class ToDoItemDetailFragment extends Fragment {
 	interface MarkItemAsDoneListener {
 		void todoItemDone(ToDoItem doneItem);
 	}
-
 }
+
 
 

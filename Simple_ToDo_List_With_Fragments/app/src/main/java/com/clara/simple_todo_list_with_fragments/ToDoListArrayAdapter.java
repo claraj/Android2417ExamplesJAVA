@@ -15,7 +15,6 @@ public class ToDoListArrayAdapter extends ArrayAdapter<ToDoItem> {
 
 	Activity mActivity;
 
-
 	public ToDoListArrayAdapter(Context context, int resource, ArrayList<ToDoItem> items) {
 		super(context, resource, items);
 		this.mActivity = (Activity) context;
@@ -42,3 +41,5 @@ public class ToDoListArrayAdapter extends ArrayAdapter<ToDoItem> {
 		return rowView;
 	}
 }
+
+

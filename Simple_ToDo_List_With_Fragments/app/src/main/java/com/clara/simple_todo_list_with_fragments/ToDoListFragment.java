@@ -16,16 +16,12 @@ import java.util.ArrayList;
 
 
 /**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link ToDoListFragment.ListItemSelectedListener} interface
- * to handle interaction events.
+ * Displays a list of to do items. Responds to list updates.
   */
 
 public class ToDoListFragment extends Fragment {
 
 	private static final String TAG = "TODO LIST FRAGMENT" ;
-	private static final String TODO_LIST = "todo list saved inatance state arg";
 	private static final String TODO_LIST_ARGS = "to do list arguments";
 	private ListItemSelectedListener mListener;
 
@@ -42,10 +38,10 @@ public class ToDoListFragment extends Fragment {
 		return fragment;
 	}
 
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-	}
+//	@Override
+//	public void onCreate(Bundle savedInstanceState) {
+//		super.onCreate(savedInstanceState);
+//	}
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -54,10 +50,12 @@ public class ToDoListFragment extends Fragment {
 
 		View view = inflater.inflate(R.layout.fragment_to_do_list, container, false);
 
-		Log.d(TAG, "This fragment has arguments: " + getArguments());
 
 		mListView = (ListView) view.findViewById(R.id.to_do_listview);
 		mListItems = getArguments().getParcelableArrayList(TODO_LIST_ARGS);
+
+		Log.d(TAG, "ArrayList: " + mListItems);
+
 
 		mListAdapter = new ToDoListArrayAdapter(getActivity(), R.layout.todo_list_item_list_element, mListItems);
 
@@ -88,6 +86,7 @@ public class ToDoListFragment extends Fragment {
 		}
 	}
 
+
 	@Override
 	public void onDetach() {
 		super.onDetach();
@@ -95,7 +94,13 @@ public class ToDoListFragment extends Fragment {
 	}
 
 	public void notifyItemsChanged() {
-		Log.d(TAG, "rec'd add/modify item message");
+		Log.d(TAG, "data set updated item message, there are " + mListAdapter.getCount());
+
+		for(int i = 0 ; i < mListAdapter.getCount() ; i++) {
+			Log.d(TAG, "adapter item " + i + " is " + mListAdapter.getItem(i));
+		}
+
+
 		mListAdapter.notifyDataSetChanged();
 	}
 

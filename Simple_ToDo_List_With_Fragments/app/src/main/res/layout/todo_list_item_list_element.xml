@@ -24,7 +24,11 @@
         android:layout_height="wrap_content"
         android:id="@+id/todo_list_urgent_checkbox"
         android:layout_below="@+id/todo_list_date_textview"
-        android:text="Urgent?"
+        android:text="@string/urgent"
         android:enabled="false"/>   <!-- can't change in the list, just for information -->
 
 </RelativeLayout>
+
+
+
+

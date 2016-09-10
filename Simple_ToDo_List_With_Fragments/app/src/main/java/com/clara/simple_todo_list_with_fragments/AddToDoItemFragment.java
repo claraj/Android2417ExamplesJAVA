@@ -18,7 +18,7 @@ import android.widget.Toast;
 
 
 /**
- * A simple {@link Fragment} subclass.
+ * A Fragment for adding a new To Do item to the list
  */
 public class AddToDoItemFragment extends Fragment {
 
@@ -44,10 +44,10 @@ public class AddToDoItemFragment extends Fragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 							 Bundle savedInstanceState) {
-		// Inflate the layout for this fragment
+
 		View view = inflater.inflate(R.layout.fragment_add_to_do_item, container, false);
 
-		Button addItem = (Button) view.findViewById(R.id.add_item_button);
+		Button addItem = (Button) view.findViewById(R.id.add_todo_item_button);
 		final EditText newItemText = (EditText) view.findViewById(R.id.new_todo_item_edittext);
 		final CheckBox urgentCheckbox = (CheckBox) view.findViewById(R.id.urgent_checkbox);
 
