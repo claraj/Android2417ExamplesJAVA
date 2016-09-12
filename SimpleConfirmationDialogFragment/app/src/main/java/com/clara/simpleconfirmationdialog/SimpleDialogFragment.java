@@ -16,8 +16,13 @@ public class SimpleDialogFragment extends DialogFragment {
 
 	SimpleDialogFragmentListener mDialogListener;
 
-	public static SimpleDialogFragment newInstance() {
+	private final static String MESSAGE_ARG = "Dialog message";
+
+	public static SimpleDialogFragment newInstance(String message) {
 		SimpleDialogFragment fragment = new SimpleDialogFragment();
+		Bundle args = new Bundle();
+		args.putString(MESSAGE_ARG, message);
+		fragment.setArguments(args);
 		return fragment;
 	}
 
@@ -39,8 +44,14 @@ public class SimpleDialogFragment extends DialogFragment {
 
 		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
+		String message = getArguments().getString(MESSAGE_ARG);
+		if (message == null) {
+			//Set a default message
+			message = "Please click Ok or Cancel";
+		}
+
 		AlertDialog dialog = builder.setTitle("OK-Cancel Dialog Fragment")
-				.setMessage("Please press OK or Cancel")
+				.setMessage(message)
 				.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
 					@Override
 					public void onClick(DialogInterface dialog, int which) {

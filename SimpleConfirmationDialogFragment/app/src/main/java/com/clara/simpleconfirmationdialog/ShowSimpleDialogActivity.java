@@ -24,7 +24,9 @@ public class ShowSimpleDialogActivity extends AppCompatActivity
 		showDialog.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				SimpleDialogFragment dialog = SimpleDialogFragment.newInstance();
+				// Call newInstance and provide data for SimpleDialogFragment's arguments,
+				// In this case, the message to display
+				SimpleDialogFragment dialog = SimpleDialogFragment.newInstance("Delete everything?");
 				dialog.show(getFragmentManager(), "Simple Dialog");
 			}
 		});
