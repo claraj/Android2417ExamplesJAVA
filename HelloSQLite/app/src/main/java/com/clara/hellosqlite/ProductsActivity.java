@@ -31,6 +31,8 @@ public class ProductsActivity extends AppCompatActivity {
 	Button showAllProductsButton;
 	Button searchProductsButton;
 
+
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -47,6 +49,8 @@ public class ProductsActivity extends AppCompatActivity {
 		searchProductsButton = (Button)findViewById(R.id.search_products_button);
 
 		allProductsListView = (ListView)findViewById(R.id.all_products_listview);
+		//TODO fetch all data from DB and display in ListView
+
 		productSearchTV = (TextView)findViewById(R.id.search_product_result_tv);
 
 		addProductButton.setOnClickListener(new View.OnClickListener() {
