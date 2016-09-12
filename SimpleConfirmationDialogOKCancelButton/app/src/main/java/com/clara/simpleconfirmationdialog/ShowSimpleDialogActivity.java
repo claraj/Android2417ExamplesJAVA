@@ -51,9 +51,11 @@ public class ShowSimpleDialogActivity extends AppCompatActivity {
 
 
 	private void userClickedOk() {
+		mDialogResult.setText("You clicked ok");
 	}
 
 	private void userClickedCancel() {
+		mDialogResult.setText("You clicked cancel");
 	}
 
 }
