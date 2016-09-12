@@ -3,6 +3,7 @@ package com.clara.hellosqlite;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -97,6 +98,15 @@ public class ProductsActivity extends AppCompatActivity {
 			@Override
 			public void onClick(View v) {
 				//TODO ensure a product name and quantity are provided
+			}
+		});
+
+
+		allProductsListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+			@Override
+			public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+				//TODO show confirmation, then delete item
+				return false;
 			}
 		});
 
