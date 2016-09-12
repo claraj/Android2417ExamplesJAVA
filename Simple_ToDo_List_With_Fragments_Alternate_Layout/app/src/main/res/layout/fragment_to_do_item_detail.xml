@@ -1,0 +1,41 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                tools:context="com.clara.simple_todo_list_with_fragments.ToDoItemDetailFragment"
+                android:background="#DA5800">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/to_do_detail_text_textview"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/to_do_detail_date_created_textview"
+        android:layout_below="@+id/to_do_detail_text_textview"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"/>
+
+    <CheckBox
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/urgent"
+        android:id="@+id/to_do_detail_urgent_checkbox"
+        android:enabled="false"
+        android:layout_below="@+id/to_do_detail_date_created_textview"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/done"
+        android:id="@+id/to_do_detail_done_button"
+        android:layout_below="@+id/to_do_detail_urgent_checkbox"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"/>
+
+</RelativeLayout>
+
+
+

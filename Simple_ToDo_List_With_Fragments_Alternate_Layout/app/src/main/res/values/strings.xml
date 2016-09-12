@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">Simple_ToDo_List_With_Fragments</string>
+
+    <string name="submit">Add</string>
+    <string name="urgent">Urgent?</string>
+    <string name="instructions">Enter your to do item</string>
+    <string name="done">Done!</string>
+</resources>
+
+
