@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteConstraintException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.support.v7.widget.ContentFrameLayout;
 import android.util.Log;
 
 import java.util.ArrayList;
@@ -36,8 +37,41 @@ public class DatabaseManager {
 		helper.close(); //Closes the database - very important!
 	}
 
-	//TODO add method to delete a product
-	//TODO add method to update the quantity of a product
+
+	//Delete a product by name.
+	// Return true if at least one row was deleted, false otherwise.
+	public boolean deleteProduct(String productName) {
+		String[] whereArgs = { productName };
+		String where = nameCol + " = ?";
+		int rowsDeleted = db.delete(DB_TABLE, where, whereArgs);
+
+		Log.i(DBTAG, "Delete "+ productName + " rows deleted:" + rowsDeleted);
+
+		if (rowsDeleted > 0) {
+			return true;   //at least one row deleted
+		}
+		return false; //nothing deleted
+	}
+
+
+	//Method to update the quantity of a product.
+	//Return false if no update is made, for example, product not found
+	public boolean updateQuantity(String name, int newQuantity) {
+		ContentValues updateProduct = new ContentValues();
+		updateProduct.put(quantityCol, newQuantity);
+		String[] whereArgs = { name };
+		String where = nameCol + " = ?";
+		int rowsChanged = db.update(DB_TABLE, updateProduct, where, whereArgs);
+		Log.i(DBTAG, "Update "+ name + " new quantity " + newQuantity +
+				" rows modified " + rowsChanged);
+
+		if ( rowsChanged > 0) {
+			return true;    //If at least one row changed, an update was made.
+		}
+		return false;  //Otherwise, no rows changed. Return false to indicate.
+ 	}
+
+
 
 
 	//Add a product and quantity to the database.

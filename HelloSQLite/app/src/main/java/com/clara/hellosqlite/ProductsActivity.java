@@ -1,5 +1,7 @@
 package com.clara.hellosqlite;
 
+import android.content.DialogInterface;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -123,23 +125,44 @@ public class ProductsActivity extends AppCompatActivity {
 		updateQuantityButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				//TODO. Ensure a product is selected and new quantity provided
 
-				int newquantity = Integer.parseInt(updateProductQuantityET.getText().toString());
+				//TODO: Ensure a product is selected and new quantity provided
+
+				int newQuantity = Integer.parseInt(updateProductQuantityET.getText().toString());
 				String productName = searchNameET.getText().toString();
 
-				//todo
-
-				//todo method in DBmanager to do the update. Case sensitive.
+				if (dbManager.updateQuantity(productName, newQuantity)){
+					Toast.makeText(ProductsActivity.this, "Updated quantity", Toast.LENGTH_LONG).show();
+					updateProductsListView();
+				} else {
+					Toast.makeText(ProductsActivity.this, "Product not found in database", Toast.LENGTH_LONG).show();
+				}
 			}
 		});
 
 
-		//TODO listview's OnItemLongPressListener to delete product.
+		//listview's OnItemLongPressListener to delete product.
 		allProductsListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
 			@Override
 			public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-				//TODO show confirmation, then delete item
+				//Show confirmation dialog. If user clicks OK, then delete item
+				final Product deleteMe = allProductsListAdapter.getItem(position);
+
+				new AlertDialog.Builder(ProductsActivity.this)
+						.setTitle("Delete")
+								.setMessage("Delete " + deleteMe.name + "?")
+						.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+							@Override
+							public void onClick(DialogInterface dialog, int which) {
+								//If user clicks ok, then delete product
+								dbManager.deleteProduct(deleteMe.name);
+								updateProductsListView();
+								Toast.makeText(ProductsActivity.this, "Product deleted", Toast.LENGTH_LONG).show();
+
+							}
+						}).setNegativeButton(android.R.string.cancel, null)  //If user clicks cancel, dismiss dialog, do nothing
+						.create().show();
+
 				return false;
 			}
 		});
@@ -160,6 +183,12 @@ public class ProductsActivity extends AppCompatActivity {
 	protected void onPause(){
 		super.onPause();
 		dbManager.close();
+	}
+
+	@Override
+	protected void onResume() {
+		super.onResume();
+		dbManager = new DatabaseManager(this); //reconnect as Activity restarts
 	}
 
 

@@ -1,6 +1,5 @@
 package com.clara.tapthesquare;
 
-import android.app.PendingIntent;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -78,6 +77,16 @@ public class SeekBarActivity extends AppCompatActivity {
 				Toast.makeText(this, "Sorry, you missed the square", Toast.LENGTH_LONG).show();
 		}
 	}
+
+
+//
+//		if (resultCode == RESULT_CANCELED) {
+//			//If the user presses the back button instead of completing the SquareActivity,
+//			//the result code is RESULT_CANCELLED. This means the SquareActivity would not have
+//			//had the chance to create an Intent to send data back to this Activity.
+//			Toast.makeText(this, "You pressed the back button", Toast.LENGTH_LONG).show();
+//		}
+//	}
 
 
 }

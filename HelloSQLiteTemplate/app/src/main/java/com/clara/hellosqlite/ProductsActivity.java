@@ -35,6 +35,7 @@ public class ProductsActivity extends AppCompatActivity {
 	Button searchProductsButton;
 	Button updateQuantityButton;
 
+	DatabaseManager dbManager;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -116,6 +117,21 @@ public class ProductsActivity extends AppCompatActivity {
 	private void updateProductsListView() {
 		//TODO fetch all data from DB and display in ListView
 	}
+
+
+	//override onPause method to close database as Activity pauses
+	@Override
+	protected void onPause(){
+		super.onPause();
+		dbManager.close();
+	}
+
+	@Override
+	protected void onResume() {
+		super.onResume();
+		dbManager = new DatabaseManager(this); //reconnect as Activity restarts
+	}
+
 
 
 }
