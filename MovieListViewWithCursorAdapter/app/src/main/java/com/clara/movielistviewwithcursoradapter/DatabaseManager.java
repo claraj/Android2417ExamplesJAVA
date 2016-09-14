@@ -37,6 +37,13 @@ public class DatabaseManager {
 	}
 
 
+	public Cursor getAllMovies() {
+		//Fetch all, sort by movie name
+		Cursor cursor = db.query(DB_TABLE, null, null, null, null, null, MOVIE_NAME_COL);
+		return cursor;
+	}
+
+
 	//Add a product and quantity to the database.
 	// Returns true if movie added, false if movie is already in the database
 	public boolean addMovie(String name, float rating) {
@@ -56,22 +63,23 @@ public class DatabaseManager {
 	}
 
 
-	public Cursor getCursorAll() {
-		//Fetch all, sort by movie name
-		Cursor cursor = db.query(DB_TABLE, null, null, null, null, null, MOVIE_NAME_COL);
-		return cursor;
-	}
-
-	public void updateRating(int movieID, float rating) {
+	//Update rating by movie ID. Return true if update successful; false otherwise.
+	public boolean updateRating(int movieID, float rating) {
 
 		Log.d(DB_TAG, "About to update rating for " + movieID + " to " + rating);
 		ContentValues updateVals = new ContentValues();
 		updateVals.put(MOVIE_RATING_COL, rating);
 		String where = ID_COL  + " = ? ";
 		String[] whereArgs = { Integer.toString(movieID) };
-		db.update(DB_TABLE, updateVals, where, whereArgs);
+		int rowsMod = db.update(DB_TABLE, updateVals, where, whereArgs);
+		Log.d(DB_TAG, "After update for " +movieID + " update " + rowsMod + " rows updated (should be 1");
+		if (rowsMod == 1) {
+			return true;
+		}
+		else {
+			return false;  //e.g. if no rows updates
 
-
+		}
 	}
 
 

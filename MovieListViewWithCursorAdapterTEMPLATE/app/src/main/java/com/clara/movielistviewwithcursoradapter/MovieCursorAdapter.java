@@ -16,6 +16,7 @@ public class MovieCursorAdapter extends CursorAdapter {
 	private static final String TAG = "MOVIE CURSOR ADAPTER";
 	RatingChangedListener ratingChangedListener;
 
+	//Correpond to column numbers in database
 	private static final int ID_COL = 0;
 	private static final int MOVIE_COL = 1;
 	private static final int RATING_COL = 2;
@@ -41,27 +42,32 @@ public class MovieCursorAdapter extends CursorAdapter {
 	@Override
 	public void bindView(View view, Context context, final Cursor cursor) {
 
-		TextView nameTV = (TextView) view.findViewById(R.id.movie_title_list_text_view);
-		RatingBar ratingBar = (RatingBar) view.findViewById(R.id.movie_rating_list_rating_bar);
+		//TODO get references to components that will contain data from database
+//		TextView nameTV = (TextView) view.findViewById(R.id.movie_title_list_text_view);
+//		RatingBar ratingBar = (RatingBar) view.findViewById(R.id.movie_rating_list_rating_bar);
+//
+//		nameTV.setText(cursor.getString(MOVIE_COL));
+//		ratingBar.setRating(cursor.getFloat(RATING_COL));
+//
+//		final int movie_id = cursor.getInt(ID_COL);
+//
 
-		nameTV.setText(cursor.getString(MOVIE_COL));
-		ratingBar.setRating(cursor.getFloat(RATING_COL));
-
-		final int movie_id = cursor.getInt(ID_COL);
-
-		ratingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
-			@Override
-			public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
-				//This is called any time the rating is changed, including when the view is
-				//created and ratingBar.setRating(cursor.getFloat(RATING_COL) is called (above).
-				//Don't need to update the database in this event.
-				//So, check to see if the change was actually made by the user before requesting DB update.
-				if (fromUser) {
-					ratingChangedListener.notifyRatingChanged(movie_id, rating);
-				}
-			}
-		});
+		//TODO register listener for user changing RatingBar to change rating for this movie
+		//TODO If user changes rating, notify the RatingChangedListener
+//		ratingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
+//			@Override
+//			public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
+//				//This is called any time the rating is changed, including when the view is
+//				//created and ratingBar.setRating(cursor.getFloat(RATING_COL) is called (above).
+//				//Don't need to update the database in this event.
+//				//So, check to see if the change was actually made by the user before requesting DB update.
+//				if (fromUser) {
+//					ratingChangedListener.notifyRatingChanged(movie_id, rating);
+//				}
+//			}
+//		});
 	}
+
 
 	interface RatingChangedListener {
 		void notifyRatingChanged(int movieID, float newRating);

@@ -29,17 +29,25 @@ public class MovieActivity extends AppCompatActivity implements MovieCursorAdapt
 		final RatingBar newMovieRB = (RatingBar) findViewById(R.id.add_movie_rating_bar);
 
 		final ListView movieList = (ListView) findViewById(R.id.movie_list_view);
-		Cursor cursor = dbManager.getCursorAll();
-		cursorListAdapter = new MovieCursorAdapter(this, cursor, true);
-		movieList.setAdapter(cursorListAdapter);
+
+		//TODO create cursor
+		//TODO create CursorAdapter
+		//TODO Configure ListView to use this adapter
+//		Cursor cursor = dbManager.getCursorAll();
+//		cursorListAdapter = new MovieCursorAdapter(this, cursor, true);
+//		movieList.setAdapter(cursorListAdapter);
 
 		addNew.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				String name = newMovieNameET.getText().toString();
 				float rating = newMovieRB.getRating();
-				dbManager.addMovie(name, rating);
-				cursorListAdapter.changeCursor(dbManager.getCursorAll());
+
+				//TODO Add this movie to the database
+				//TODO Update list
+
+//				dbManager.addMovie(name, rating);
+//				cursorListAdapter.changeCursor(dbManager.getCursorAll());
 			}
 		});
 
@@ -47,8 +55,8 @@ public class MovieActivity extends AppCompatActivity implements MovieCursorAdapt
 
 	public void notifyRatingChanged(int movieID, float rating) {
 
-		//Update DB, and then update the cursor for the ListView if necessary.
-		dbManager.updateRating(movieID, rating);
+		//TODO Update DB, and then update the cursor for the ListView if necessary.
+		//dbManager.updateRating(movieID, rating);
 
 		//Just to make sure the list and DB are in sync.
 		// This program works fine without this call, but only because
@@ -58,7 +66,7 @@ public class MovieActivity extends AppCompatActivity implements MovieCursorAdapt
 		// If your program changes data in the database and the list
 		// does need to update, like in the product DB app, then you'll
 		// definitely need to recreate the cursor for the list adapter.
-		cursorListAdapter.changeCursor(dbManager.getCursorAll());
+		//cursorListAdapter.changeCursor(dbManager.getCursorAll());
 	}
 
 

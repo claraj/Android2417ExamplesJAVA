@@ -29,7 +29,7 @@ public class MovieActivity extends AppCompatActivity implements MovieCursorAdapt
 		final RatingBar newMovieRB = (RatingBar) findViewById(R.id.add_movie_rating_bar);
 
 		final ListView movieList = (ListView) findViewById(R.id.movie_list_view);
-		Cursor cursor = dbManager.getCursorAll();
+		Cursor cursor = dbManager.getAllMovies();
 		cursorListAdapter = new MovieCursorAdapter(this, cursor, true);
 		movieList.setAdapter(cursorListAdapter);
 
@@ -38,8 +38,8 @@ public class MovieActivity extends AppCompatActivity implements MovieCursorAdapt
 			public void onClick(View v) {
 				String name = newMovieNameET.getText().toString();
 				float rating = newMovieRB.getRating();
-				dbManager.addMovie(name, rating);
-				cursorListAdapter.changeCursor(dbManager.getCursorAll());
+				dbManager.addMovie(name, rating);   //TODO detect errors and handle appropriately
+				cursorListAdapter.changeCursor(dbManager.getAllMovies());
 			}
 		});
 
@@ -58,7 +58,7 @@ public class MovieActivity extends AppCompatActivity implements MovieCursorAdapt
 		// If your program changes data in the database and the list
 		// does need to update, like in the product DB app, then you'll
 		// definitely need to recreate the cursor for the list adapter.
-		cursorListAdapter.changeCursor(dbManager.getCursorAll());
+		cursorListAdapter.changeCursor(dbManager.getAllMovies());
 	}
 
 

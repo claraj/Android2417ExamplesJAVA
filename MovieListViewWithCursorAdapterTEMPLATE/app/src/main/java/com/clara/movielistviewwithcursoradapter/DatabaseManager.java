@@ -37,41 +37,24 @@ public class DatabaseManager {
 	}
 
 
+	public Cursor getAllMovies() {
+		//TODO Fetch all data, sort by movie name
+		return null; //TODO replace this with a Cursor
+	}
+
+
 	//Add a product and quantity to the database.
 	// Returns true if movie added, false if movie is already in the database
 	public boolean addMovie(String name, float rating) {
-		ContentValues newProduct = new ContentValues();
-		newProduct.put(MOVIE_NAME_COL, name);
-		newProduct.put(MOVIE_RATING_COL, rating);
-		try {
-			db.insertOrThrow(DB_TABLE, null, newProduct);
-			Log.d(DB_TAG, "Updated movie: " + name + " to have rating: " + rating);
-			return true;
+		//TODO add movie
+		return false; //TODO replace with boolean reflecting success of operation
 
-		} catch (SQLiteConstraintException sqlce) {
-			Log.e(DB_TAG, "error inserting data into table. " +
-					"Name:" + name + " quantity:" + rating, sqlce);
-			return false;
-		}
 	}
 
 
-	public Cursor getCursorAll() {
-		//Fetch all, sort by movie name
-		Cursor cursor = db.query(DB_TABLE, null, null, null, null, null, MOVIE_NAME_COL);
-		return cursor;
-	}
-
-	public void updateRating(int movieID, float rating) {
-
-		Log.d(DB_TAG, "About to update rating for " + movieID + " to " + rating);
-		ContentValues updateVals = new ContentValues();
-		updateVals.put(MOVIE_RATING_COL, rating);
-		String where = ID_COL  + " = ? ";
-		String[] whereArgs = { Integer.toString(movieID) };
-		db.update(DB_TABLE, updateVals, where, whereArgs);
-
-
+	public boolean updateRating(int movieID, float rating) {
+		//TODO update the rating for a movie, but movie id.
+		return false; //TODO replace with boolean reflecting success of operation
 	}
 
 

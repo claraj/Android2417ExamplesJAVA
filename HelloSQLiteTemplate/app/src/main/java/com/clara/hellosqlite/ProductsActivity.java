@@ -27,7 +27,6 @@ public class ProductsActivity extends AppCompatActivity {
 	EditText searchNameET;
 	EditText updateProductQuantityET;
 
-	TextView productSearchTV;
 	ListView allProductsListView;
 	ArrayAdapter<Product> allProductsListAdapter;
 
@@ -126,10 +125,11 @@ public class ProductsActivity extends AppCompatActivity {
 		dbManager.close();
 	}
 
+	//And reconnect as Activity restarts
 	@Override
 	protected void onResume() {
 		super.onResume();
-		dbManager = new DatabaseManager(this); //reconnect as Activity restarts
+		dbManager = new DatabaseManager(this);
 	}
 
 

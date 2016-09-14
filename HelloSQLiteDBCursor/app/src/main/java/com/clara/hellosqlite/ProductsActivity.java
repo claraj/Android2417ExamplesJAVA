@@ -1,6 +1,7 @@
 package com.clara.hellosqlite;
 
 import android.content.DialogInterface;
+import android.database.Cursor;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -23,14 +24,19 @@ public class ProductsActivity extends AppCompatActivity {
 	//App records these in a database
 	//App has a search button to look for a specific product
 
+
+	//TODO database cursor!
+
 	EditText productNameET;
 	EditText productQuantityET;
 	EditText searchNameET;
 	EditText updateProductQuantityET;
 
 	ListView allProductsListView;
-	ArrayAdapter<Product> allProductsListAdapter;
-	
+
+	ProductListAdapter<Product> allProductListAdapter;
+	Cursor allProductsCursor;
+
 	Button addProductButton;
 	Button searchProductsButton;
 	Button updateQuantityButton;
@@ -55,11 +61,11 @@ public class ProductsActivity extends AppCompatActivity {
 		updateQuantityButton = (Button)findViewById(R.id.update_quantity_button);
 
 		allProductsListView = (ListView)findViewById(R.id.all_products_listview);
-		allProductsListAdapter = new ArrayAdapter<Product>(this, R.layout.list_item);
-		allProductsListView.setAdapter(allProductsListAdapter);
 
-		updateProductsListView();
+		allProductsCursor = dbManager.getCursorAll();
 
+		allProductListAdapter = new ProductListAdapter(this, allProductsCursor, false);
+		allProductsListView.setAdapter(allProductListAdapter);
 
 		addProductButton.setOnClickListener(new View.OnClickListener() {
 
@@ -83,7 +89,6 @@ public class ProductsActivity extends AppCompatActivity {
 					//Clear form and update ListView
 					productNameET.getText().clear();
 					productQuantityET.getText().clear();
-					updateProductsListView();
 				} else {
 					//Duplicate product name
 					Toast.makeText(ProductsActivity.this, newName +" is already in the database",
@@ -128,7 +133,6 @@ public class ProductsActivity extends AppCompatActivity {
 
 				if (dbManager.updateQuantity(productName, newQuantity)){
 					Toast.makeText(ProductsActivity.this, "Updated quantity", Toast.LENGTH_LONG).show();
-					updateProductsListView();
 				} else {
 					Toast.makeText(ProductsActivity.this, "Product not found in database", Toast.LENGTH_LONG).show();
 				}
@@ -141,7 +145,7 @@ public class ProductsActivity extends AppCompatActivity {
 			@Override
 			public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
 				//Show confirmation dialog. If user clicks OK, then delete item
-				final Product deleteMe = allProductsListAdapter.getItem(position);
+				final Product deleteMe = allProductListAdapter.getItem(position);
 
 				new AlertDialog.Builder(ProductsActivity.this)
 						.setTitle("Delete")
@@ -151,7 +155,6 @@ public class ProductsActivity extends AppCompatActivity {
 							public void onClick(DialogInterface dialog, int which) {
 								//If user clicks ok, then delete product
 								dbManager.deleteProduct(deleteMe.name);
-								updateProductsListView();
 								Toast.makeText(ProductsActivity.this, "Product deleted", Toast.LENGTH_LONG).show();
 
 							}
@@ -164,14 +167,6 @@ public class ProductsActivity extends AppCompatActivity {
 
 	}
 
-	private void updateProductsListView() {
-
-		ArrayList<Product> allProd = dbManager.fetchAllProducts();
-		allProductsListAdapter.clear();
-		allProductsListAdapter.addAll(allProd);
-		allProductsListAdapter.notifyDataSetChanged();
-	}
-
 
 	//override onPause method to close database as Activity pauses
 	@Override
@@ -180,11 +175,11 @@ public class ProductsActivity extends AppCompatActivity {
 		dbManager.close();
 	}
 
+	//reconnect as Activity restarts
 	@Override
 	protected void onResume() {
 		super.onResume();
-		dbManager = new DatabaseManager(this); //reconnect as Activity restarts
+		dbManager = new DatabaseManager(this);
 	}
-
 
 }

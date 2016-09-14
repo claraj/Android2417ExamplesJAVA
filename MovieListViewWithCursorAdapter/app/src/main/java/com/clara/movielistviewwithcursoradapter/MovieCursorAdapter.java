@@ -44,9 +44,12 @@ public class MovieCursorAdapter extends CursorAdapter {
 		TextView nameTV = (TextView) view.findViewById(R.id.movie_title_list_text_view);
 		RatingBar ratingBar = (RatingBar) view.findViewById(R.id.movie_rating_list_rating_bar);
 
+		//Cursor is set to the correct database row, that corresponds to this row of the list.
+		//Get data by reading the column needed.
 		nameTV.setText(cursor.getString(MOVIE_COL));
 		ratingBar.setRating(cursor.getFloat(RATING_COL));
 
+		//Need this to update data - good idea to use a primary key
 		final int movie_id = cursor.getInt(ID_COL);
 
 		ratingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
