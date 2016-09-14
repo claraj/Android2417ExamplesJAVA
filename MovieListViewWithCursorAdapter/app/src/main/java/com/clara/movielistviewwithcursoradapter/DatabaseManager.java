@@ -44,7 +44,7 @@ public class DatabaseManager {
 	}
 
 
-	//Add a product and quantity to the database.
+	// Add a movie and its rating to the database.
 	// Returns true if movie added, false if movie is already in the database
 	public boolean addMovie(String name, float rating) {
 		ContentValues newProduct = new ContentValues();
@@ -52,12 +52,12 @@ public class DatabaseManager {
 		newProduct.put(MOVIE_RATING_COL, rating);
 		try {
 			db.insertOrThrow(DB_TABLE, null, newProduct);
-			Log.d(DB_TAG, "Updated movie: " + name + " to have rating: " + rating);
+			Log.d(DB_TAG, "Added movie: " + name + " to with rating: " + rating);
 			return true;
 
 		} catch (SQLiteConstraintException sqlce) {
 			Log.e(DB_TAG, "error inserting data into table. " +
-					"Name:" + name + " quantity:" + rating, sqlce);
+					"Name:" + name + " rating:" + rating, sqlce);
 			return false;
 		}
 	}

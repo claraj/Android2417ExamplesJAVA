@@ -42,7 +42,6 @@ public class MovieActivity extends AppCompatActivity implements MovieCursorAdapt
 				cursorListAdapter.changeCursor(dbManager.getAllMovies());
 			}
 		});
-
 	}
 
 	public void notifyRatingChanged(int movieID, float rating) {
