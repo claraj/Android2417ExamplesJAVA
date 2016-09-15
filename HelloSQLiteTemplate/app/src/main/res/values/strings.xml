@@ -3,7 +3,7 @@
 
     <string name="instruction_product_to_search">Type name to search:</string>
     <string name="button_search_for_product">Search</string>
-    <string name="button_show_all_products">Show all products</string>
+    <string name="all_products">All products</string>
     <string name="button_add_product">Add product</string>
     <string name="label_product_name">Product name:</string>
     <string name="label_product_quantity">Quantity:</string>

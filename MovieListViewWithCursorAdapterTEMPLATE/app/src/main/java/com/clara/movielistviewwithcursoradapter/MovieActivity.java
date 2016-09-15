@@ -22,7 +22,7 @@ public class MovieActivity extends AppCompatActivity implements MovieCursorAdapt
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_movie);
 
-		dbManager = new DatabaseManager(this);
+		//TODO Create DatabaseManager object
 
 		Button addNew = (Button) findViewById(R.id.add_movie_button);
 		final EditText newMovieNameET = (EditText) findViewById(R.id.add_movie_name);
@@ -33,9 +33,6 @@ public class MovieActivity extends AppCompatActivity implements MovieCursorAdapt
 		//TODO create cursor
 		//TODO create CursorAdapter
 		//TODO Configure ListView to use this adapter
-//		Cursor cursor = dbManager.getCursorAll();
-//		cursorListAdapter = new MovieCursorAdapter(this, cursor, true);
-//		movieList.setAdapter(cursorListAdapter);
 
 		addNew.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -46,8 +43,6 @@ public class MovieActivity extends AppCompatActivity implements MovieCursorAdapt
 				//TODO Add this movie to the database
 				//TODO Update list
 
-//				dbManager.addMovie(name, rating);
-//				cursorListAdapter.changeCursor(dbManager.getCursorAll());
 			}
 		});
 
@@ -56,17 +51,6 @@ public class MovieActivity extends AppCompatActivity implements MovieCursorAdapt
 	public void notifyRatingChanged(int movieID, float rating) {
 
 		//TODO Update DB, and then update the cursor for the ListView if necessary.
-		//dbManager.updateRating(movieID, rating);
-
-		//Just to make sure the list and DB are in sync.
-		// This program works fine without this call, but only because
-		// the changes the user makes to the list are the same as the
-		// list should show.
-		//
-		// If your program changes data in the database and the list
-		// does need to update, like in the product DB app, then you'll
-		// definitely need to recreate the cursor for the list adapter.
-		//cursorListAdapter.changeCursor(dbManager.getCursorAll());
 	}
 
 

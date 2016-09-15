@@ -7,14 +7,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import java.util.ArrayList;
 
 public class ProductsActivity extends AppCompatActivity {
 
@@ -24,9 +21,6 @@ public class ProductsActivity extends AppCompatActivity {
 	//App records these in a database
 	//App has a search button to look for a specific product
 
-
-	//TODO database cursor!
-
 	EditText productNameET;
 	EditText productQuantityET;
 	EditText searchNameET;
@@ -34,7 +28,7 @@ public class ProductsActivity extends AppCompatActivity {
 
 	ListView allProductsListView;
 
-	ProductListAdapter<Product> allProductListAdapter;
+	ProductListAdapter allProductListAdapter;
 	Cursor allProductsCursor;
 
 	Button addProductButton;
@@ -60,10 +54,10 @@ public class ProductsActivity extends AppCompatActivity {
 		searchProductsButton = (Button)findViewById(R.id.search_products_button);
 		updateQuantityButton = (Button)findViewById(R.id.update_quantity_button);
 
+		// Set up Cursor, create ProductListAdapter using this Cursor,
+		// configure ListView to use this ProductListAdapter,
 		allProductsListView = (ListView)findViewById(R.id.all_products_listview);
-
 		allProductsCursor = dbManager.getCursorAll();
-
 		allProductListAdapter = new ProductListAdapter(this, allProductsCursor, false);
 		allProductsListView.setAdapter(allProductListAdapter);
 
@@ -89,8 +83,10 @@ public class ProductsActivity extends AppCompatActivity {
 					//Clear form and update ListView
 					productNameET.getText().clear();
 					productQuantityET.getText().clear();
+					allProductListAdapter.changeCursor(dbManager.getCursorAll());
+
 				} else {
-					//Duplicate product name
+					//Probably a duplicate product name
 					Toast.makeText(ProductsActivity.this, newName +" is already in the database",
 							Toast.LENGTH_LONG).show();
 				}
@@ -131,8 +127,10 @@ public class ProductsActivity extends AppCompatActivity {
 				int newQuantity = Integer.parseInt(updateProductQuantityET.getText().toString());
 				String productName = searchNameET.getText().toString();
 
+				// If update successful, show Toast and update ListView's Adapter's Cursor
 				if (dbManager.updateQuantity(productName, newQuantity)){
-					Toast.makeText(ProductsActivity.this, "Updated quantity", Toast.LENGTH_LONG).show();
+					Toast.makeText(ProductsActivity.this, "Quantity updated", Toast.LENGTH_LONG).show();
+					allProductListAdapter.changeCursor(dbManager.getCursorAll());
 				} else {
 					Toast.makeText(ProductsActivity.this, "Product not found in database", Toast.LENGTH_LONG).show();
 				}
@@ -140,22 +138,33 @@ public class ProductsActivity extends AppCompatActivity {
 		});
 
 
-		//listview's OnItemLongPressListener to delete product.
+		//ListView's OnItemLongClickListener to delete product.
 		allProductsListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+
+			//The last argument is the value from the database _id column, provided by the ProductListAdapter
 			@Override
-			public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+			public boolean onItemLongClick(AdapterView<?> parent, View view, int position, final long id) {
+
 				//Show confirmation dialog. If user clicks OK, then delete item
-				final Product deleteMe = allProductListAdapter.getItem(position);
+
+				// We can delete by id, no problem, so could simply call dbManager.deleteProduct(id)
+				// In this case, we'd like to show a confirmation dialog
+				// with the name of the product, so need to get some data about this list item
+				// Want the data? Need to call getItem to get the Cursor for this row
+
+				Cursor cursor = (Cursor) allProductListAdapter.getItem(position);
+				String name = cursor.getString(1);
 
 				new AlertDialog.Builder(ProductsActivity.this)
 						.setTitle("Delete")
-								.setMessage("Delete " + deleteMe.name + "?")
+						.setMessage("Delete " + name + "?")
 						.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
 							@Override
 							public void onClick(DialogInterface dialog, int which) {
 								//If user clicks ok, then delete product
-								dbManager.deleteProduct(deleteMe.name);
+								dbManager.deleteProduct(id);
 								Toast.makeText(ProductsActivity.this, "Product deleted", Toast.LENGTH_LONG).show();
+								allProductListAdapter.changeCursor(dbManager.getCursorAll());
 
 							}
 						}).setNegativeButton(android.R.string.cancel, null)  //If user clicks cancel, dismiss dialog, do nothing

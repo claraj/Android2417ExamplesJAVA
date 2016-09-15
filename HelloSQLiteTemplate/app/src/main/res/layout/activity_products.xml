@@ -78,11 +78,12 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-        <Button
-            android:id="@+id/search_products_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/button_search_for_product" />
+
+            <Button
+                android:id="@+id/search_products_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/button_search_for_product" />
 
             <EditText
                 android:id="@+id/update_quantity_et"
@@ -99,11 +100,10 @@
         </LinearLayout>
 
 
-        <Button
-            android:id="@+id/show_all_products_button"
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/button_show_all_products" />
+            android:text="@string/all_products" />
 
     </LinearLayout>
 
