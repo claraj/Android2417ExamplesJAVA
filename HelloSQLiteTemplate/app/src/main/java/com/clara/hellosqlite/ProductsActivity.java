@@ -43,7 +43,6 @@ public class ProductsActivity extends AppCompatActivity {
 		setContentView(R.layout.activity_products);
 
 		//TODO Create database manager
-		//dbManager = new DatabaseManager(this);
 
 		productNameET = (EditText)findViewById(R.id.add_new_product_name_et);
 		productQuantityET = (EditText)findViewById(R.id.add_new_product_quantity_et);
@@ -56,10 +55,6 @@ public class ProductsActivity extends AppCompatActivity {
 
 		// TODO Set up Cursor, create ProductListAdapter using this Cursor,
 		// TODO configure ListView to use this ProductListAdapter,
-//		allProductsListView = (ListView)findViewById(R.id.all_products_listview);
-//		allProductsCursor = dbManager.getCursorAll();
-//		allProductListAdapter = new ProductListAdapter(this, allProductsCursor, false);
-//		allProductsListView.setAdapter(allProductListAdapter);
 
 		addProductButton.setOnClickListener(new View.OnClickListener() {
 
@@ -78,19 +73,6 @@ public class ProductsActivity extends AppCompatActivity {
 				int quantity = Integer.parseInt(newQuantity);
 
 				// TODO Request DB mananger add this product
-//				if (dbManager.addProduct(newName, quantity)) {
-//					Toast.makeText(ProductsActivity.this, "Product added to database", Toast.LENGTH_LONG).show();
-//
-//					//Clear form and update ListView
-//					productNameET.getText().clear();
-//					productQuantityET.getText().clear();
-//					allProductListAdapter.changeCursor(dbManager.getCursorAll());
-//
-//				} else {
-//					//Probably a duplicate product name
-//					Toast.makeText(ProductsActivity.this, newName +" is already in the database",
-//							Toast.LENGTH_LONG).show();
-//				}
 			}
 		});
 
@@ -108,15 +90,6 @@ public class ProductsActivity extends AppCompatActivity {
 				}
 
 				//TODO request quantity of product from dbMananger
-//				int quantity = dbManager.getQuantityForProduct(searchName);
-//
-//				if (quantity == -1) {
-//					//Product not found
-//					Toast.makeText(ProductsActivity.this, "Product " + searchName + " not found",
-//							Toast.LENGTH_LONG).show();
-//				} else {
-//					updateProductQuantityET.setText(Integer.toString(quantity));
-//				}
 			}
 		});
 
@@ -131,17 +104,12 @@ public class ProductsActivity extends AppCompatActivity {
 
 				// TODO dbMananger update product quantity
 				// TODO If update successful, show Toast and update ListView's Adapter's Cursor
-//				if (dbManager.updateQuantity(productName, newQuantity)){
-//					Toast.makeText(ProductsActivity.this, "Quantity updated", Toast.LENGTH_LONG).show();
-//					allProductListAdapter.changeCursor(dbManager.getCursorAll());
-//				} else {
-//					Toast.makeText(ProductsActivity.this, "Product not found in database", Toast.LENGTH_LONG).show();
-//				}
 			}
 		});
 
 
 		//ListView's OnItemLongClickListener to delete product.
+		//TODO remember to configure the list view! This template app will crash on this line since allProductsListView is null.
 		allProductsListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
 
 			//The last argument is the value from the database _id column, provided by the ProductListAdapter
@@ -154,24 +122,6 @@ public class ProductsActivity extends AppCompatActivity {
 				// In this case, we'd like to show a confirmation dialog
 				// with the name of the product, so need to get some data about this list item
 				// Want the data? Need to call getItem to get the Cursor for this row
-
-//				Cursor cursor = (Cursor) allProductListAdapter.getItem(position);
-//				String name = cursor.getString(1);
-//
-//				new AlertDialog.Builder(ProductsActivity.this)
-//						.setTitle("Delete")
-//						.setMessage("Delete " + name + "?")
-//						.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-//							@Override
-//							public void onClick(DialogInterface dialog, int which) {
-//								//If user clicks ok, then delete product
-//								dbManager.deleteProduct(id);
-//								Toast.makeText(ProductsActivity.this, "Product deleted", Toast.LENGTH_LONG).show();
-//								allProductListAdapter.changeCursor(dbManager.getCursorAll());
-//
-//							}
-//						}).setNegativeButton(android.R.string.cancel, null)  //If user clicks cancel, dismiss dialog, do nothing
-//						.create().show();
 
 				return false;
 			}
