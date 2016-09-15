@@ -16,7 +16,7 @@ public class DatabaseManager {
 	private Context context;
 	private SQLHelper helper;
 	private SQLiteDatabase db;
-	protected static final String DB_NAME = "products";
+	protected static final String DB_NAME = "products.db";
 
 	protected static final int DB_VERSION = 1;
 	protected static final String DB_TABLE = "inventory";
