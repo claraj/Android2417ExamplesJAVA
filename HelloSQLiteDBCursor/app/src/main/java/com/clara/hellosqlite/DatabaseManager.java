@@ -16,7 +16,7 @@ public class DatabaseManager {
 	private Context context;
 	private SQLHelper helper;
 	private SQLiteDatabase db;
-	protected static final String DB_NAME = "products";
+	protected static final String DB_NAME = "products.db";
 
 	protected static final int DB_VERSION = 1;
 	protected static final String DB_TABLE = "inventory";
@@ -51,8 +51,11 @@ public class DatabaseManager {
 		if (rowsDeleted == 1) {
 			return true;   //should be exactly one row deleted, since _id is a primary key
 		}
-		return false; //nothing deleted, this primary key is not in the DB (or more than 1, which indicates DB design error.)
+		return false; //nothing deleted, this primary key is not in the DB
+		          // (or more than 1 row deleted, which indicates DB design error.)
 	}
+
+
 
 
 	//Method to update the quantity of a product.
@@ -62,15 +65,18 @@ public class DatabaseManager {
 		updateProduct.put(QUANTITY_COL, newQuantity);
 		String[] whereArgs = { name };
 		String where = NAME_COL + " = ?";
+
 		int rowsChanged = db.update(DB_TABLE, updateProduct, where, whereArgs);
+
 		Log.i(DB_TAG, "Update "+ name + " new quantity " + newQuantity +
 				" rows modified " + rowsChanged);
 
 		if ( rowsChanged > 0) {
 			return true;    //If at least one row changed, an update was made.
 		}
-		return false;  //Otherwise, no rows changed. Return false to indicate.
+		return false;  //Otherwise, no rows changed. Return false to indicate no update.
  	}
+
 
 
 	//Add a product and quantity to the database.
@@ -130,7 +136,7 @@ public class DatabaseManager {
 
 		// This query is case sensitive. If you don't care about case, convert the search
 		// query to uppercase and compare to the uppercase versions of the data in the database
-		// select quantity from products where upper(product_name) = upper(productName>) limit 1
+		// select quantity from products where upper(product_name) = upper(productName>)
 
 		String selection =  NAME_COL + " = ? ";
 		String[] selectionArgs = { productName };
@@ -162,13 +168,17 @@ public class DatabaseManager {
 		@Override
 		public void onCreate(SQLiteDatabase db) {
 
-			//Table contains a primary key column, _id which autoincrements - saves you setting the value
-			//Having a primary key column is almost always a good idea. In this app, the _id column is used by
-			//the list CursorAdapter data source to figure out what to put in the list, and to uniquely identify each element
-			//Name column, String
-			//Quantity column, int
+			//Table contains these columns:
+			// _id column, primary key, which autoincrements - saves you setting the value
+			//			Having a primary key column is almost always a good idea. In this app, the _id column is used by
+			//			the list CursorAdapter data source to figure out what to put in the list, and to uniquely identify each element
+			// Name column, String
+			// Quantity column, int
 
-			String createTable = "CREATE TABLE " + DB_TABLE + " (" + INT_COL + " INTEGER PRIMARY KEY AUTOINCREMENT, " +  NAME_COL +" TEXT UNIQUE, " + QUANTITY_COL +" INTEGER);"  ;
+			String createTable = "CREATE TABLE " + DB_TABLE + " (" +
+					INT_COL + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+					NAME_COL +" TEXT UNIQUE, " +
+					QUANTITY_COL +" INTEGER);"  ;
 			Log.d(SQL_TAG, createTable);
 			db.execSQL(createTable);
 		}

@@ -62,7 +62,6 @@ public class ProductsActivity extends AppCompatActivity {
 		allProductsListView.setAdapter(allProductListAdapter);
 
 		addProductButton.setOnClickListener(new View.OnClickListener() {
-
 			@Override
 			public void onClick(View v) {
 
@@ -148,9 +147,9 @@ public class ProductsActivity extends AppCompatActivity {
 				//Show confirmation dialog. If user clicks OK, then delete item
 
 				// We can delete by id, no problem, so could simply call dbManager.deleteProduct(id)
-				// In this case, we'd like to show a confirmation dialog
-				// with the name of the product, so need to get some data about this list item
-				// Want the data? Need to call getItem to get the Cursor for this row
+				// In this case, we'd like to show a confirmation dialog before deleting,
+				// and the dialog will show the the name of the product.
+				// So, need to get some data about this list item by calling getItem, to get the Cursor for this row
 
 				Cursor cursor = (Cursor) allProductListAdapter.getItem(position);
 				String name = cursor.getString(1);
@@ -167,7 +166,8 @@ public class ProductsActivity extends AppCompatActivity {
 								allProductListAdapter.changeCursor(dbManager.getCursorAll());
 
 							}
-						}).setNegativeButton(android.R.string.cancel, null)  //If user clicks cancel, dismiss dialog, do nothing
+						}).setNegativeButton(android.R.string.cancel, null)  //No event handler for negative button.
+																// If user clicks cancel, dismiss dialog, do nothing
 						.create().show();
 
 				return false;

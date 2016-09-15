@@ -15,9 +15,9 @@ public class DatabaseManager {
 	private SQLHelper helper;
 	private SQLiteDatabase db;
 
-	protected static final String DB_NAME = "products";
+	protected static final String DB_NAME = "movies";
 	protected static final int DB_VERSION = 1;
-	protected static final String DB_TABLE = "inventory";
+	protected static final String DB_TABLE = "ratings";
 
 	protected static final String ID_COL = "_id";
 	protected static final String MOVIE_NAME_COL = "name";
