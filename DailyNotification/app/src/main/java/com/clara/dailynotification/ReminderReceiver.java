@@ -17,7 +17,7 @@ public class ReminderReceiver extends BroadcastReceiver {
 
 		//Create and issue a notification with the task the user wants to do daily.
 
-		//The task
+		//The task the user wishes to be reminded of
 		String task = intent.getStringExtra(ConfigureReminderActivity.EXTRA_TASK);
 		//"Daily", or "testing"
 		String interval = intent.getStringExtra(ConfigureReminderActivity.EXTRA_INTERVAL);
@@ -26,10 +26,12 @@ public class ReminderReceiver extends BroadcastReceiver {
 
 		String notificationMessage = interval + " reminder to " + task;
 
-		NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+		NotificationManager notificationManager = (NotificationManager)
+				context.getSystemService(Context.NOTIFICATION_SERVICE);
 
+		//Build notification
 		NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
-		builder.setSmallIcon(android.R.drawable.star_on)
+		builder.setSmallIcon(android.R.drawable.star_on)    //TODO swap for app icon
 				.setContentTitle("Daily Reminder")
 				.setContentText(notificationMessage);
 
@@ -40,3 +42,4 @@ public class ReminderReceiver extends BroadcastReceiver {
 
 	}
 }
+

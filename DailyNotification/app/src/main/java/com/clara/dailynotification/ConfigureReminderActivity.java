@@ -32,7 +32,7 @@ public class ConfigureReminderActivity extends AppCompatActivity {
 			@Override
 			public void onClick(View view) {
 
-				int interval = 0;
+				long interval = 0;
 				String intervalText;
 				//For testing, or a real daily alarm?
 				if (alarmInterval.getCheckedRadioButtonId() == R.id.testing_alarm) {
@@ -40,7 +40,7 @@ public class ConfigureReminderActivity extends AppCompatActivity {
 					intervalText = "Testing, 1 minute";
 
 				} else {
-					interval = 24 * 60 * 60 * 1000; //One day, in milliseconds
+					interval = AlarmManager.INTERVAL_DAY;
 					intervalText = "Daily";
 				}
 
@@ -48,26 +48,28 @@ public class ConfigureReminderActivity extends AppCompatActivity {
 				startReminders(interval, userTask, intervalText);
 
 				Toast.makeText(ConfigureReminderActivity.this,
-						"Alarm configured, notifcation repeat " + intervalText, Toast.LENGTH_LONG).show(); ;
-
+						"Alarm configured, notifcation repeat " + intervalText, Toast.LENGTH_LONG).show();
 			}
 		});
-
-
 	}
 
-	private void startReminders(int interval, String userTask, String intervalString) {
+	private void startReminders(long interval, String userTask, String intervalString) {
 
+		//Get the AlarmManager
 		AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
 
+		//Create an Intent for ReminderReceiver
 		Intent intent = new Intent(this, ReminderReceiver.class);
-		intent.putExtra(EXTRA_INTERVAL, interval);
+		//Add data - the name of the task, and frequency - daily or testing
+		intent.putExtra(EXTRA_INTERVAL, intervalString);
 		intent.putExtra(EXTRA_TASK, userTask);
 		PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, intent, 0);
 
 		long startTime = SystemClock.elapsedRealtime() + interval;
 		alarmManager.setInexactRepeating(AlarmManager.ELAPSED_REALTIME, startTime, interval, pendingIntent);
 
-
 	}
+
+
 }
+
