@@ -11,7 +11,7 @@
 
     <style name="ButtonBlueCapsMonospace">
         <item name="android:background">@color/buttonBlue</item>
-        <item name="android:fontFamily">serif-monospace</item>
+        <item name="android:typeface">monospace</item>
         <item name="android:textAllCaps">true</item>
     </style>
 
