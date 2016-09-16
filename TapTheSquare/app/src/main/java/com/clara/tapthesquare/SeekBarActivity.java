@@ -9,6 +9,7 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+
 public class SeekBarActivity extends AppCompatActivity {
 
 	public static final String EXTRA_SQUARE_SIZE = "com.clara.tapthesquare.squaresize";
@@ -31,6 +32,7 @@ public class SeekBarActivity extends AppCompatActivity {
 				Intent launchSquareActivity = new Intent(SeekBarActivity.this, SquareActivity.class);
 				//Add data to the Intent using putExtra method
 				launchSquareActivity.putExtra(EXTRA_SQUARE_SIZE, seekBar.getProgress());
+
 				startActivityForResult(launchSquareActivity, SQUARE_REQUEST_CODE);
 			}
 		});

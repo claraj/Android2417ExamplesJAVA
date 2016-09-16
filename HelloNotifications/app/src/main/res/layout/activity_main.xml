@@ -24,4 +24,17 @@
         android:id="@+id/notification_with_pending_intent_button"
         android:layout_below="@id/notification_now"/>
 
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Notification with Intent to carry data back to this Activity"
+        android:id="@+id/notification_with_pending_intent_with_data_button"
+        android:layout_below="@id/notification_with_pending_intent_button"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:id="@+id/show_intent_data"
+        android:layout_below="@id/notification_with_pending_intent_with_data_button"/>
+
 </RelativeLayout>

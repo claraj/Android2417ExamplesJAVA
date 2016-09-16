@@ -2,7 +2,6 @@ package com.clara.movielistviewwithcursoradapter;
 
 import android.content.ContentValues;
 import android.content.Context;
-import android.content.pm.InstrumentationInfo;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteConstraintException;
 import android.database.sqlite.SQLiteDatabase;
