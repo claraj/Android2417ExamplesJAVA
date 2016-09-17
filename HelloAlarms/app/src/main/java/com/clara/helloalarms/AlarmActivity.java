@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.media.Image;
 import android.os.SystemClock;
+import android.provider.Settings;
 import android.support.graphics.drawable.AnimatedVectorDrawableCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -73,13 +74,27 @@ public class AlarmActivity extends AppCompatActivity {
 		//Calculate time for Alarm to fire, in Unix time - milliseconds since 1/1/1970
 		//SystemClock.elapsedRealTime returns the current time in milliseconds.
 		// Calculate delay in milliseconds and add to current time.
-		long alarmTime = SystemClock.elapsedRealtime() + (seconds * 1000) ;
 
 		// Set a one-time alarm with our parameters. When the Alarm fires,
 		// AlarmReceiver will have onReceive method called. Make sure you've
 		// registered AlarmReceiver as a receiver in the manifest.
 		// with the Intent inside the PendingIntent
-		alarmMgr.set(AlarmManager.ELAPSED_REALTIME, alarmTime, pendingIntent);
+
+		//Types of alarms
+		// ELAPSED_REALTIME = Alarms relative to time since boot
+		// Get the current elapsed realtime with SystemClock.elapsedRealtime()
+
+		// RTC = Alarms relative to the actual time
+		// Get the current time with System.currentTimeMillis()
+
+		//So this alarm is relative the the uptime of the phone, and will fire at current time plus alarmTime
+
+		//long alarmRelativeToElapsedRealTime = SystemClock.elapsedRealtime() + (seconds * 1000) ;
+		//alarmMgr.set(AlarmManager.ELAPSED_REALTIME, alarmRelativeToElapsedRealTime, pendingIntent);
+
+		//This does the same thing as the 2 lines above. Alarm is set relative to actual real world clock time.
+		//long alarmRelativeToRTC = System.currentTimeMillis();
+		//alarmMgr.set(AlarmManager.RTC, alarmRelativeToRTC, pendingIntent);
 
 	}
 

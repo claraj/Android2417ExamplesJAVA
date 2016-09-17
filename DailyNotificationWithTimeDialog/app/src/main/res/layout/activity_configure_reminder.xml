@@ -15,10 +15,11 @@
         android:id="@+id/instructions"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="What is the task you wish to be reminded of?"/>
+        android:text="@string/user_reminder_task_name"/>
 
     <EditText
         android:id="@+id/task_edit_text"
+        android:inputType="text"
         android:layout_below="@id/instructions"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
@@ -27,7 +28,7 @@
         android:id="@+id/frequency"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Select frequency"
+        android:text="@string/select_frequency"
         android:layout_below="@id/task_edit_text"/>
 
     <RadioGroup
@@ -39,19 +40,28 @@
             android:id="@+id/daily_alarm"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Daily"/>
+            android:text="@string/daily"/>
         <RadioButton
             android:id="@+id/testing_alarm"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Every minute (for testing)"/>
+            android:text="@string/every_minute_for_testing"/>
     </RadioGroup>
 
     <Button
         android:id="@+id/set_alarm_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Set up notifications"
+        android:text="@string/set_up_notifications"
         android:layout_below="@id/alarm_interval_radio_buttons"/>
+
+
+    <Button
+        android:id="@+id/cancel_alarm_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/cancel_alarms"
+        android:layout_alignParentBottom="true"
+        />
 
 </RelativeLayout>

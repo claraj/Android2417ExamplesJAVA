@@ -20,10 +20,10 @@ public class ReminderReceiver extends BroadcastReceiver {
 
 		//The task the user wishes to be reminded of
 		String task = intent.getStringExtra(ConfigureReminderActivity.EXTRA_TASK);
-		//"Daily", or "testing"
+		//In this app, it will be "daily", or "testing". Could be hourly, twice daily...
 		String interval = intent.getStringExtra(ConfigureReminderActivity.EXTRA_INTERVAL);
 
-		Log.d(TAG, "Alarm received for " + task + " interval " + interval);
+		Log.d(TAG, "**** BEEP BEEP **** Alarm received for " + task + " interval " + interval);
 
 		String notificationMessage = interval + " reminder to " + task;
 
@@ -42,15 +42,14 @@ public class ReminderReceiver extends BroadcastReceiver {
 
 		Notification notification = builder.build();
 
-		int id = 0;
+		int n_id = 0;   //Used by our app to identify a particular notification. It doesn't need to be unique system-wide.
 
-		//Cancel other notifications
+		//Cancel a previous notification, if there is one.
 
-		notificationManager.cancel(id);
+		notificationManager.cancel(n_id);
 
-		//Issue new notification
-
-		notificationManager.notify(id, notification);
+		//And issue new notification
+		notificationManager.notify(n_id, notification);
 
 
 

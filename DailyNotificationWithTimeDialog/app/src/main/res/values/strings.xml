@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">DailyNotification</string>
+    <string name="cancel_alarms">Cancel alarms</string>
+    <string name="set_up_notifications">Set up notifications</string>
+    <string name="every_minute_for_testing">Every minute (for testing)</string>
+    <string name="daily">Daily</string>
+    <string name="select_frequency">Select frequency</string>
+    <string name="user_reminder_task_name">What is the task you wish to be reminded of?</string>
 </resources>
