@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    android:id="@+id/activity_configure_reminder"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="com.clara.dailynotification.ConfigureReminderActivity">
+
+    <TextView
+        android:id="@+id/instructions"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="What is the task you wish to be reminded of?"/>
+
+    <EditText
+        android:id="@+id/task_edit_text"
+        android:layout_below="@id/instructions"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <TextView
+        android:id="@+id/frequency"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Select frequency"
+        android:layout_below="@id/task_edit_text"/>
+
+    <RadioGroup
+        android:id="@+id/alarm_interval_radio_buttons"
+        android:layout_below="@id/frequency"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <RadioButton
+            android:id="@+id/daily_alarm"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Daily"/>
+        <RadioButton
+            android:id="@+id/testing_alarm"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Every minute (for testing)"/>
+    </RadioGroup>
+
+    <Button
+        android:id="@+id/set_alarm_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Set up notifications"
+        android:layout_below="@id/alarm_interval_radio_buttons"/>
+
+</RelativeLayout>
