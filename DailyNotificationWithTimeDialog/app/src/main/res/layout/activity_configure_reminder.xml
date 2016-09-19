@@ -55,7 +55,6 @@
         android:text="@string/set_up_notifications"
         android:layout_below="@id/alarm_interval_radio_buttons"/>
 
-
     <Button
         android:id="@+id/cancel_alarm_button"
         android:layout_width="wrap_content"
@@ -63,5 +62,7 @@
         android:text="@string/cancel_alarms"
         android:layout_alignParentBottom="true"
         />
+
+
 
 </RelativeLayout>

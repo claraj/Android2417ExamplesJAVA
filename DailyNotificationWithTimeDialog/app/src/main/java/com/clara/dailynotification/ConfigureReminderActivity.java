@@ -27,6 +27,7 @@ public class ConfigureReminderActivity extends AppCompatActivity {
 	RadioGroup mIntervalRadioGroup;
 
 	final static String TAG = "CFG REMINDER ACTIVITY";
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -41,13 +42,11 @@ public class ConfigureReminderActivity extends AppCompatActivity {
 			@Override
 			public void onClick(View view) {
 
-				//Make sure task is entered, and a radio button is selec
-
+				//Validation: make sure a task is entered, and a radio button is selected
 				if (mUserTaskET.getText().toString().length() == 0) {
 					Toast.makeText(ConfigureReminderActivity.this, "Enter a task", Toast.LENGTH_LONG).show();
 					return;
 				}
-
 				if (mIntervalRadioGroup.getCheckedRadioButtonId() == -1) {
 					Toast.makeText(ConfigureReminderActivity.this, "Select frequency", Toast.LENGTH_LONG).show();
 					return;
@@ -67,7 +66,8 @@ public class ConfigureReminderActivity extends AppCompatActivity {
 
 	private void cancelReminderAlarms() {
 
-		//To cancel an Alarm, need to make a PendingIntent that's the same as the Alarm's PendingIntent, and then cancel that.
+		//To cancel an Alarm, need to make a PendingIntent that's the
+		// same as the Alarm's PendingIntent, and then cancel that.
 
 		Log.d(TAG, "Cancelling Alarm");
 
@@ -83,22 +83,21 @@ public class ConfigureReminderActivity extends AppCompatActivity {
 
 	private void configureReminders() {
 
-		final String intervalText;
 		//For testing, or a real daily alarm?
 		if (mIntervalRadioGroup.getCheckedRadioButtonId() == R.id.testing_alarm) {
 			long interval = TEST_INTERVAL;
-			intervalText = "Testing, 1 minute";
+			String intervalText = "Testing, 1 minute";
 			String userTask = mUserTaskET.getText().toString();
 			startReminderAlarms(System.currentTimeMillis(), interval, userTask, intervalText);
 			Toast.makeText(ConfigureReminderActivity.this,
 					"Alarm configured, notification repeat " + intervalText, Toast.LENGTH_LONG).show();
 
 		} else {
-
-			intervalText = "Daily";
-
-			int hourNow = Calendar.getInstance().get(Calendar.HOUR);
+			final String intervalText = "Daily";
+			int hourNow = Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
 			int minuteNow = Calendar.getInstance().get(Calendar.MINUTE);
+
+			//Show TimePickerDialog for user to select the reminder time.
 
 			TimePickerDialog dialog = new TimePickerDialog(ConfigureReminderActivity.this, new TimePickerDialog.OnTimeSetListener() {
 				@Override
@@ -106,22 +105,17 @@ public class ConfigureReminderActivity extends AppCompatActivity {
 
 					String userTask = mUserTaskET.getText().toString();
 
-					//Need to figure out start time.
-
-					Calendar startTime = Calendar.getInstance();
-					startTime.set(Calendar.HOUR_OF_DAY, hour);
+					//Need to figure out start time. Calendar represents dates and times.
+					Calendar startTime = Calendar.getInstance();    //Default to now
+					startTime.set(Calendar.HOUR_OF_DAY, hour);      //set to TimePickerDialog settings
 					startTime.set(Calendar.MINUTE, min);
-					long startTimeMs = startTime.getTimeInMillis();
+					long startTimeMs = startTime.getTimeInMillis();  //And get the representation of that time in ms
 
-					//If time is in the past, (e.g. current time is 6pm and desired reminder time is 11am daily) roll the start time to the next day
+					// If time is in the past, (e.g. current time is 6pm and desired reminder time is 11am daily)
+					// roll the start time to the next day
 					if (startTimeMs < System.currentTimeMillis()) {
 						startTime.roll(Calendar.DAY_OF_YEAR, 1);
 					}
-
-					Log.d(TAG, "Current time = " + System.currentTimeMillis() + "\n" +
-							Calendar.getInstance().toString() + "\n" +
-							"Alarm start time = " + startTime.getTimeInMillis() + "\n" +
-							startTime.toString());
 
 					startReminderAlarms(startTimeMs, AlarmManager.INTERVAL_DAY, userTask, intervalText);
 					Toast.makeText(ConfigureReminderActivity.this,
@@ -135,9 +129,11 @@ public class ConfigureReminderActivity extends AppCompatActivity {
 	}
 
 
+
 	private void startReminderAlarms(long startTime, long interval, String userTask, String intervalString) {
 
-		Log.d(TAG, "Start reminder interval " + interval + " start " + startTime + " task " + userTask + " interval str " + intervalString);
+		Log.d(TAG, "Start reminder interval " + interval + " start " + startTime + " task " +
+				userTask + " interval str " + intervalString);
 
 		//Get the AlarmManager
 		AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
@@ -147,7 +143,7 @@ public class ConfigureReminderActivity extends AppCompatActivity {
 		//Add data - the name of the task, and frequency - daily or testing
 		intent.putExtra(EXTRA_INTERVAL, intervalString);
 		intent.putExtra(EXTRA_TASK, userTask);
-		PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, intent, 0);
+		PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
 		//Since this alarm needs to occur daily, need to set with regard to actual RTC - wall clock time.
 		alarmManager.setInexactRepeating(AlarmManager.RTC, startTime, interval, pendingIntent);
@@ -155,3 +151,4 @@ public class ConfigureReminderActivity extends AppCompatActivity {
 	}
 
 }
+

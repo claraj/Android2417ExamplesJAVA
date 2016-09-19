@@ -27,6 +27,7 @@ public class ReminderReceiver extends BroadcastReceiver {
 
 		String notificationMessage = interval + " reminder to " + task;
 
+		//Create Intent, wrap in PendingIntent. This will be the Nofitication action, to bring user back to the app
 		Intent returnToApp = new Intent(context, ConfigureReminderActivity.class);
 		PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, returnToApp, PendingIntent.FLAG_UPDATE_CURRENT);
 
@@ -38,21 +39,19 @@ public class ReminderReceiver extends BroadcastReceiver {
 		builder.setSmallIcon(android.R.drawable.star_on)    //TODO swap for app icon
 				.setContentTitle("Daily Reminder")
 				.setContentText(notificationMessage)
-				.setContentIntent(pendingIntent);
+				.setContentIntent(pendingIntent)
+				.setAutoCancel(true);       //Dismiss notification when user clicks on it.
 
 		Notification notification = builder.build();
 
-		int n_id = 0;   //Used by our app to identify a particular notification. It doesn't need to be unique system-wide.
+		int n_id = 0;   //Used by our app to identify a particular notification.
+		// It doesn't need to be unique system-wide.
 
-		//Cancel a previous notification, if there is one.
-
+		//Cancel a previous notification, by id, if there is one. Nothing happens if notification doesn't exist.
 		notificationManager.cancel(n_id);
 
 		//And issue new notification
 		notificationManager.notify(n_id, notification);
-
-
-
 	}
 }
 

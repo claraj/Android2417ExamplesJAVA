@@ -12,7 +12,19 @@
     tools:context="com.clara.hellohandlers.MainActivity">
 
     <TextView
+        android:id="@+id/hello_thread"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Hello World!"/>
+
+    <Button
+        android:id="@+id/stop_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="stop"
+        android:layout_below="@+id/hello_thread"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="71dp"/>
+
 </RelativeLayout>
