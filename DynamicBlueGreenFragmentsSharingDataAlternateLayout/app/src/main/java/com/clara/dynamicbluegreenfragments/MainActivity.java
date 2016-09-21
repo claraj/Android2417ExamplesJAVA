@@ -1,8 +1,8 @@
 
 package com.clara.dynamicbluegreenfragments;
 
-import android.app.FragmentTransaction;
-import android.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
@@ -24,31 +24,29 @@ public class MainActivity extends AppCompatActivity implements BlueFragment.Rand
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 
-		showBlueFragment();   //Need to show something to start with
+		FragmentManager fm = getSupportFragmentManager();
+		FragmentTransaction ft = fm.beginTransaction();
+
+		ft.add(R.id.green_fragment_container, greenFragment);
+		ft.add(R.id.blue_fragment_container, blueFragment);
+
+		ft.commit();
+
+		//showBlueFragment();   //Need to show something to start with
 	}
 
-	private void showBlueFragment() {
-		FragmentManager fm = getFragmentManager();
-		FragmentTransaction ft = fm.beginTransaction();
-		ft.add(android.R.id.content, blueFragment, BLUE_TAG);
-		ft.commit();
-	}
+//	private void showBlueFragment() {
+//		FragmentManager fm = getFragmentManager();
+//		FragmentTransaction ft = fm.beginTransaction();
+//		ft.add(android.R.id.content, blueFragment, BLUE_TAG);
+//		ft.commit();
+//	}
 
 	// Send the random number to the GreenFragment
 	public void sendRandomNumber(int rnd) {
-		// Create a Bundle to carry arguments to the Fragment
-		Bundle arguments = new Bundle();
-		// Add the random integer
-		arguments.putInt(RANDOM_BUNDLE_KEY, rnd);
-		// And give the arguments to our GreenFragment
-		greenFragment.setArguments(arguments);
 
-		// Replace the BlueFragment with GreenFragment
-		FragmentManager fm = getFragmentManager();
-		FragmentTransaction ft = fm.beginTransaction();
-		ft.replace(android.R.id.content, greenFragment, GREEN_TAG);
-		ft.addToBackStack(GREEN_TAG);
-		ft.commit();  //Don't forget!
+		greenFragment.setRandom(rnd);
+
 	}
 }
 

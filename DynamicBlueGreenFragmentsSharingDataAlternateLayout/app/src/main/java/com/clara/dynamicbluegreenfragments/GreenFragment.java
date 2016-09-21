@@ -1,6 +1,6 @@
 package com.clara.dynamicbluegreenfragments;
 
-import android.app.Fragment;
+import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +9,8 @@ import android.widget.TextView;
 
 
 public class GreenFragment extends Fragment {
+
+	TextView showRandomTV;
 
 	@Override
 	public View onCreateView (LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
@@ -22,17 +24,26 @@ public class GreenFragment extends Fragment {
 			random = getArguments().getInt(MainActivity.RANDOM_BUNDLE_KEY, -1);  //default for no random number
 		}
 
-		TextView showRandomTV = (TextView) view.findViewById(R.id.green_fragment_random_textview);
+		showRandomTV = (TextView) view.findViewById(R.id.green_fragment_random_textview);
 
 		if (random == -1) {
 			//No random number received, no arguments or no data for RANDOM_BUNDLE_KEY
-			showRandomTV.setText("No random number received :(");
+			showRandomTV.setText("No random number received yet");
 		} else {
 			showRandomTV.setText("The random number is " + random);
 		}
 
 
 		return view;
+
+	}
+
+
+	//TODO save instance state so random number is persisted on rotation.
+
+
+	public void setRandom(int random) {
+		showRandomTV.setText("The random number is " + random);
 
 	}
 }
