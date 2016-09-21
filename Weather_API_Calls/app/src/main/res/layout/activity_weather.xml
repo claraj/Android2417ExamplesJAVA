@@ -15,13 +15,21 @@
         android:id="@+id/temp_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Temperature goes here"/>
+        android:text="Fetching Temperature..."/>
 
     <ImageView
         android:id="@+id/radar_image"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/temp_tv"/>
+
+    <ProgressBar
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/fetching_data_progress"
+        android:layout_centerInParent="true"
+        android:visibility="invisible"/>
+
 
 </RelativeLayout>
 
