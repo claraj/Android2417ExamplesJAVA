@@ -1,7 +1,7 @@
 package com.clara.simple_todo_list_with_fragments;
 
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity implements
 			ToDoListFragment listFragment = ToDoListFragment.newInstance(mTodoItems);
 			ToDoItemDetailFragment detailFragment = ToDoItemDetailFragment.newInstance(new ToDoItem("", false));
 
-			FragmentManager fm = getFragmentManager();
+			FragmentManager fm = getSupportFragmentManager();
 			FragmentTransaction ft = fm.beginTransaction();
 
 			ft.add(R.id.add_todo_view_container, addNewFragment, ADD_NEW_FRAG_TAG);
@@ -59,7 +59,6 @@ public class MainActivity extends AppCompatActivity implements
 			mTodoItems = savedInstanceState.getParcelableArrayList(TODO_ITEMS_KEY);
 			Log.d(TAG, "onCreate has saved instance state ArrayList =  " + mTodoItems);
 		}
-
 	}
 
 	@Override
@@ -72,7 +71,6 @@ public class MainActivity extends AppCompatActivity implements
 
 	@Override
 	public void newItemCreated(ToDoItem newItem) {
-
 		//Add item to the ArrayList
 		mTodoItems.add(newItem);
 
@@ -80,23 +78,20 @@ public class MainActivity extends AppCompatActivity implements
 
 		//get reference to list Fragment from the FragmentMananger,
 		// and tell this Fragment that the data set has changed
-		FragmentManager fm = getFragmentManager();
+		FragmentManager fm = getSupportFragmentManager();
 		ToDoListFragment listFragment = (ToDoListFragment) fm.findFragmentByTag(LIST_FRAG_TAG);
 		listFragment.notifyItemsChanged();
 	}
 
 
-
-
 	@Override
 	public void itemSelected(ToDoItem selected) {
 
-		//Replace the previous Detail fragment with a new one, showing the selected To Do item
-		FragmentManager fm = getFragmentManager();
+		//Replace the previous Detail fragment with a new Detail Fragment, showing the selected To Do item
+		FragmentManager fm = getSupportFragmentManager();
 		FragmentTransaction ft = fm.beginTransaction();
 		ft.replace(R.id.todo_detail_view_container, ToDoItemDetailFragment.newInstance(selected));
 		ft.commit();
-
 	}
 
 
@@ -105,7 +100,7 @@ public class MainActivity extends AppCompatActivity implements
 
 		mTodoItems.remove(doneItem);
 		//Find List fragment and tell it that the  data has changed
-		FragmentManager fm = getFragmentManager();
+		FragmentManager fm = getSupportFragmentManager();
 		ToDoListFragment listFragment = (ToDoListFragment) fm.findFragmentByTag(LIST_FRAG_TAG);
 		listFragment.notifyItemsChanged();
 
