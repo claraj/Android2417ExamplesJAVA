@@ -1,7 +1,8 @@
 package com.clara.simple_todo_list_with_fragments;
 
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
+
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -41,7 +42,7 @@ public class MainActivity extends AppCompatActivity implements
 			AddToDoItemFragment addNewFragment = AddToDoItemFragment.newInstance();
 			ToDoListFragment listFragment = ToDoListFragment.newInstance(mTodoItems);
 
-			FragmentManager fm = getFragmentManager();
+			FragmentManager fm = getSupportFragmentManager();
 			FragmentTransaction ft = fm.beginTransaction();
 
 			ft.add(R.id.add_todo_view_container, addNewFragment, ADD_NEW_FRAG_TAG);
@@ -57,7 +58,6 @@ public class MainActivity extends AppCompatActivity implements
 			mTodoItems = savedInstanceState.getParcelableArrayList(TODO_ITEMS_KEY);
 			Log.d(TAG, "onCreate has saved instance state ArrayList =  " + mTodoItems);
 		}
-
 	}
 
 	@Override
@@ -78,7 +78,7 @@ public class MainActivity extends AppCompatActivity implements
 
 		//get reference to list Fragment from the FragmentMananger,
 		// and tell this Fragment that the data set has changed
-		FragmentManager fm = getFragmentManager();
+		FragmentManager fm = getSupportFragmentManager();
 		ToDoListFragment listFragment = (ToDoListFragment) fm.findFragmentByTag(LIST_FRAG_TAG);
 		listFragment.notifyItemsChanged();
 	}
@@ -89,7 +89,7 @@ public class MainActivity extends AppCompatActivity implements
 	@Override
 	public void itemSelected(ToDoItem selected) {
 
-		FragmentTransaction ft = getFragmentManager().beginTransaction();
+		FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
 
 		//Create a new Detail fragment. Add it to the Activity.
 		ToDoItemDetailFragment detailFragment = ToDoItemDetailFragment.newInstance(selected);
@@ -111,7 +111,7 @@ public class MainActivity extends AppCompatActivity implements
 		Log.d(TAG, "newItemRemoved list is now  =  " + mTodoItems);
 
 		//Find List fragment and tell it that the  data has changed
-		FragmentManager fm = getFragmentManager();
+		FragmentManager fm = getSupportFragmentManager();
 		ToDoListFragment listFragment = (ToDoListFragment) fm.findFragmentByTag(LIST_FRAG_TAG);
 		listFragment.notifyItemsChanged();
 

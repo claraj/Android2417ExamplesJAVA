@@ -4,9 +4,9 @@
     android:layout_width="match_parent"
     android:descendantFocusability="blocksDescendants">
     <!-- This descendantFocusability attribute is necessary otherwise any
-     clickable item(s) - in this case, the CheckBox - in the ListView items
-     being the component that handles clicks on the ListView items. -->
-
+  clickable item(s) - in this case, the CheckBox - in the ListView items
+  will be the component that handles clicks on the ListView items,
+  instead of the whole ListView item. -->
 
     <TextView
         android:layout_width="match_parent"

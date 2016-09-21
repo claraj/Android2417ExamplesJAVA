@@ -1,19 +1,16 @@
 package com.clara.simple_todo_list_with_fragments;
 
 
-import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
-import android.app.Fragment;
+import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.Checkable;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 
@@ -24,7 +21,7 @@ public class AddToDoItemFragment extends Fragment {
 
 	private static final String TAG = "Add To Do Item Fragment";
 
-	private NewItemCreatedListener mNewItemlistener;
+	private NewItemCreatedListener mNewItemListener;
 
 	//Nothing happens here except creating a new Fragment
 	//but this is nice in case we did need to send any data to this Fragment
@@ -36,18 +33,27 @@ public class AddToDoItemFragment extends Fragment {
 	@Override
 	public void onAttach(Context context) {
 		super.onAttach(context);
+
+		Log.d(TAG, "onAttach");
+
 		if (context instanceof NewItemCreatedListener){
-			mNewItemlistener = (NewItemCreatedListener) context;
+			mNewItemListener = (NewItemCreatedListener) context;
+			Log.d(TAG, "set listener");
+
 		} else  {
 			throw new RuntimeException(context.toString() + " must implement NewItemCreatedListener");
 		}
 	}
 
 
+
+
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
 		View view = inflater.inflate(R.layout.fragment_add_to_do_item, container, false);
+
+		Log.d(TAG, "onCreateView");
 
 		Button addItem = (Button) view.findViewById(R.id.add_todo_item_button);
 		final EditText newItemText = (EditText) view.findViewById(R.id.new_todo_item_edittext);
@@ -72,7 +78,7 @@ public class AddToDoItemFragment extends Fragment {
 					Log.d(TAG, "New item is " + newItem);
 
 					//Return newItem back to calling Activity
-					mNewItemlistener.newItemCreated(newItem);
+					mNewItemListener.newItemCreated(newItem);
 
 				} else {
 					Toast.makeText(getActivity(), "Please enter some text", Toast.LENGTH_LONG).show();
@@ -87,7 +93,9 @@ public class AddToDoItemFragment extends Fragment {
 	@Override
 	public void onDetach() {
 		super.onDetach();
-		mNewItemlistener = null;
+		Log.d(TAG, "onDetach");
+
+		mNewItemListener = null;
 	}
 
 

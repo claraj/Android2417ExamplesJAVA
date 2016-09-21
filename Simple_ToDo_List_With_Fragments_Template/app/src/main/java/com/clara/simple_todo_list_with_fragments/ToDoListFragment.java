@@ -2,7 +2,7 @@ package com.clara.simple_todo_list_with_fragments;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.app.Fragment;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,7 +14,7 @@ import android.view.ViewGroup;
 
 public class ToDoListFragment extends Fragment {
 
-	private ListItemSelectedListener mListener;
+	private ListItemSelectedListener mItemSelectedListener;
 
 	private static final String TAG = "TODO LIST FRAGMENT" ;
 
@@ -42,7 +42,7 @@ public class ToDoListFragment extends Fragment {
 	public void onAttach(Context context) {
 		super.onAttach(context);
 		if (context instanceof ListItemSelectedListener) {
-			mListener = (ListItemSelectedListener) context;
+			mItemSelectedListener = (ListItemSelectedListener) context;
 		} else {
 			throw new RuntimeException(context.toString()
 					+ " must implement OnFragmentInteractionListener");
@@ -52,7 +52,7 @@ public class ToDoListFragment extends Fragment {
 	@Override
 	public void onDetach() {
 		super.onDetach();
-		mListener = null;
+		mItemSelectedListener = null;
 	}
 
 	public interface ListItemSelectedListener {
