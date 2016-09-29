@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import java.util.Random;
 
 /**
- * Created by admin on 9/28/16.
+ * Created by clara on 9/28/16.
  */
 
 public class GameFragment extends Fragment {
@@ -25,7 +25,7 @@ public class GameFragment extends Fragment {
 
 	private static final String TAG = "GAME FRAGMENT" ;
 
-	long gameSpeed = 500;     //Time in ms between game ui updates
+	long gameSpeed = 1500;     //Time in ms between game ui updates. Larger number = slower game
 
 	int score = 0;
 	int scoreIncrement = 100;
@@ -96,10 +96,11 @@ public class GameFragment extends Fragment {
 	private void alienClicked(View alienView) {
 
 		aliensTapped++;
-		score++;
+		score+=scoreIncrement;
+
 		alienView.setVisibility(View.INVISIBLE);
 
-		Log.d(TAG, "Alien tapped" + score + " " + aliensTapped + " " + aliensShown);
+		Log.d(TAG, "Alien tapped " + score + " " + aliensTapped + " " + aliensShown);
 
 		//todo explosion image - not all devices can vibrate
 		Vibrator vibrator = (Vibrator) getActivity().getSystemService(Context.VIBRATOR_SERVICE);
@@ -142,7 +143,7 @@ public class GameFragment extends Fragment {
 					//game over
 					Log.d(TAG, "game over.");
 					gameHandler.removeCallbacks(this);
-						listener.endGame(score);
+					listener.endGame(score);
 				}
 
 				else {

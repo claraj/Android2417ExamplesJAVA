@@ -1,53 +1,41 @@
 package com.clara.aliens;
 
+import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
-import java.util.ArrayList;
 
-//TODO fix layout for welcome screen fragment
-//todo fix layout for high score fragment
-//todo local storage for score and username
-//todo vibrate on alien demise (test on device)
-
+//todo custom list adapter/list view to display high scores in table form
 //todo firebase - get high score data, send high score data if new high score
 
 
 public class AlienActivity extends AppCompatActivity implements WelcomeFragment.UsernameListener, GameFragment.EndGameListener, HighScoresFragment.RestartListener {
 
 	String username;
-	ArrayList<HighScore> highScores;
-	Firebase firebase;
+
 	LocalStorage localStorage;
+	Firebase highScoreDB;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+
+		//for testing - uncomment to clear saved username and high score
+		//PreferenceManager.getDefaultSharedPreferences(this).edit().clear().apply();
+
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_alien);
 
-		firebase = new Firebase();
 		localStorage = new LocalStorage(this);
+		highScoreDB = new Firebase();
 
-		fetchUsername(); //todo fetch from firebase or device storage or whatever.
-		fetchHighScores();  //Also todo, fetch from firebase
+		username = localStorage.fetchUsername();  //Will be null if no username has been saved.
 
 		FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
 		WelcomeFragment welcomeFragment = WelcomeFragment.newInstance(username);
 		ft.add(R.id.activity_alien, welcomeFragment);
 		ft.commit();
-	}
 
-	private void fetchHighScores() {
-		//todo - talk to Firebase
-		highScores = new ArrayList<>();
-	}
-
-
-
-	private void fetchUsername() {
-		//// TODO
-		username = localStorage.fetchUsername();
 	}
 
 
@@ -62,16 +50,41 @@ public class AlienActivity extends AppCompatActivity implements WelcomeFragment.
 	@Override
 	public void endGame(int score) {
 
-		//Show high scores
+		//Check to see if user has new high score. If so, save new high score to local storage.
 
-		if (score > localStorage.getHighScore()) {
+		//Fetch previous high score
+		int lastHighScore = localStorage.getHighScore();
+
+
+		// User has never played game before. Since this is their first score, any score is a high score.
+
+		if (lastHighScore == LocalStorage.NO_SCORE_RECORDED) {
 			localStorage.writeHighScore(score);
-			firebase.sendHighScore(username, score);
+			highScoreDB.saveHighScore(new HighScore(username, score));
 		}
 
-		highScores = firebase.getSortedHighScores();
+		else {
 
-		HighScoresFragment highScoresFragment = HighScoresFragment.newInstance(highScores);
+			// User has played game before. This score is greater than the previous high score
+
+			if (score > lastHighScore) {
+				highScoreDB.saveHighScore(new HighScore(username, score));
+				localStorage.writeHighScore(score);
+
+			}
+
+			// User has played game before. This score is not greater than the previous high score
+
+			else  {
+				//This takes care of the situation where user has played game before and does not beat previous high score
+				highScoreDB.saveHighScore(new HighScore(username, lastHighScore));
+				localStorage.writeHighScore(score);
+			}
+		}
+
+		//And send all high scores to the HighScoreFragment to display
+
+		HighScoresFragment highScoresFragment = HighScoresFragment.newInstance(highScoreDB.getSortedHighScores());
 
 		FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
 		ft.replace(R.id.activity_alien, highScoresFragment);
@@ -95,7 +108,6 @@ public class AlienActivity extends AppCompatActivity implements WelcomeFragment.
 		localStorage.writeUsername(username);
 
 		startGame();
-
 
 	}
 }

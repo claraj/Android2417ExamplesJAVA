@@ -3,9 +3,12 @@ package com.clara.aliens;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -56,7 +59,7 @@ public class WelcomeFragment extends Fragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-		View view = inflater.inflate(R.layout.fragment_welcome, container, false);
+		final View view = inflater.inflate(R.layout.fragment_welcome, container, false);
 
 		TextView usernameTV = (TextView) view.findViewById(R.id.welcome_username);
 		final TextView enterNameTV = (TextView) view.findViewById(R.id.enter_username_instructions);
@@ -64,9 +67,7 @@ public class WelcomeFragment extends Fragment {
 		Button playButton = (Button) view.findViewById(R.id.play_button);
 
 		// If a username set, display username and play button
-		// Otherwise, show edittext for username entry, and play button
-
-		EditText enterUserName = (EditText) view.findViewById(R.id.player_name);
+		// Otherwise, show EditText for username entry, and play button
 
 		if (getArguments() != null && getArguments().getString(USERNAME) != null) {
 			username = getArguments().getString(USERNAME);
@@ -81,9 +82,10 @@ public class WelcomeFragment extends Fragment {
 
 		playButton.setOnClickListener(new View.OnClickListener() {
 			@Override
-			public void onClick(View view) {
+			public void onClick(View buttonview) {
 
 				if (username != null) {
+					hideKeyboard();
 					listener.userStartsPlay(username);
 				}
 
@@ -92,15 +94,23 @@ public class WelcomeFragment extends Fragment {
 					String newUsername = usernameET.getText().toString();
 					if (newUsername.length() == 0) {
 						Toast.makeText(getActivity(), "Enter your name", Toast.LENGTH_LONG).show();
-						return;
 					} else {
+						hideKeyboard();
 						listener.userStartsPlay(newUsername);
 					}
-			}
+				}
 			}
 		});
 
 		return view;
+
+	}
+
+	//Stack overflow. Why is hiding the keyboard so awkward?
+	private void hideKeyboard() {
+		InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Activity.INPUT_METHOD_SERVICE);
+		imm.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0);
+		Log.i(TAG, "Hiding keyboard");
 
 	}
 

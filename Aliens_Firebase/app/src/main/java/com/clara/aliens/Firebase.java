@@ -22,6 +22,7 @@ public class Firebase {
 		highScores.add(new HighScore("Someone", 10000));
 		highScores.add(new HighScore("Someone else", 1000));
 
+		//TODO configure Firebase
 
 		FirebaseAuth f_auth = FirebaseAuth.getInstance();
 		FirebaseDatabase database = FirebaseDatabase.getInstance();
@@ -31,26 +32,19 @@ public class Firebase {
 
 
 	//If new high score for this user, replace old score with new score.
-	public void sendHighScore(String username, int score) {
+	public void saveHighScore(HighScore highScore) {
 
-		for (HighScore s : highScores) {
-			if (s.getUsername().equals(username)) {
-				if (s.score < score) {
-					s.setScore(score);
-				}
-			}
-		}
+		//TODO
+
 	}
 
 	public ArrayList<HighScore> getSortedHighScores() {
-		//// TODO - these are not sorted yet
-		Collections.sort(highScores);
-		return highScores;
-	}
 
-	/* Local version - one way to sort the scores is to make the HighScore class implement Comparable<HighScore> interface, and
-	provide a compareTo method. Then you can simply call Collections.sort on the highScores array.
-	 */
+		//// TODO - fetch from Firebase
+
+		return highScores;
+
+	}
 
 
 }

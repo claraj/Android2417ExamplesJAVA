@@ -1,25 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:background="@color/background">
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/background">
+
+    <!--Want list to take up as much space as needed, but leave room for
+     button beneath. Setting ListView height & width to match_parent
+     and then setting it to be **above** @+id/play_again button causes the to
+     fill as much space as needed, but always stay above button.
+
+     The other way, setting the button to be beneath the list, causes the button
+     to be squashed once the list gets too large for the screen. -->
 
     <ListView
-        android:id="@+id/highscore_list"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        />
+        android:layout_height="match_parent"
+        android:id="@+id/highscore_list"
+        android:layout_above="@+id/play_again"/>
 
 
     <Button
         android:id="@+id/play_again"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Play Again"
-        android:layout_below="@id/highscore_list"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"/>
+        android:text="@string/play_again"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"/>
 
 
 

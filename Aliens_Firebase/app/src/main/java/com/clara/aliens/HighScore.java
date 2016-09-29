@@ -4,7 +4,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 /**
- * Created by admin on 9/29/16.
+ * Created by Clara on 9/29/16.
  */
 
 public class HighScore implements Comparable<HighScore>, Parcelable {
@@ -14,23 +14,6 @@ public class HighScore implements Comparable<HighScore>, Parcelable {
 		this.username = username;
 		this.score = score;
 	}
-
-	protected HighScore(Parcel in) {
-		score = in.readInt();
-		username = in.readString();
-	}
-
-	public static final Creator<HighScore> CREATOR = new Creator<HighScore>() {
-		@Override
-		public HighScore createFromParcel(Parcel in) {
-			return new HighScore(in);
-		}
-
-		@Override
-		public HighScore[] newArray(int size) {
-			return new HighScore[size];
-		}
-	};
 
 	public String getUsername() {
 		return username;
@@ -53,12 +36,16 @@ public class HighScore implements Comparable<HighScore>, Parcelable {
 
 	@Override
 	public int compareTo(HighScore otherHighScore) {
-		return Integer.valueOf(this.score).compareTo(otherHighScore.getScore());
+		return Integer.valueOf(otherHighScore.getScore()).compareTo(this.score);
 	}
 
 	public String toString() {
 		return username + " " + score;
 	}
+
+
+
+	//Things required to make HighScore Parcelable
 
 	@Override
 	public int describeContents() {
@@ -70,5 +57,23 @@ public class HighScore implements Comparable<HighScore>, Parcelable {
 		parcel.writeInt(score);
 		parcel.writeString(username);
 	}
+
+	protected HighScore(Parcel in) {
+		score = in.readInt();
+		username = in.readString();
+	}
+
+	public static final Creator<HighScore> CREATOR = new Creator<HighScore>() {
+		@Override
+		public HighScore createFromParcel(Parcel in) {
+			return new HighScore(in);
+		}
+
+		@Override
+		public HighScore[] newArray(int size) {
+			return new HighScore[size];
+		}
+	};
+
 }
 
