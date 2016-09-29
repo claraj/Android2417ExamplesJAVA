@@ -22,7 +22,7 @@ public class AlienActivity extends AppCompatActivity implements WelcomeFragment.
 	protected void onCreate(Bundle savedInstanceState) {
 
 		//for testing - uncomment to clear saved username and high score
-		PreferenceManager.getDefaultSharedPreferences(this).edit().clear().apply();
+		//PreferenceManager.getDefaultSharedPreferences(this).edit().clear().apply();
 
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_alien);

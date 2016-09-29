@@ -25,7 +25,7 @@ public class GameFragment extends Fragment {
 
 	private static final String TAG = "GAME FRAGMENT" ;
 
-	long gameSpeed = 1500;     //Time in ms between game ui updates
+	long gameSpeed = 1500;     //Time in ms between game ui updates. Larger number = slower game
 
 	int score = 0;
 	int scoreIncrement = 100;
