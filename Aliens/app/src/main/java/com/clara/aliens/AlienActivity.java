@@ -6,8 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 
-//todo vibrate on alien demise (test on device)
-
+//todo custom list adapter/list view to display high scores in table form
 //todo firebase - get high score data, send high score data if new high score
 
 

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Aliens Firebase</string>
+    <string name="app_name">Aliens</string>
     <string name="enter_your_name">Enter your name</string>
     <string name="play_again">Play Again</string>
     <string name="play">Play</string>
