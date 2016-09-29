@@ -18,9 +18,10 @@ public class HighScoreDatabase {
 
 		highScores = new ArrayList<>();
 
-			//Some example scores for testing
+		//Some example scores for testing
 		highScores.add(new HighScore("Someone", 10000));
 		highScores.add(new HighScore("Someone else", 1000));
+		highScores.add(new HighScore("And someone else", 100));
 
 
 	}

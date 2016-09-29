@@ -7,6 +7,7 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -83,6 +84,7 @@ public class WelcomeFragment extends Fragment {
 			public void onClick(View view) {
 
 				if (username != null) {
+					hideKeyboard(usernameET);
 					listener.userStartsPlay(username);
 				}
 
@@ -92,6 +94,7 @@ public class WelcomeFragment extends Fragment {
 					if (newUsername.length() == 0) {
 						Toast.makeText(getActivity(), "Enter your name", Toast.LENGTH_LONG).show();
 					} else {
+						hideKeyboard(usernameET);
 						listener.userStartsPlay(newUsername);
 					}
 			}
@@ -99,6 +102,13 @@ public class WelcomeFragment extends Fragment {
 		});
 
 		return view;
+
+	}
+
+	//Stack overflow. Why is hiding the keyboard so awkward?
+	private void hideKeyboard(EditText et) {
+		InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Activity.INPUT_METHOD_SERVICE);
+		imm.hideSoftInputFromInputMethod(et.getWindowToken(), 0);
 
 	}
 
