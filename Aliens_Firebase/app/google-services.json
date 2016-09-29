@@ -1,27 +1,27 @@
 {
   "project_info": {
-    "project_number": "951062520078",
-    "firebase_url": "https://aliens-e6dfc.firebaseio.com",
-    "project_id": "aliens-e6dfc",
-    "storage_bucket": "aliens-e6dfc.appspot.com"
+    "project_number": "361775414947",
+    "firebase_url": "https://alien-3929a.firebaseio.com",
+    "project_id": "alien-3929a",
+    "storage_bucket": "alien-3929a.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:951062520078:android:c987821f6f8d785c",
+        "mobilesdk_app_id": "1:361775414947:android:b81304ac04442232",
         "android_client_info": {
-          "package_name": "com.clara.aliensfirebase"
+          "package_name": "com.clara.android"
         }
       },
       "oauth_client": [
         {
-          "client_id": "951062520078-hghtl94uekonn7ed5evns3mseiu6rr3f.apps.googleusercontent.com",
+          "client_id": "361775414947-kjj2vgon1gi9sarmmpen1qnjr2222vam.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyDOVxVpdpI3Bx6HC10ajEVcIKcXbcyJTVM"
+          "current_key": "AIzaSyDLMrAT-VmKFOCeOaOmOJL5XXTH4obtH40"
         }
       ],
       "services": {
