@@ -1,4 +1,4 @@
-package com.clara.aliensfirebase;
+package com.clara.aliens;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;

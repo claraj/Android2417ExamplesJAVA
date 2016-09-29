@@ -1,4 +1,4 @@
-package com.clara.aliensfirebase;
+package com.clara.aliens;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -30,7 +30,7 @@ public class WelcomeFragment extends Fragment {
 	UsernameListener listener;
 
 	interface UsernameListener {
-		void setUsername(String username);
+		void userStartsPlay(String username);
 	}
 
 	//Receive list of names and scores
@@ -64,13 +64,13 @@ public class WelcomeFragment extends Fragment {
 		Button playButton = (Button) view.findViewById(R.id.play_button);
 
 		// If a username set, display username and play button
-		// Otherwise, show edittext for username entry, and play button
+		// Otherwise, show EditText for username entry, and play button
 
 		EditText enterUserName = (EditText) view.findViewById(R.id.player_name);
 
 		if (getArguments() != null && getArguments().getString(USERNAME) != null) {
 			username = getArguments().getString(USERNAME);
-			usernameTV.setText(username);
+			usernameTV.setText("Welcome, " + username);
 			usernameTV.setVisibility(View.VISIBLE);
 		}
 
@@ -83,17 +83,19 @@ public class WelcomeFragment extends Fragment {
 			@Override
 			public void onClick(View view) {
 
-				username = usernameET.getText().toString();
-
-				if (username.length() == 0) { username = null;}
-
-				if (username == null) {
-					//todo error message, tell user to enter name
-					Toast.makeText(getActivity(), "Enter your name", Toast.LENGTH_LONG).show();
-					return;
+				if (username != null) {
+					listener.userStartsPlay(username);
 				}
 
-				listener.setUsername(username);
+				else {
+
+					String newUsername = usernameET.getText().toString();
+					if (newUsername.length() == 0) {
+						Toast.makeText(getActivity(), "Enter your name", Toast.LENGTH_LONG).show();
+					} else {
+						listener.userStartsPlay(newUsername);
+					}
+			}
 			}
 		});
 

@@ -1,4 +1,4 @@
-package com.clara.aliensfirebase;
+package com.clara.aliens;
 
 import org.junit.Test;
 
