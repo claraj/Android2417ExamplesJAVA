@@ -6,20 +6,19 @@
               android:background="@color/background">
 
     <ListView
-        android:id="@+id/highscore_list"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        />
+        android:layout_height="match_parent"
+        android:id="@+id/highscore_list"
+        android:layout_above="@+id/play_again"/>
 
 
     <Button
         android:id="@+id/play_again"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Play Again"
-        android:layout_below="@id/highscore_list"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"/>
+        android:text="@string/play_again"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"/>
 
 
 

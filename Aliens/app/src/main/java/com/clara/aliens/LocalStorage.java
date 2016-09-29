@@ -5,7 +5,12 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
 /**
- * Created by admin on 9/28/16.
+ * Created by clara on 9/28/16.
+ *
+ *
+ * Use SharedPreferences - a persistent storage area, private to this app - to store username and their highest score.
+ * SharedPreferences is a key-value store.
+ *
  */
 
 
@@ -14,6 +19,8 @@ public class LocalStorage {
 	private static final String USERNAME_KEY = "username";
 	private static final String HIGHSCORE_KEY = "highscore";
 	private static final String TAG = "LOCAL STORAGE";
+
+	public static final int NO_SCORE_RECORDED = -1;
 
 	private Context context;
 
@@ -47,7 +54,7 @@ public class LocalStorage {
 	protected int getHighScore() {
 
 		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
-		return preferences.getInt(HIGHSCORE_KEY, -1);
+		return preferences.getInt(HIGHSCORE_KEY, NO_SCORE_RECORDED);    // -1 is the default, if no score exists. So if user gets 0 as a score, it will still register as a new high score.
 
 	}
 

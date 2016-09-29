@@ -45,7 +45,7 @@ public class SimpleDialogFragment extends DialogFragment {
 		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
 		String message = getArguments().getString(MESSAGE_ARG);
-		if (message == null) {
+			if (message == null) {
 			//Set a default message
 			message = "Please click Ok or Cancel";
 		}

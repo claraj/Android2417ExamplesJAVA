@@ -3,6 +3,7 @@ package com.clara.aliens;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -65,8 +66,6 @@ public class WelcomeFragment extends Fragment {
 
 		// If a username set, display username and play button
 		// Otherwise, show EditText for username entry, and play button
-
-		EditText enterUserName = (EditText) view.findViewById(R.id.player_name);
 
 		if (getArguments() != null && getArguments().getString(USERNAME) != null) {
 			username = getArguments().getString(USERNAME);

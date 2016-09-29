@@ -1,5 +1,7 @@
 package com.clara.aliens;
 
+import android.util.Log;
+
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -9,15 +11,17 @@ import java.util.Collections;
 
 public class HighScoreDatabase {
 
+	private static final String TAG = "HIGH SCORE DB";
 	ArrayList<HighScore> highScores;
 
 	public HighScoreDatabase() {
 
 		highScores = new ArrayList<>();
 
-		//Some example scores for testing
+			//Some example scores for testing
 		highScores.add(new HighScore("Someone", 10000));
 		highScores.add(new HighScore("Someone else", 1000));
+
 
 	}
 
@@ -29,8 +33,10 @@ public class HighScoreDatabase {
 			if (s.getUsername().equals(highScore.getUsername())) {
 				if (s.score < highScore.getScore()) {
 					s.setScore(highScore.getScore());
-					return;
+					Log.i(TAG, "Updating score for " + highScore);
+
 				}
+				return;
 			}
 		}
 

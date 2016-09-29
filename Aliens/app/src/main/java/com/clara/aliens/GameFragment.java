@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import java.util.Random;
 
 /**
- * Created by admin on 9/28/16.
+ * Created by clara on 9/28/16.
  */
 
 public class GameFragment extends Fragment {

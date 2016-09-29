@@ -96,6 +96,7 @@ public class MainActivity extends AppCompatActivity implements
 		ft.add(android.R.id.content, detailFragment);
 		// Add to the back stack, so if user presses back button from the Detail
 		// fragment, it will revert this transaction - Activity will go back to the Add+List fragments
+
 		ft.addToBackStack(DETAIL_FRAG_TAG);
 
 		ft.commit();
