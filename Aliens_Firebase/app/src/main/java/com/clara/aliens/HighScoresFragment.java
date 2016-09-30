@@ -3,12 +3,16 @@ package com.clara.aliens;
 import android.app.Activity;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
@@ -16,25 +20,37 @@ import java.util.ArrayList;
  * Created by clara on 9/28/16.
  */
 
-public class HighScoresFragment extends Fragment {
+public class HighScoresFragment extends Fragment implements Firebase.HighScoreUpdateListener {
 
 	private String TAG = "HIGH SCORE FRAGMENT";
 
-	private static String SCORES = "high scores bundle key";
+	private static String LOCAL_USER_SCORE = "high scores bundle key";
 
-	private ArrayList<String> scores;
+	private ArrayList<HighScore> scores;
+
+	ListView highScores;
 
 	private RestartListener listener;
+
+	@Override
+	public void highScoresUpdated(ArrayList<HighScore> scores) {
+
+		Log.d(TAG, "High scores data received from firebase, about to update list " + scores);
+		ArrayAdapter<HighScore> adapter = new ArrayAdapter<HighScore>(getActivity(), R.layout.list_item, scores);
+		highScores.setAdapter(adapter);
+		adapter.notifyDataSetChanged();
+
+	}
 
 	interface RestartListener {
 		void playAgain();
 	}
 
-	//Receive list of names and scores
-	public static HighScoresFragment newInstance(ArrayList<HighScore> highScore) {
+	//Receive score for this user, for this round of the game
+	public static HighScoresFragment newInstance(HighScore localUserScore) {
 		HighScoresFragment fragment = new HighScoresFragment();
 		Bundle bundle = new Bundle();
-		bundle.putParcelableArrayList(SCORES, highScore);
+		bundle.putParcelable(LOCAL_USER_SCORE, localUserScore);
 		fragment.setArguments(bundle);
 		return fragment;
 	}
@@ -57,11 +73,20 @@ public class HighScoresFragment extends Fragment {
 
 		View view = inflater.inflate(R.layout.fragment_high_score, container, false);
 
-		scores = getArguments().getStringArrayList(SCORES);
+		HighScore localUserScore = getArguments().getParcelable(LOCAL_USER_SCORE);
 
-		ListView HighScores = (ListView) view.findViewById(R.id.highscore_list);
+		TextView localUserScoreTV = (TextView) view.findViewById(R.id.user_score);
 
-		HighScores.setAdapter(new ArrayAdapter<String>(getActivity(), R.layout.list_item, scores));
+		localUserScoreTV.setText(localUserScore.getUsername() + ", your score is " + localUserScore.getScore());
+
+		highScores = (ListView) view.findViewById(R.id.highscore_list);
+
+		if (scores == null) {
+			scores = new ArrayList<>();
+			scores.add(new HighScore("High Score Table Not Available!", 0));   //dummy score. Bet you can think of a nicer way to do this!
+		}
+
+		highScores.setAdapter(new ArrayAdapter<HighScore>(getActivity(), R.layout.list_item, scores));
 
 		Button playAgain = (Button) view.findViewById(R.id.play_again);
 

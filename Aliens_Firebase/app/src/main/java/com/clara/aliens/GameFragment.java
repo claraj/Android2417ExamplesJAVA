@@ -25,7 +25,7 @@ public class GameFragment extends Fragment {
 
 	private static final String TAG = "GAME FRAGMENT" ;
 
-	long gameSpeed = 1500;     //Time in ms between game ui updates. Larger number = slower game
+	long gameSpeed = 1100;     //Time in ms between game ui updates. Larger number = slower game
 
 	int score = 0;
 	int scoreIncrement = 100;
@@ -112,6 +112,10 @@ public class GameFragment extends Fragment {
 	@Override
 	public void onResume() {
 		super.onResume();
+
+		score = 0;
+		aliensShown = 0;
+		aliensTapped = 0;
 
 		final Random rnd = new Random();
 

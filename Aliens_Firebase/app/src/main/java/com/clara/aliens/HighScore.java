@@ -3,17 +3,21 @@ package com.clara.aliens;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-/**
- * Created by Clara on 9/29/16.
- */
+//
 
-public class HighScore implements Comparable<HighScore>, Parcelable {
+public class HighScore implements Parcelable {
 
+	private int score;
+	private String username;
 
 	public HighScore(String username, int score) {
 		this.username = username;
 		this.score = score;
 	}
+
+	//Empty constructor, and getter and setter methods, required by Firebase
+
+	public HighScore() {}
 
 	public String getUsername() {
 		return username;
@@ -31,17 +35,10 @@ public class HighScore implements Comparable<HighScore>, Parcelable {
 		this.score = score;
 	}
 
-	int score;
-	String username;
-
-	@Override
-	public int compareTo(HighScore otherHighScore) {
-		return Integer.valueOf(otherHighScore.getScore()).compareTo(this.score);
-	}
-
 	public String toString() {
 		return username + " " + score;
 	}
+
 
 
 
