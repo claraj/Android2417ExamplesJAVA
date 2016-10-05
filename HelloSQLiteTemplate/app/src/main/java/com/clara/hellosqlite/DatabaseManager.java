@@ -60,7 +60,10 @@ public class DatabaseManager {
 			//Name column, String
 			//Quantity column, int
 
-			String createTable = "CREATE TABLE " + DB_TABLE + " (" + INT_COL + " INTEGER PRIMARY KEY AUTOINCREMENT, " +  NAME_COL +" TEXT UNIQUE, " + QUANTITY_COL +" INTEGER);"  ;
+			String createTable = "CREATE TABLE " + DB_TABLE +
+					" (" + INT_COL + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+					NAME_COL +" TEXT UNIQUE, " + QUANTITY_COL +" INTEGER);"  ;
+
 			Log.d(SQL_TAG, createTable);
 			db.execSQL(createTable);
 		}

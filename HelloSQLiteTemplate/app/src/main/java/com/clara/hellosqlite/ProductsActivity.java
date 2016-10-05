@@ -72,7 +72,7 @@ public class ProductsActivity extends AppCompatActivity {
 
 				int quantity = Integer.parseInt(newQuantity);
 
-				// TODO Request DB mananger add this product
+				// TODO Request DB manager add this product
 			}
 		});
 
@@ -97,10 +97,16 @@ public class ProductsActivity extends AppCompatActivity {
 			@Override
 			public void onClick(View v) {
 
-				//TODO: Ensure a product is selected and new quantity provided
+				//Ensure a product is selected, and new quantity provided
+				String newQuantityString = updateProductQuantityET.getText().toString();
+				String productName = searchNameET.getText().toString();
+
+				if (!newQuantityString.matches("^\\d+$") || productName.length() == 0) {
+					Toast.makeText(ProductsActivity.this, "Please enter a numerical quantity and a product name", Toast.LENGTH_LONG).show();
+					return;
+				}
 
 				int newQuantity = Integer.parseInt(updateProductQuantityET.getText().toString());
-				String productName = searchNameET.getText().toString();
 
 				// TODO dbMananger update product quantity
 				// TODO If update successful, show Toast and update ListView's Adapter's Cursor

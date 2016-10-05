@@ -89,6 +89,7 @@
                 android:id="@+id/update_quantity_et"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:inputType="number"
                 android:layout_weight="1"/>
 
             <Button
