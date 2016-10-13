@@ -22,17 +22,16 @@ import java.util.Random;
 
 public class GameFragment extends Fragment {
 
-
 	private static final String TAG = "GAME FRAGMENT" ;
 
-	long gameSpeed = 1100;     //Time in ms between game ui updates. Larger number = slower game
+	long gameSpeed = 1000;     //Time in ms between game ui updates. Larger number = slower game
 
 	int score = 0;
 	int scoreIncrement = 100;
 
 	private long vibrate_length = 200;
 
-	int missedPermitted = 5;
+	int missesPermitted = 5;
 
 	int aliensShown = 0;
 	int aliensTapped = 0;
@@ -104,7 +103,9 @@ public class GameFragment extends Fragment {
 
 		//todo explosion image - not all devices can vibrate
 		Vibrator vibrator = (Vibrator) getActivity().getSystemService(Context.VIBRATOR_SERVICE);
-		vibrator.vibrate(vibrate_length);
+		if (vibrator != null) {
+			vibrator.vibrate(vibrate_length);
+		}
 
 	}
 
@@ -143,7 +144,7 @@ public class GameFragment extends Fragment {
 
 				//run out of chances?
 
-				if (aliensTapped + missedPermitted < aliensShown) {
+				if (aliensTapped + missesPermitted < aliensShown) {
 					//game over
 					Log.d(TAG, "game over.");
 					gameHandler.removeCallbacks(this);

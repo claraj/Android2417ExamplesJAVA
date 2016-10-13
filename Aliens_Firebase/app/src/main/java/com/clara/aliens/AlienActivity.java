@@ -6,7 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 
-//todo, appearance:
+//  todo, appearance:
 // 	custom list adapter/list view to display high scores in table form
 //	if no data connection, a better message for the high score table in HighScoreFragment.
 
