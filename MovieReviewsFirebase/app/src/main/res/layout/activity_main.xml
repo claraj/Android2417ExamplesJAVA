@@ -41,7 +41,15 @@
         android:id="@+id/movie_stars_rb"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:stepSize="0.5"
         android:numStars="5"/>
+
+    <Button
+        android:id="@+id/save_review_button"
+        android:text="Save"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        />
 
     <Button
         android:id="@+id/show_all_reviews_button"
