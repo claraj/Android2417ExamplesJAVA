@@ -19,13 +19,17 @@ import com.google.firebase.database.ValueEventListener;
 
 
 /*
-* index on available?
+*
+* Rock Paper Scissors between two devices, with Firebase back end
+*
+* This game is driven by ValueListener callbacks, and event handlers on the UI components.
+*
+* TODO index on available?
 * display image for choice (resize, or scale relative to device display size)
-* test rotation, saving instance state
-* test game state
+* test rotation, saving instance state - FIXME player loses their opponent when device is rotated
+* more testing game state
 *
 * check for opponent going offline
-* listener for this player being found by another player
 
 * what if app crashes? how is data removed from db? Other player times out? Game is abandoned.
 * player makes new entry every time app starts, so player will be ok. DBA will need to clear out db
@@ -35,6 +39,8 @@ import com.google.firebase.database.ValueEventListener;
 *
 * FIXME sometimes two games being created in the database, two devices finding each other simultaneously.
 * Could just ignore and pull score from each.
+*
+* TODO display scores
 *
 * */
 
@@ -423,7 +429,7 @@ public class MainActivity extends AppCompatActivity {
 
 		//disable buttons
 		//await opponent choice, if opponent has not yet played.
-		//once both players have played, then
+		//once both players have played, then show results
 
 		enableButtons(false);
 
