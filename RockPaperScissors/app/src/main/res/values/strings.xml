@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Rock Paper Scissors</string>
+    <string name="opponent_thinking">opponent thinking...</string>
+    <string name="waiting_for_opponent">waiting for opponent...</string>
+</resources>
