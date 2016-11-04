@@ -59,30 +59,20 @@ public class MainActivity extends AppCompatActivity {
 	private static final String GAMES = "games";
 
 	//saved instance state bundle keys
-	private static final String PLAYED = "played_bundle_key";
-	private static final String AVAILABLE = "available_bundle_key";
-	private static final String KEY = "fb_key_bundle_key";
-
-	private static final String OP_PLAYED = "opponent_played_bundle_key";
-	private static final String OP_AVAILABLE = "opponent_available_bundle_key";
-	private static final String OP_KEY = "opponent_fb_key_bundle_key";
-
-	private static final String PLAYER_1_KEY = "game_player_1_key_bundle_key";
-	private static final String PLAYER_2_KEY = "game_player_2_key_bundle_key";
-	private static final String PLAYER_1_SCORE = "game_player_1_score_bundle_key";
-	private static final String PLAYER_2_SCORE = "game_player_2_score_bundle_key";
-	private static final String GAME_KEY = "game_key_bundle_key";
+	private static final String PLAYER_INSTANCE_STATE_KEY = "player_bundle_key";
+	private static final String OPPONENT_INSTANCE_STATE_KEY = "opponent_bundle_key";
+	private static final String GAME_INSTANCE_STATE_KEY = "game_bundle_key";
 
 
-	TextView opponentStatusTV, resultTV;
-	ImageView opponentPlayIV, thisPlayerPlayIV, rockIV, paperIV, scissorsIV;
+	private TextView opponentStatusTV, resultTV;
+	private ImageView opponentPlayIV, thisPlayerPlayIV, rockIV, paperIV, scissorsIV;
 
 	ImageView[] playerChoices;   //Store the rock, paper, scissors ImageViews in an array for convenience, for operations that have to apply to all three
 
-	Player thisPlayer;
-	Player opponent;
+	private Player player;
+	private Player opponent;
 
-	Game game;   //links the two players and their scores.
+	private Game game;   //links the two players and their scores.
 
 	/* Imagine a player starts the game, and no-one else is online.
 	* Then another player comes along and finds this player. Other player
@@ -91,13 +81,11 @@ public class MainActivity extends AppCompatActivity {
 	* Alternative: this player comes online, and there is another player waiting
 	* for a game. This player is Player 1, other player is Player 2.  */
 
-	boolean isPlayer1;   // Player 1 is the player that sets up the game.
+	private boolean isPlayer1;   // Player 1 is the player that sets up the game.
 
-	FirebaseDatabase database;
-	DatabaseReference playersReference;
-	DatabaseReference gamesReference;
-
-	//ValueEventListener mOpponentPlayedListener;
+	private FirebaseDatabase database;
+	private DatabaseReference playersReference;
+	private DatabaseReference gamesReference;
 
 
 	@Override
@@ -110,36 +98,16 @@ public class MainActivity extends AppCompatActivity {
 			Log.d(TAG, "restoring from instance state");
 
 			//Restore self
-
-			boolean avail = savedInstanceState.getBoolean(AVAILABLE);
-			String played = savedInstanceState.getString(PLAYED);
-			String key = savedInstanceState.getString(KEY);
-			thisPlayer = new Player(avail, played, key);
+			player = savedInstanceState.getParcelable(PLAYER_INSTANCE_STATE_KEY);
 
 			//Restore opponent, if present
+			opponent = savedInstanceState.getParcelable(OPPONENT_INSTANCE_STATE_KEY);
 
-			boolean opAvailable = savedInstanceState.getBoolean(OP_AVAILABLE);
-			String opPlayed = savedInstanceState.getString(OP_PLAYED);
-			String opKey = savedInstanceState.getString(OP_KEY);
-
-			if (opKey != null) {
-				opponent = new Player(opAvailable, opPlayed, opKey);
-			}
-
-			String gamePlayer1 = savedInstanceState.getString(PLAYER_1_KEY);
-			String gamePlayer2 = savedInstanceState.getString(PLAYER_1_KEY);
-			int player1score = savedInstanceState.getInt(PLAYER_1_SCORE);
-			int player2score = savedInstanceState.getInt(PLAYER_2_SCORE);
-			String gameKey = savedInstanceState.getString(GAME_KEY);
-
-			if (gameKey != null) {
-				game = new Game(gamePlayer1, gamePlayer2, player1score, player2score, gameKey);
-			}
-
+			game = savedInstanceState.getParcelable(GAME_INSTANCE_STATE_KEY);
 
 		} else {
 			//No instance state, first time game is launched. Make new player.
-			thisPlayer = new Player(true, null, null);  //available, no play made, awaiting key
+			player = new Player(true, null, null);  //available, no play made, awaiting key
 		}
 
 		database = FirebaseDatabase.getInstance();
@@ -226,7 +194,7 @@ public class MainActivity extends AppCompatActivity {
 					possibleOpponent = ds.getValue(Player.class);
 
 					//If this opponent is not us, and is available, select
-					if (! ds.getKey().equals(thisPlayer.key) && possibleOpponent.available) {
+					if (! ds.getKey().equals(player.key) && possibleOpponent.available) {
 						opponent = possibleOpponent;
 						opponent.key = ds.getKey();
 						break;
@@ -257,7 +225,7 @@ public class MainActivity extends AppCompatActivity {
 	private void listenForDiscovery() {
 
 		//Has a game with this player set as player 2 been created?
-		Query haveBeenPaired = gamesReference.orderByChild("player2key").equalTo(thisPlayer.key);
+		Query haveBeenPaired = gamesReference.orderByChild("player2key").equalTo(player.key);
 
 		haveBeenPaired.addValueEventListener(new ValueEventListener() {
 			@Override
@@ -325,12 +293,12 @@ public class MainActivity extends AppCompatActivity {
 
 		opponent.available = false;
 		playersReference.child(opponent.key).setValue(opponent);
-		thisPlayer.available = false;
-		playersReference.child(thisPlayer.key).setValue(thisPlayer);
+		player.available = false;
+		playersReference.child(player.key).setValue(player);
 
 		//Create a new game with both player's keys. Other player will be listening for
 		//a game with their key as player2key
-		game = new Game(thisPlayer.key, opponent.key, 0, 0, null);
+		game = new Game(player.key, opponent.key, 0, 0, null);
 
 		//we are player 1
 		isPlayer1 = true;
@@ -353,9 +321,9 @@ public class MainActivity extends AppCompatActivity {
 	private void notifyOpponentPlayed() {
 
 		Log.d(TAG, "opponent has played, " + opponent);
-		Log.d(TAG, "this player played " + thisPlayer);
+		Log.d(TAG, "this player played " + player);
 
-		String thisPlayerPlay = thisPlayer.played;
+		String thisPlayerPlay = player.played;
 		String opponentPlay = opponent.played;
 
 		opponentStatusTV.setText("Opponent has decided their play..");
@@ -363,7 +331,7 @@ public class MainActivity extends AppCompatActivity {
 
 		if (thisPlayerPlay != null && opponentPlay != null) {
 
-			thisPlayer.played = null;
+			player.played = null;
 			opponent.played = null;
 
 			opponentStatusTV.setText("The results are...");
@@ -433,11 +401,11 @@ public class MainActivity extends AppCompatActivity {
 
 		enableButtons(false);
 
-		thisPlayer.played = choice;
+		player.played = choice;
 
-		Log.d(TAG, "this player has played, " + thisPlayer);
+		Log.d(TAG, "this player has played, " + player);
 
-		playersReference.child(thisPlayer.key).setValue(thisPlayer);
+		playersReference.child(player.key).setValue(player);
 
 		Log.d(TAG, "opponent is currently " + opponent);
 
@@ -498,11 +466,11 @@ public class MainActivity extends AppCompatActivity {
 		thisPlayerPlayIV.setVisibility(View.INVISIBLE);
 		resultTV.setVisibility(View.INVISIBLE);
 
-		thisPlayer.played = null;
+		player.played = null;
 		//opponent.played = null;
 
 		opponentStatusTV.setText("New game, make your choice...");
-		playersReference.child(thisPlayer.key).child("played").setValue(null);
+		playersReference.child(player.key).child("played").setValue(null);
 		//playersReference.child(opponent.key).child("played").setValue(null);
 
 		//Await other player reset
@@ -534,15 +502,15 @@ public class MainActivity extends AppCompatActivity {
 		//no key? save as new player
 		if (key == null) {
 			DatabaseReference ref = playersReference.push();
-			ref.setValue(thisPlayer);
-			thisPlayer.key = ref.getKey();
-			Log.d(TAG, "Saved self to db, " + thisPlayer);
+			ref.setValue(player);
+			player.key = ref.getKey();
+			Log.d(TAG, "Saved self to db, " + player);
 		}
 
 		//else if key, create new player / update player with this key
-		playersReference.child(thisPlayer.key).setValue(thisPlayer);
+		playersReference.child(player.key).setValue(player);
 
-		Log.d(TAG, "Saved updated self in  db, " + thisPlayer);
+		Log.d(TAG, "Saved updated self in  db, " + player);
 	}
 
 
@@ -551,43 +519,30 @@ public class MainActivity extends AppCompatActivity {
 	//and written back to the DB.
 
 	private void removeSelfFromDB() {
-		playersReference.child(thisPlayer.key).removeValue();
+		playersReference.child(player.key).removeValue();
 	}
 
 	@Override
 	public void onPause() {
 		super.onPause();
-		Log.d(TAG, "on pause, this player " + thisPlayer);
+		Log.d(TAG, "on pause, this player " + player);
 		removeSelfFromDB();
 	}
 
 	@Override
 	public void onResume(){
 		super.onResume();
-		Log.d(TAG, "on resume, this player " + thisPlayer);
-		saveSelfToDB(thisPlayer.key);
+		Log.d(TAG, "on resume, this player " + player);
+		saveSelfToDB(player.key);
 	}
 
 	@Override
 	public void onSaveInstanceState(Bundle bundle) {
 
-		bundle.putBoolean(AVAILABLE, thisPlayer.available);
-		bundle.putString(PLAYED, thisPlayer.played);
-		bundle.putString(KEY, thisPlayer.key);
+		bundle.putParcelable(PLAYER_INSTANCE_STATE_KEY, player);
+		bundle.putParcelable(OPPONENT_INSTANCE_STATE_KEY, opponent);
+		bundle.putParcelable(GAME_INSTANCE_STATE_KEY, game);
 
-		if (opponent != null) {
-			bundle.putBoolean(OP_AVAILABLE, opponent.available);
-			bundle.putString(OP_PLAYED, opponent.played);
-			bundle.putString(OP_KEY, opponent.key);
-		}
-
-		if (game != null) {
-			bundle.putString(PLAYER_1_KEY, game.player1key);
-			bundle.putString(PLAYER_2_KEY, game.player2key);
-			bundle.putInt(PLAYER_1_SCORE, game.player1score);
-			bundle.putInt(PLAYER_2_SCORE, game.player2score);
-			bundle.putString(GAME_KEY, game.key);
-		}
 	}
 
 

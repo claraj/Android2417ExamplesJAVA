@@ -1,12 +1,15 @@
 package com.clara.rockpaperscissors;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.firebase.database.Exclude;
 
 /**
  * Created by admin on 11/3/16.
  */
 
-public class Game {
+public class Game implements Parcelable{
 
 	String player1key;
 	String player2key;
@@ -26,6 +29,26 @@ public class Game {
 		this.key = key;
 	}
 
+	protected Game(Parcel in) {
+		player1key = in.readString();
+		player2key = in.readString();
+		player1score = in.readInt();
+		player2score = in.readInt();
+		key = in.readString();
+	}
+
+	public static final Creator<Game> CREATOR = new Creator<Game>() {
+		@Override
+		public Game createFromParcel(Parcel in) {
+			return new Game(in);
+		}
+
+		@Override
+		public Game[] newArray(int size) {
+			return new Game[size];
+		}
+	};
+
 	@Override
 	public String toString() {
 		return "Game{" +
@@ -35,5 +58,19 @@ public class Game {
 				", player2score=" + player2score +
 				", key='" + key + '\'' +
 				'}';
+	}
+
+	@Override
+	public int describeContents() {
+		return 0;
+	}
+
+	@Override
+	public void writeToParcel(Parcel parcel, int i) {
+		parcel.writeString(player1key);
+		parcel.writeString(player2key);
+		parcel.writeInt(player1score);
+		parcel.writeInt(player2score);
+		parcel.writeString(key);
 	}
 }
