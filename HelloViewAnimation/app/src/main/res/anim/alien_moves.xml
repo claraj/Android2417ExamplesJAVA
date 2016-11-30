@@ -1,11 +1,63 @@
 <?xml version="1.0" encoding="utf-8"?>
-<set xmlns:android="http://schemas.android.com/apk/res/android">
+<set xmlns:android="http://schemas.android.com/apk/res/android"
+    >
 
-    <rotate
-        android:fromDegrees="0"
-        android:toDegrees="360"
-        android:duration="3000"
-        android:pivotX="50%"
-        android:pivotY="50%" />
+    <!--Roll clockwise 360 degrees, about the center of the view -->
+
+    <set>
+
+        <rotate
+            android:fromDegrees="0"
+            android:toDegrees="360"
+            android:duration="3000"
+            android:pivotX="50%"
+            android:pivotY="50%"
+            />
+
+        <!--And slide right at the same time, for same duration -->
+
+        <translate
+            android:toXDelta="600"
+            android:duration="3000"
+            />
+
+    </set>
+
+
+
+    <!--After 3000 ms (duration of the above rotate and translate),
+    slide left to original position-->
+
+    <set
+        android:startOffset="3000">
+
+        <translate
+            android:toXDelta="-600"
+            android:duration="3000" />
+
+    </set>
+
+
+    <!--And after 6000mn, shrink to 0 size and fade away-->
+
+    <set
+        android:startOffset="6000">
+
+        <alpha
+            android:toAlpha="0"
+            android:duration="2000" />
+
+        <scale
+            android:duration="2000"
+            android:pivotX="50%"
+            android:pivotY="50%"
+            android:fromXScale="1"
+            android:toXScale="0"
+            android:fromYScale="1"
+            android:toYScale="0"
+            />
+
+    </set>
+
 
 </set>
