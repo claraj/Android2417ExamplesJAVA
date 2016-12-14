@@ -1,4 +1,4 @@
-package com.clara.rockpaperscissors;
+package com.clara.rockpaperscissors.Model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -6,20 +6,20 @@ import android.os.Parcelable;
 import com.google.firebase.database.Exclude;
 
 /**
- * Created by admin on 11/3/16.
+ * Created by clara on 11/3/16. Deserializing Firebase data
  */
 
 public class Game implements Parcelable{
 
-	String player1key;
-	String player2key;
-	int player1score;
-	int player2score;
+	public String player1key;
+	public String player2key;
+	public int player1score;
+	public int player2score;
 
-	Game() {}
+	Game() {}   //Firebase requires empty constructor
 
 	@Exclude
-	String key;
+	public String key;
 
 	public Game(String player1key, String player2key, int player1score, int player2score, String key) {
 		this.player1key = player1key;
@@ -29,6 +29,20 @@ public class Game implements Parcelable{
 		this.key = key;
 	}
 
+
+	@Override
+	public String toString() {
+		return "Game{" +
+				"player1key='" + player1key + '\'' +
+				", player2key='" + player2key + '\'' +
+				", player1score=" + player1score +
+				", player2score=" + player2score +
+				", key='" + key + '\'' +
+				'}';
+	}
+
+
+	//Parcelable
 	protected Game(Parcel in) {
 		player1key = in.readString();
 		player2key = in.readString();
@@ -50,17 +64,6 @@ public class Game implements Parcelable{
 	};
 
 	@Override
-	public String toString() {
-		return "Game{" +
-				"player1key='" + player1key + '\'' +
-				", player2key='" + player2key + '\'' +
-				", player1score=" + player1score +
-				", player2score=" + player2score +
-				", key='" + key + '\'' +
-				'}';
-	}
-
-	@Override
 	public int describeContents() {
 		return 0;
 	}
@@ -73,4 +76,5 @@ public class Game implements Parcelable{
 		parcel.writeInt(player2score);
 		parcel.writeString(key);
 	}
+
 }

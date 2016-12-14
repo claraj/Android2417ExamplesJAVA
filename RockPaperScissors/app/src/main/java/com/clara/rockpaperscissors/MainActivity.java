@@ -10,6 +10,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.clara.rockpaperscissors.Model.Game;
+import com.clara.rockpaperscissors.Model.Player;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -97,18 +99,15 @@ public class MainActivity extends AppCompatActivity {
 
 			Log.d(TAG, "restoring from instance state");
 
-			//Restore self
 			player = savedInstanceState.getParcelable(PLAYER_INSTANCE_STATE_KEY);
-
-			//Restore opponent, if present
 			opponent = savedInstanceState.getParcelable(OPPONENT_INSTANCE_STATE_KEY);
-
 			game = savedInstanceState.getParcelable(GAME_INSTANCE_STATE_KEY);
 
 		} else {
 			//No instance state, first time game is launched. Make new player.
 			player = new Player(true, null, null);  //available, no play made, awaiting key
 		}
+
 
 		database = FirebaseDatabase.getInstance();
 		playersReference = database.getReference().child(PLAYERS);

@@ -1,6 +1,5 @@
 package com.clara.aliens;
 
-import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;

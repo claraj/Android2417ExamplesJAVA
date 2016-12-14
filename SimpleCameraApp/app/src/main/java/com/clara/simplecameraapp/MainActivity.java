@@ -85,6 +85,13 @@ public class MainActivity extends AppCompatActivity {
 
 				imageFileUri = FileProvider.getUriForFile(MainActivity.this, "com.clara.simplecameraapp", imageFile);
 
+				Log.i(TAG, "image file URI  " + imageFileUri);
+
+				//todo need to do this for N
+				// https://inthecheesefactory.com/blog/how-to-share-access-to-file-with-fileprovider-on-android-nougat/en
+
+
+
 			} catch (IOException ioe) {
 				Log.e(TAG, "Error creating file for photo storage", ioe);
 				return;
@@ -195,6 +202,7 @@ public class MainActivity extends AppCompatActivity {
 
 		Bitmap bitmap = BitmapFactory.decodeFile(mImagePath, bOptions);
 		mImage = bitmap;
+
 	}
 }
 

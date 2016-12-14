@@ -1,21 +1,20 @@
-package com.clara.rockpaperscissors;
+package com.clara.rockpaperscissors.Model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.google.firebase.database.Exclude;
-import com.google.firebase.database.IgnoreExtraProperties;
 
 /**
  * Created by clara on 11/2/16.  For deserializing Firebase data
  */
 public class Player implements Parcelable {
 
-	boolean available;
-	String played;       // rock, paper, scissors, or null
+	public boolean available;
+	public String played;       // rock, paper, scissors, or null
 
 	@Exclude
-	String key;
+	public String key;
 
 
 	//What stage of the game is the player in? available, ready, played, viewing results, reset?
@@ -24,7 +23,7 @@ public class Player implements Parcelable {
 
 	Player() {}
 
-	Player(boolean avail, String played, String key) {
+	public Player(boolean avail, String played, String key) {
 		this.available = avail;
 		this.played = played;
 		this.key = key;
@@ -41,8 +40,9 @@ public class Player implements Parcelable {
 	}
 
 
+	//Parcelable stuff
 
-	protected Player(Parcel in) {
+	Player(Parcel in) {
 		available = in.readByte() != 0;
 		played = in.readString();
 		key = in.readString();
