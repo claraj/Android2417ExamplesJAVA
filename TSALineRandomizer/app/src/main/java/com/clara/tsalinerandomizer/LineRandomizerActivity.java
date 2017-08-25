@@ -60,6 +60,7 @@ public class LineRandomizerActivity extends AppCompatActivity {
 		// Remove button
 		mTapHereButton.setVisibility(View.GONE);
 
+		// Generate a random number between 0 and 1. Or in other words, 0 or 1
 		int random = new Random().nextInt(2);
 
 		if (random == 0) {
@@ -70,7 +71,6 @@ public class LineRandomizerActivity extends AppCompatActivity {
 			// Show left arrow
 			mLeftArrow.setVisibility(View.VISIBLE);
 		}
-
 	}
 
 
@@ -83,7 +83,8 @@ public class LineRandomizerActivity extends AppCompatActivity {
 
 		// And show button
 		mTapHereButton.setVisibility(View.VISIBLE);
-
 	}
 
 }
+
+
