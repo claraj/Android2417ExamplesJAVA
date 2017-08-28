@@ -7,34 +7,49 @@ import android.widget.TextView;
 
 public class SeekBarActivity extends AppCompatActivity {
 
+	SeekBar mSeekBar;
+	TextView mSeekBarLabel;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_seek_bar);
 
-		final TextView seekbarValueTV = (TextView) findViewById(R.id.seek_bar_value_label);
-		SeekBar seekBar = (SeekBar) findViewById(R.id.seek_bar);
 
-		int seekbarProgress = seekBar.getProgress();
+		mSeekBar = (SeekBar) findViewById(R.id.seek_bar);
+		mSeekBarLabel = (TextView) findViewById(R.id.seek_bar_value_label);
 
-		seekbarValueTV.setText("The intital SeekBar value is " + seekbarProgress);
+		// Set initial TextView value using a format string resource
+		mSeekBarLabel.setText(getString(R.string.seekbar_progress, mSeekBar.getProgress()));
 
-		seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+		addSeekBarListener();
+
+	}
+
+	private void addSeekBarListener() {
+
+		mSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
 			@Override
 			public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-				//The onProgessChanged method supplies the current SeekBar progress
-				seekbarValueTV.setText("The seekbar value is " + progress);
+				mSeekBarLabel.setText(getString(R.string.seekbar_progress, progress));
 			}
 
 			@Override
 			public void onStartTrackingTouch(SeekBar seekBar) {
-				//Don't need to respond to this event, but still need to implement this method
+				// We don't care about this event in this app, but are required to implement this method.
+				// It's ok that nothing happens here, our app doesn't need to do anything when this event happens.
 			}
 
 			@Override
 			public void onStopTrackingTouch(SeekBar seekBar) {
-				//same here
+				// Same as previous method, can leave this empty.
 			}
 		});
+
 	}
+
+
 }
+
+
+
