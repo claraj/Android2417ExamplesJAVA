@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">Hello Testing</string>
+    <string name="answer">The sum is %1$d</string>
+    <string name="answer_placeholder">Answer goes here</string>
+    <string name="error_enter_two_numbers">Enter two numbers</string>
+</resources>
