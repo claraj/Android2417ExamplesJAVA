@@ -21,12 +21,12 @@ public class MainActivity extends AppCompatActivity {
 		//Get a reference to the ListView
 		 ListView listView = (ListView) findViewById(R.id.simple_list);
 
-		//Some data for the list
-		 final String[] androidVersions = {"Ice cream sandwich", "Jellybean", "Kitkat", "Lollipop"};
+		//An array to provide some data for the list
+		String[] androidVersions = {"Ice cream sandwich", "Jellybean", "Kitkat", "Lollipop"};
 
-		//Create an ArrayAdapter. Note generic types used
+		//Create an ArrayAdapter. Note generic type <String> used
 		//Arguments are Context, a TextView's resource ID, a List of the generic type
-		final ArrayAdapter<String> arrayAdapter =
+		ArrayAdapter<String> arrayAdapter =
 				new ArrayAdapter<String>(this, R.layout.list_item, R.id.list_item_text, androidVersions);
 
 		//And set this ArrayAdapter to be the the ListView's adapter
