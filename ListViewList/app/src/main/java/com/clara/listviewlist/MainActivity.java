@@ -31,8 +31,9 @@ public class MainActivity extends AppCompatActivity {
 		listView.setAdapter(arrayAdapter);
 
 		//Add data to the ArrayList
-		androidVersions.add("Marshmallow");
-		androidVersions.add(0, "Ice cream sandwich");
+		androidVersions.add("Marshmallow");   // Add at the end
+		androidVersions.add(0, "Ice cream sandwich");   // Add at the start
+		androidVersions.add(2, "Oreo");   // Add in the middle
 		//And tell the ArrayAdapter to notify the ListView that the data has changed
 		arrayAdapter.notifyDataSetChanged();
 
