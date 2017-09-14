@@ -2,9 +2,12 @@ package com.clara.listview_todo_list;
 
 import java.util.Date;
 
+/** Represents the data about one item in a To Do list */
+
 public class ToDoItem {
-	String text;
-	Date created;
+
+	private String text;
+	private Date created;
 
 	public ToDoItem(String text) {
 		this.text = text;

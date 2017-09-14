@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 public class ToDoListAdapter extends ArrayAdapter<ToDoItem> {
 
-	Context context;    //Usually the Activity that this ListView belongs to
+	Context context;    // Often the Activity that this ListView belongs to
 
 	public ToDoListAdapter(Context context, int resource) {
 		super(context, resource);

@@ -42,15 +42,15 @@ public class MainActivity extends AppCompatActivity {
 		FragmentTransaction ft = fm.beginTransaction();
 
 
-		//If blue Fragment is shown, then replace with green fragment
+		//If blue fragment is shown, then replace with green fragment
 		//Check if the FragmentManager is managing a Fragment with the tag BLUE_TAG
 		//If not, then replace whatever is there with the BlueFragment
 		if (fm.findFragmentByTag(BLUE_TAG) != null) {
 			//Carry out the transaction - in this case, replace one fragment with another
-			//replace() removes all Fragments from a container and replaces with another Fragment
+			//replace() removes all Fragments from a container (like this Activity) and replaces with another Fragment
 			//Add a String tag to the transaction. (Can use this to figure out what's displayed)
-			ft.replace(android.R.id.content, greenFragment, GREEN_TAG);
 			//And keep track of which Fragment is currently shown
+			ft.replace(android.R.id.content, greenFragment, GREEN_TAG);
 		}
 
 		//Otherwise, the green fragment is shown. Replace with blue.

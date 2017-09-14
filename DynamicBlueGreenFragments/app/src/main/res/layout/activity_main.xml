@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -10,9 +10,9 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.clara.dynamicbluegreenfragments.MainActivity">
 
-    <!-- delete Fragment elements, we'll add them in code -->
+    <!-- No components added to the FrameLayout. We'll add Fragment(s) in code -->
 
-</LinearLayout>
+</FrameLayout>
 
 
 
