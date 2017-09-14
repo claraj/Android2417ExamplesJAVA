@@ -32,15 +32,7 @@ public class MainActivity extends AppCompatActivity implements BlueFragment.Rand
 
 		ft.commit();
 
-		//showBlueFragment();   //Need to show something to start with
 	}
-
-//	private void showBlueFragment() {
-//		FragmentManager fm = getFragmentManager();
-//		FragmentTransaction ft = fm.beginTransaction();
-//		ft.add(android.R.id.content, blueFragment, BLUE_TAG);
-//		ft.commit();
-//	}
 
 	// Send the random number to the GreenFragment
 	public void sendRandomNumber(int rnd) {
@@ -49,4 +41,5 @@ public class MainActivity extends AppCompatActivity implements BlueFragment.Rand
 
 	}
 }
+
 
