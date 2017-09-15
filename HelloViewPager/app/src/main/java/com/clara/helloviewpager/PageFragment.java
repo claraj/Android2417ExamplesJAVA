@@ -58,9 +58,15 @@ public class PageFragment extends Fragment {
 		// Inflate the layout for this fragment
 		View view = inflater.inflate(R.layout.fragment_page, container, false);
 		TextView number = (TextView) view.findViewById(R.id.number_tv);
-		number.setText("The number of this page is " + mParam);
 
-		container.setBackgroundColor(Color.argb(100, Math.min(mParam * 50, 255), Math.min(mParam * 50, 255), Math.min(mParam * 50, 255)));
+		// Set variables for this particular view in the series of pages.
+		// In a real app, this is more likely to come from an array, a database, Firebase, some other source...
+
+		// Number the pages, and set a different background color for each
+		number.setText("The number of this page is " + mParam);
+		int color = Math.min(Math.abs(mParam * 50), 255);  // Constrain to range 0-255; works fine if mParam is in the range 1-4,
+		// values outside of this range will be either 0 or 255. For a more general solution, you'd need to know the number of pages to scale the color value correctly.
+		container.setBackgroundColor(Color.argb(100, color, color, color));   // gray
 		return view;
 	}
 
