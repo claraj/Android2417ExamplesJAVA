@@ -121,10 +121,23 @@ public class ProductsActivity extends AppCompatActivity {
 			@Override
 			public void onClick(View v) {
 
-				//TODO: Ensure a product is selected and new quantity provided
+				//Ensure a product is selected and new quantity provided
 
-				int newQuantity = Integer.parseInt(updateProductQuantityET.getText().toString());
-				String productName = searchNameET.getText().toString();
+				int newQuantity = -1;  // an invalid value; will be replaced by data entered by user, but only if it is valid
+
+				try {
+					newQuantity = Integer.parseInt(updateProductQuantityET.getText().toString());
+				} catch (NumberFormatException ne) {
+					// Don't modify updateQuantity, so it will stay as -1
+				}
+
+				String productName = searchNameET.getText().toString().trim();
+
+				if (productName.length() == 0 || newQuantity == -1) {
+					Toast.makeText(ProductsActivity.this, "Enter a product and a quantity", Toast.LENGTH_SHORT).show();
+					return;
+				}
+
 
 				if (dbManager.updateQuantity(productName, newQuantity)){
 					Toast.makeText(ProductsActivity.this, "Updated quantity", Toast.LENGTH_LONG).show();
