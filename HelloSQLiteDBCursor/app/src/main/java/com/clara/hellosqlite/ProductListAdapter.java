@@ -32,30 +32,10 @@ public class ProductListAdapter extends CursorAdapter {
 		// Put data from this cursor (represents one row of the database) into this
 		// view (the corresponding row in the list)
 
-
-
 		final TextView productListName = (TextView) view.findViewById(R.id.product_list_name);
 		TextView productListQuantity = (TextView) view.findViewById(R.id.product_list_quantity);
 
-//		final String name = cursor.getString(NAME_COL);
-//		final String shortVersion = name.substring(0, 4) + "...";
-//		productListName.setText(shortVersion);
-//
-//		view.setOnClickListener(new View.OnClickListener() {
-//			@Override
-//			public void onClick(View v) {
-//
-//				if (productListName.getText().toString().endsWith("...") ){
-//					productListName.setText(name);
-//				} else {
-//					productListName.setText(shortVersion);
-//				}
-//			}
-//		});
-
 		productListName.setText(cursor.getString(NAME_COL));
-
-
 
 		productListQuantity.setText(cursor.getString(QUANTITY_COL));
 

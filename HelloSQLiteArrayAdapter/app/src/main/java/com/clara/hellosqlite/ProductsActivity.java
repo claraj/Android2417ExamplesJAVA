@@ -121,7 +121,7 @@ public class ProductsActivity extends AppCompatActivity {
 			@Override
 			public void onClick(View v) {
 
-				//Ensure a product is selected and new quantity provided
+				//Ensure a product is selected and new quantity provided. The quantity must be a positive integer.
 
 				int newQuantity = -1;  // an invalid value; will be replaced by data entered by user, but only if it is valid
 
@@ -133,7 +133,7 @@ public class ProductsActivity extends AppCompatActivity {
 
 				String productName = searchNameET.getText().toString().trim();
 
-				if (productName.length() == 0 || newQuantity == -1) {
+				if (productName.length() == 0 || newQuantity >= 0) {
 					Toast.makeText(ProductsActivity.this, "Enter a product and a quantity", Toast.LENGTH_SHORT).show();
 					return;
 				}

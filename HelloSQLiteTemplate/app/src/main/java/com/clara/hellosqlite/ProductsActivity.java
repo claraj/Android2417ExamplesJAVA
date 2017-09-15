@@ -143,6 +143,7 @@ public class ProductsActivity extends AppCompatActivity {
 		dbManager.close();
 	}
 
+
 	//reconnect as Activity restarts
 	@Override
 	protected void onResume() {

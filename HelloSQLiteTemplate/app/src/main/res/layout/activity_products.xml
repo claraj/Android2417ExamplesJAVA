@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -8,7 +8,8 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.clara.hellosqlite.ProductsActivity">
+    tools:context="com.clara.hellosqlite.ProductsActivity"
+    android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -19,65 +20,50 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-            <TextView
-                android:id="@+id/add_new_product_name_tv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/label_product_name" />
-
 
             <EditText
                 android:id="@+id/add_new_product_name_et"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" >
-            </EditText>
+                android:layout_height="wrap_content"
+                android:inputType="text"
+                android:hint="@string/label_product_name"/>
+
         </LinearLayout>
 
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-            <TextView
-                android:id="@+id/add_new_product_quantity_tv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/label_product_quantity" />
 
             <EditText
                 android:id="@+id/add_new_product_quantity_et"
                 android:inputType="number"
-                android:layout_width="match_parent"
+                android:hint="@string/label_product_quantity"
+                android:layout_weight="1"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content" />
+
+            <Button
+                android:id="@+id/add_product_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/button_add_product" />
+
         </LinearLayout>
 
-
-        <Button
-            android:id="@+id/add_product_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/button_add_product" />
 
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/instruction_product_to_search" />
 
             <EditText
                 android:id="@+id/search_et"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-
-        </LinearLayout>
-
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:inputType="text"
+                android:hint="@string/instruction_product_to_search"/>
 
             <Button
                 android:id="@+id/search_products_button"
@@ -85,12 +71,22 @@
                 android:layout_height="wrap_content"
                 android:text="@string/button_search_for_product" />
 
+        </LinearLayout>
+
+
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
             <EditText
                 android:id="@+id/update_quantity_et"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:inputType="number"
-                android:layout_weight="1"/>
+                android:hint="@string/instruction_product_quantity_update"/>
 
             <Button
                 android:id="@+id/update_quantity_button"
@@ -101,12 +97,21 @@
         </LinearLayout>
 
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/all_products" />
+
 
     </LinearLayout>
+
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:padding="5dp"
+        android:background="@color/colorPrimaryDark"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/all_products" />
 
     <ListView
         android:id="@+id/all_products_listview"
@@ -115,4 +120,4 @@
         android:layout_below="@id/controls"/>
 
 
-</RelativeLayout>
+</LinearLayout>
