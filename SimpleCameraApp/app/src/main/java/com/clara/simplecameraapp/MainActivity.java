@@ -26,16 +26,26 @@ import java.util.Date;
 
 public class MainActivity extends AppCompatActivity {
 
+	// Logging tag
 	private static final String TAG = "Camera Main Activity";
-	private static final int REQUEST_SAVE_IMAGE_PERMISSION_REQUEST_CODE = 123;
+
+	// UI components
 	Button mTakePictureButton;
 	ImageView mCameraPicture;
 
-	private static int TAKE_PICTURE = 0;
+	// To identify the which permission request is returning a result
+	private static final int REQUEST_SAVE_IMAGE_PERMISSION_REQUEST_CODE = 1001;
 
+	// To identify that the camera is returning a result
+	private static final int TAKE_PICTURE_REQUEST_CODE = 0;
+
+	// For file storage, where is the current image stored?
 	private String mImagePath;
+
+	// The image to be displayed in the app
 	private Bitmap mImage;
 
+	// Used in the instance state Bundle, to preserve image when device is rotated
 	private static final String IMAGE_FILEPATH_KEY = "image filepath key";
 
 
@@ -45,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
 		setContentView(R.layout.activity_main);
 
 		if (savedInstanceState != null) {
-			mImagePath = savedInstanceState.getString(IMAGE_FILEPATH_KEY);
+			mImagePath = savedInstanceState.getString(IMAGE_FILEPATH_KEY, null);
 		}
 
 		mCameraPicture = (ImageView) findViewById(R.id.camera_picture);
@@ -68,41 +78,32 @@ public class MainActivity extends AppCompatActivity {
 		}
 
 		else {
-			// Create a File object from the specified filename
-			String imageFilename = "simple_camera_app_" + new Date().getTime();  //Create a unique filename including a timestamp
+			// Create a unique filename for the image
+			String imageFilename = "simple_camera_app_" + new Date().getTime();  //Create a unique filename with a timestamp
 
-			File storageDirectory = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+			File storageDirectory = getExternalFilesDir(Environment.DIRECTORY_PICTURES);  // directory to store temp file
 			File imageFile = null;
 			Uri imageFileUri = null;
 
 			try {
-
+				// Create a temporary file with this name and path
 				imageFile = File.createTempFile(imageFilename, ".jpg", storageDirectory);
-				Log.i(TAG, "image file " + imageFile);
-
-				mImagePath = imageFile.getAbsolutePath();
-				Log.i(TAG, "image file path  " + mImagePath);
-
+				mImagePath = imageFile.getAbsolutePath();   // Save path in global variable
+				// Create an URI from the path; the Intent will send this to the camera. A URI defines a location and how to access it
+				// For example content://com.clara.simplecameraapp/my_images/simple_camera_app_15054908234543141945190112.jpg
 				imageFileUri = FileProvider.getUriForFile(MainActivity.this, "com.clara.simplecameraapp", imageFile);
-
 				Log.i(TAG, "image file URI  " + imageFileUri);
-
-				//todo need to do this for N
-				// https://inthecheesefactory.com/blog/how-to-share-access-to-file-with-fileprovider-on-android-nougat/en
-
-
 
 			} catch (IOException ioe) {
 				Log.e(TAG, "Error creating file for photo storage", ioe);
-				return;
+				return;   // Will be unable to continue if unable to access storage
 			}
 
-			//So if the file creation worked, should have a value for imageFileUri. Include this URI as an extra
+			//So if creating the temporary file worked, should have a value for imageFileUri. Include this URI as an extra
 			pictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, imageFileUri);
 
 			//And then request the camera is launched
-			startActivityForResult(pictureIntent, TAKE_PICTURE);
-
+			startActivityForResult(pictureIntent, TAKE_PICTURE_REQUEST_CODE);
 		}
 	}
 
@@ -112,12 +113,11 @@ public class MainActivity extends AppCompatActivity {
 
 		Log.d(TAG, "On Activity Result");
 
-		if (resultCode == RESULT_OK && requestCode == TAKE_PICTURE) {
-			scaleBitmap();
-			saveToMediaStore();
-
+		if (resultCode == RESULT_OK && requestCode == TAKE_PICTURE_REQUEST_CODE) {
+			saveImageToMediaStore();
 		}
 	}
+
 
 	@Override
 	public void onWindowFocusChanged(boolean hasFocus) {
@@ -132,24 +132,31 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-	private void saveToMediaStore() {
+
+	private void saveImageToMediaStore() {
+
 		//Add image to device's MediaStore - this makes the image accessible to the
-		//gallery app, and other apps that can read from the MediaStore
+		//gallery app, and any other apps that can read from the MediaStore
 
-		//Need to request permission on Nougat and above
+		//Do we have permission to write to storage?
 
+		// Marshmallow and before, we just need to request permission in AndroidManifest,
+		// and this check will return true if we've done so. The user will be notified that this app uses the file system when they first install it.
 		if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
 			MediaStore.Images.Media.insertImage(getContentResolver(), mImage, "SimpleCameraApp", "Photo taken by SimpleCameraApp");
-		} else {
+		}
+
+		// WRITE_EXTERNAL_STORAGE is a dangerous permission. So for Nougat and above, need to request permission in the mainfest
+		// AND we will need to ask the user for permission when the app runs.
+		else {
 			//This request opens a dialog box for the user to accept the permission request.
 			// When the user clicks ok or cancel, the onRequestPermission method (below) is called with the results
 			ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_SAVE_IMAGE_PERMISSION_REQUEST_CODE);
 		}
-
 	}
 
 
-	// This ts the callback for requestPermissions for adding image to media store
+	// This is the callback for requestPermissions for adding image to media store
 
 	@Override
 	public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
@@ -157,9 +164,14 @@ public class MainActivity extends AppCompatActivity {
 			if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
 				//Now should be able to save
 				MediaStore.Images.Media.insertImage(getContentResolver(), mImage, "SimpleCameraApp", "Photo taken by SimpleCameraApp");
+			} else {
+				Log.w(TAG, "Permission to WRITE_EXERNAL_STORAGE was NOT granted.");
+				Toast.makeText(this, "The images taken will NOT saved to the gallery", Toast.LENGTH_SHORT).show();
 			}
 		}
 	}
+
+
 
 	//Handle rotation. Save the image pathname.
 	// Bitmap objects are parcelable so can be put in a bundle, but the bitmap might be huge and take up more
@@ -170,11 +182,18 @@ public class MainActivity extends AppCompatActivity {
 	}
 
 
+	// Scale picture taken to fit into the ImageView
 	private void scaleBitmap() {
-		// * Scale picture taken to fit into the ImageView */      
+
 		//Step 1: what size is the ImageView?
 		int imageViewHeight = mCameraPicture.getHeight();
 		int imageViewWidth = mCameraPicture.getWidth();
+
+		// If height or width are zero, there's no point doing this. Return.
+		if (imageViewHeight == 0 || imageViewWidth == 0) {
+			Log.w(TAG, "The image view size is zero. Unable to scale.");
+			return;
+		}
 
 		//Step 2: decode file to find out how large the image is.
 
@@ -196,8 +215,8 @@ public class MainActivity extends AppCompatActivity {
 		//Step 3. Can use the original size and target size to calculate scale factor
 		int scaleFactor = Math.min(pictureHeight / imageViewHeight, pictureWidth / imageViewWidth);
 
-		//Step 4. Decode the image file into a new bitmap, scaled to fit the ImageView
-		bOptions.inJustDecodeBounds = false;   //setting this to be false will actualy decode the file to a Bitmap
+		//Step 4. Decode the image file into a new Bitmap, scaled to fit the ImageView
+		bOptions.inJustDecodeBounds = false;   //setting this to false will actually decode the file to a Bitmap
 		bOptions.inSampleSize = scaleFactor;
 
 		Bitmap bitmap = BitmapFactory.decodeFile(mImagePath, bOptions);
