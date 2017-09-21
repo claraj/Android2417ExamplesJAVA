@@ -63,6 +63,7 @@ public class SquareActivity extends AppCompatActivity {
 			@Override
 			public void onClick(View v) {
 				Intent resultIntent = new Intent();
+				// This time, the value of the extra should be false, to represent that the user did NOT tap in the square
 				resultIntent.putExtra(EXTRA_INSIDE_SQUARE, false);
 				setResult(RESULT_OK, resultIntent);
 				finish();
@@ -70,5 +71,22 @@ public class SquareActivity extends AppCompatActivity {
 		});
 
 	}
+
+	/*
+
+	You could also write a method like this,
+	and call setResultAndFinish(true) from the squareView onClick method
+	and call setResultAndFinish(false) from the mainView onClick method
+
+	void setResultAndFinish(boolean tappedInSquare) {
+
+		Intent resultIntent = new Intent();
+		resultIntent.putExtra(EXTRA_INSIDE_SQUARE, tappedInSquare);
+		setResult(RESULT_OK, resultIntent);
+		finish();
+	}
+
+	*/
+
 }
 
