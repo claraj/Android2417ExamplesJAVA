@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">MovieReview</string>
+    <string name="movie_name_here">Movie Name Here</string>
+    <string name="set_name">Set Name</string>
+    <string name="review">Review</string>
+    <string name="name">Name</string>
+    <string name="save">Save</string>
+    <string name="would_see_again">Would see again?</string>
+    <string name="clear">Clear</string>
+    <string name="movie_name">Movie Name</string>
+    <string name="set_name_to_start">Set movie name to start</string>
+</resources>
