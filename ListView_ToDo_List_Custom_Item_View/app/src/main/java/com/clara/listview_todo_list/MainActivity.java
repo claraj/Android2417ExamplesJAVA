@@ -51,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
 
 				//Else, create a new ToDoIem from the text, and add to the ArrayAdapter
 				ToDoItem newItem = new ToDoItem(newItemText);
-				todoListAdapter.add(new ToDoItem(newItemText));
+				todoListAdapter.add(newItem);
 
 				//And notify the ArrayAdapter that the data set has changed, to request UI update
 				todoListAdapter.notifyDataSetChanged();

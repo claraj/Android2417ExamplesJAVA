@@ -68,13 +68,14 @@ public class MainActivity extends AppCompatActivity {
 				//Remove the item at position in ArrayList, but first ask user if they are sure
 
 				Log.d(TAG, "On long click listener");
-				final int indexPosition = position;    //Copy position clicked into final variable so it can be used inside the Dialog's event handler
+				final int indexPosition = position;    //Copy position clicked into final variable so it
+															// can be used inside the Dialog's event handler
 				final String todoItemText = todoListItems.get(position);
 
 				AlertDialog areYouSureDialog = new AlertDialog.Builder(MainActivity.this)
 						.setTitle("Delete this item?")
 						.setMessage(todoItemText)
-						.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+						.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
 							@Override
 							public void onClick(DialogInterface dialog, int which) {
 								//remove item from ArrayList
@@ -83,13 +84,15 @@ public class MainActivity extends AppCompatActivity {
 								todoListAdapter.notifyDataSetChanged();
 							}
 						})
-						.setNegativeButton(R.string.no, null) /* no listener needed, if user presses this button the dialog will just close and nothing will happen */
+						.setNegativeButton(android.R.string.no, null) /* no listener needed, if user presses this button
+																	the dialog will just close and nothing will happen */
 						.create();
 
 				areYouSureDialog.show();
 
 				return true; //Does this event handler completely handle this event?
-				//Would return false if you wanted this event to then be passed onto other listeners that may receive this event
+				//return false if you want this event to then be passed onto other listeners that may receive this event
+				//for example, the ListView itself
 
 			}
 

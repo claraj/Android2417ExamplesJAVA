@@ -9,7 +9,7 @@
     <ListView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/listview_arraylist"
+        android:id="@+id/simple_list"
         tools:layout_constraintTop_creator="1"
         android:layout_marginTop="16dp"
         tools:layout_constraintLeft_creator="1"

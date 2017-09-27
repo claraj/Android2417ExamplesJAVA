@@ -16,7 +16,7 @@ public class MainActivity extends AppCompatActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 
-		ListView listView = (ListView) findViewById(R.id.listview_arraylist);
+		ListView listView = (ListView) findViewById(R.id.simple_list);
 
 		//Create an ArrayList and add some example data
 		ArrayList<String> androidVersions = new ArrayList<String>();
@@ -26,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
 
 		//Create Adapter: provide Context (typically this Activity), a layout file, and TextView, and List
 		ArrayAdapter<String> arrayAdapter =
-				new ArrayAdapter<String>(this, R.layout.list_view_item, R.id.android_version_name, androidVersions);
+				new ArrayAdapter<String>(this, R.layout.list_view_item, R.id.list_item_text, androidVersions);
 
 		listView.setAdapter(arrayAdapter);
 
