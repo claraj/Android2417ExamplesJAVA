@@ -14,9 +14,6 @@ import java.util.Random;
 
 public class BlueFragment extends Fragment {
 
-	//To save a reference to the host Activity, so can call methods to send data
-	MainActivity hostingActivity;
-
 	@Override
 	public View onCreateView (LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
 
@@ -32,6 +29,8 @@ public class BlueFragment extends Fragment {
 				//This Fragment shouldn't know or care what happens to the random number
 				Random rng = new Random();
 				int rnd = rng.nextInt(100);   //Random number between 0 and 99
+
+				MainActivity hostingActivity = (MainActivity) getActivity();
 				hostingActivity.sendRandomNumber(rnd);
 			}
 		});
@@ -39,11 +38,6 @@ public class BlueFragment extends Fragment {
 		return view;
 	}
 
-	@Override
-	public void onAttach(Context context) {
-		super.onAttach(context);
-		hostingActivity = (MainActivity) getActivity();   //Save a reference to the hosting activity
-	}
 
 }
 
