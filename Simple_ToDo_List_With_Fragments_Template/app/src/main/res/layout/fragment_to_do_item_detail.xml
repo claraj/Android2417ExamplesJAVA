@@ -18,13 +18,14 @@
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"/>
 
-    <CheckBox
+    <CheckedTextView
+        android:id="@+id/to_do_detail_urgent_checkbox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/urgent"
-        android:id="@+id/to_do_detail_urgent_checkbox"
-        android:enabled="false"
-        android:layout_below="@+id/to_do_detail_date_created_textview"/>
+        android:layout_below="@+id/to_do_detail_date_created_textview"
+        android:checkMark="@android:drawable/checkbox_on_background"
+        android:text="@string/urgent" />
+
 
     <Button
         android:layout_width="wrap_content"
