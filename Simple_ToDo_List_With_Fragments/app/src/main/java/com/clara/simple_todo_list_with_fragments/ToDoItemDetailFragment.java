@@ -9,7 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.CheckBox;
+import android.widget.CheckedTextView;
 import android.widget.TextView;
 
 
@@ -58,7 +58,7 @@ public class ToDoItemDetailFragment extends Fragment {
 		//Set up the view
 		final TextView detailTextText = (TextView) view.findViewById(R.id.to_do_detail_text_textview);
 		final TextView detailDateText = (TextView) view.findViewById(R.id.to_do_detail_date_created_textview);
-		final CheckBox detailUrgentCheckBox = (CheckBox) view.findViewById(R.id.to_do_detail_urgent_checkbox);
+		final CheckedTextView detailUrgentCheckBox = (CheckedTextView) view.findViewById(R.id.to_do_detail_urgent_checkbox);
 		Button doneButton = (Button) view.findViewById(R.id.to_do_detail_done_button);
 
 		detailTextText.setText(item.getText());
