@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
+import android.widget.CheckedTextView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -37,7 +38,7 @@ public class ToDoListArrayAdapter extends ArrayAdapter<ToDoItem> {
 
 		TextView todoText = (TextView) rowView.findViewById(R.id.todo_list_text_textview);
 		TextView todoDate = (TextView) rowView.findViewById(R.id.todo_list_date_textview);
-		CheckBox todoUrgent = (CheckBox) rowView.findViewById(R.id.todo_list_urgent_checkbox);
+		CheckedTextView todoUrgent = (CheckedTextView) rowView.findViewById(R.id.todo_list_urgent_checkbox);
 
 		todoText.setText(item.getText());
 		todoDate.setText(item.getDateCreated().toString());
