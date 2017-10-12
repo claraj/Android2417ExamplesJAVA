@@ -10,7 +10,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -66,16 +65,15 @@ public class ProductsActivity extends AppCompatActivity {
 			@Override
 			public void onClick(View v) {
 
-				String newName = productNameET.getText().toString();
+				String newName = productNameET.getText().toString().trim();
 				String newQuantity = productQuantityET.getText().toString();
+				int quantity = positiveInteger(newQuantity);
 
-				if ( newName.length() == 0  || !newQuantity.matches("^\\d+$")) {   //regex validation
+				if ( newName.isEmpty() || quantity < 0 ) {   // validation
 					Toast.makeText(ProductsActivity.this, "Please enter a product name and numerical quantity",
 							Toast.LENGTH_LONG).show();
 					return;
 				}
-
-				int quantity = Integer.parseInt(newQuantity);
 
 				if (dbManager.addProduct(newName, quantity)) {
 					Toast.makeText(ProductsActivity.this, "Product added to database", Toast.LENGTH_LONG).show();
@@ -98,8 +96,8 @@ public class ProductsActivity extends AppCompatActivity {
 			@Override
 			public void onClick(View v) {
 
-				String searchName = searchNameET.getText().toString();
-				if ( searchName.equals("")) {
+				String searchName = searchNameET.getText().toString().trim();
+				if ( searchName.isEmpty() ) {
 					Toast.makeText(ProductsActivity.this, "Please enter a product to search for",
 							Toast.LENGTH_LONG).show();
 					return;
@@ -123,17 +121,12 @@ public class ProductsActivity extends AppCompatActivity {
 
 				//Ensure a product is selected and new quantity provided. The quantity must be a positive integer.
 
-				int newQuantity = -1;  // an invalid value; will be replaced by data entered by user, but only if it is valid
-
-				try {
-					newQuantity = Integer.parseInt(updateProductQuantityET.getText().toString());
-				} catch (NumberFormatException ne) {
-					// Don't modify updateQuantity, so it will stay as -1
-				}
+				String newQuantityString = updateProductQuantityET.getText().toString();
+				int newQuantity = positiveInteger(newQuantityString);  // an invalid value; will be replaced by data entered by user, but only if it is valid
 
 				String productName = searchNameET.getText().toString().trim();
 
-				if (productName.length() == 0 || newQuantity >= 0) {
+				if ( productName.isEmpty() || newQuantity < 0 ) {
 					Toast.makeText(ProductsActivity.this, "Enter a product and a quantity", Toast.LENGTH_SHORT).show();
 					return;
 				}
@@ -177,6 +170,8 @@ public class ProductsActivity extends AppCompatActivity {
 
 	}
 
+
+	/* Update the ListView by re-running the query and rebuilding the list. */
 	private void updateProductsListView() {
 
 		ArrayList<Product> allProd = dbManager.fetchAllProducts();
@@ -184,6 +179,23 @@ public class ProductsActivity extends AppCompatActivity {
 		allProductsListAdapter.addAll(allProd);
 		allProductsListAdapter.notifyDataSetChanged();
 	}
+
+
+
+	/* Utility method to assist with validation.
+	  Returns a positive int representing the number given by String s.
+	  For example, "55" returns the int 55
+	  If the number is negative or cannot be converted to a valid integer, return -1.
+	   */
+	private int positiveInteger(String s) {
+		try {
+			int i = Integer.parseInt(s);
+			return (i < 0) ? -1 : i;   // if i < 0 then return -1, otherwise return i
+		} catch (NumberFormatException ne) {
+			return -1;
+		}
+	}
+
 
 
 	//override onPause method to close database as Activity pauses

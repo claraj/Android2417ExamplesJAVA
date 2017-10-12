@@ -6,7 +6,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteConstraintException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.support.v7.widget.ContentFrameLayout;
 import android.util.Log;
 
 import java.util.ArrayList;
@@ -118,8 +117,8 @@ public class DatabaseManager {
 
 		String[] cols = { quantityCol };
 
-		// Not case sensitive
-		// select quantity from products where upper(name) = upper(<productName>) limit 1
+		// Not case sensitive. For a case-sensitive search, use something like this,
+		// select quantity from products where upper(nameCol) = upper(productName) limit 1
 
 		String selection =  "upper(" + nameCol + ") = upper ( ? ) ";
 		String[] selectionArgs = { productName };
