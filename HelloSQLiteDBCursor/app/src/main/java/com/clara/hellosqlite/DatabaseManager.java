@@ -21,7 +21,7 @@ public class DatabaseManager {
 	protected static final int DB_VERSION = 1;
 	protected static final String DB_TABLE = "inventory";
 
-	private static final String INT_COL = "_id";
+	private static final String ID_COL = "_id";
 	protected static final String NAME_COL = "product_name";
 	protected static final String QUANTITY_COL = "quantity";
 
@@ -35,7 +35,7 @@ public class DatabaseManager {
 	}
 
 	public void close() {
-		helper.close(); //Closes the database - very important!
+		helper.close(); //Closes the database - very important to ensure all data is saved!
 	}
 
 
@@ -43,7 +43,7 @@ public class DatabaseManager {
 	// Return true if at least one row was deleted, false otherwise.
 	public boolean deleteProduct(long productId) {
 		String[] whereArgs = { Long.toString(productId) };
-		String where =  "_id = ?";
+		String where =  ID_COL + " = ?";
 		int rowsDeleted = db.delete(DB_TABLE, where, whereArgs);
 
 		Log.i(DB_TAG, "Delete "+ productId + " rows deleted:" + rowsDeleted);
@@ -68,8 +68,8 @@ public class DatabaseManager {
 
 		int rowsChanged = db.update(DB_TABLE, updateProduct, where, whereArgs);
 
-		Log.i(DB_TAG, "Update "+ name + " new quantity " + newQuantity +
-				" rows modified " + rowsChanged);
+		Log.i(DB_TAG, "Update "+ name + " with new quantity " + newQuantity +
+				" rows modified = " + rowsChanged);
 
 		if ( rowsChanged > 0) {
 			return true;    //If at least one row changed, an update was made.
@@ -90,7 +90,7 @@ public class DatabaseManager {
 			return true;
 
 		} catch (SQLiteConstraintException sqlce) {
-			Log.e(DB_TAG, "error inserting data into table. " +
+			Log.e(DB_TAG, "Error inserting data into table. " +
 					"Name:" + name + " quantity:" + quantity, sqlce);
 			return false;
 		}
@@ -136,7 +136,7 @@ public class DatabaseManager {
 
 		// This query is case sensitive. If you don't care about case, convert the search
 		// query to uppercase and compare to the uppercase versions of the data in the database
-		// select quantity from products where upper(product_name) = upper(productName>)
+		// select quantity from products where upper(product_name) = upper(productName)
 
 		String selection =  NAME_COL + " = ? ";
 		String[] selectionArgs = { productName };
@@ -154,7 +154,7 @@ public class DatabaseManager {
 			// 0 products found - the product is not in the database.
 			// (Or more than one, which would indicate a problem with the design.
 			// When the db was created, the product_name was configured to be unique.)
-			return -1;    //todo - better way to indicate product not found?
+			return -1;    //todo - is there a better way to indicate product not found?
 		}
 	}
 
@@ -169,14 +169,14 @@ public class DatabaseManager {
 		public void onCreate(SQLiteDatabase db) {
 
 			//Table contains these columns:
-			// _id column, primary key, which autoincrements - saves you setting the value
+			// _id column, primary key, which auto-increments - saves you setting the value
 			//			Having a primary key column is almost always a good idea. In this app, the _id column is used by
 			//			the list CursorAdapter data source to figure out what to put in the list, and to uniquely identify each element
 			// Name column, String
 			// Quantity column, int
 
 			String createTable = "CREATE TABLE " + DB_TABLE + " (" +
-					INT_COL + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+					ID_COL + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
 					NAME_COL +" TEXT UNIQUE, " +
 					QUANTITY_COL +" INTEGER);"  ;
 			Log.d(SQL_TAG, createTable);

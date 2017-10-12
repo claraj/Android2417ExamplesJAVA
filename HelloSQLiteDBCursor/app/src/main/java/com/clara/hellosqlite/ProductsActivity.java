@@ -54,11 +54,13 @@ public class ProductsActivity extends AppCompatActivity {
 		searchProductsButton = (Button)findViewById(R.id.search_products_button);
 		updateQuantityButton = (Button)findViewById(R.id.update_quantity_button);
 
-		// Set up Cursor, create ProductListAdapter using this Cursor,
-		// configure ListView to use this ProductListAdapter,
+		// Get reference to ListView
 		allProductsListView = (ListView)findViewById(R.id.all_products_listview);
+		// Set up Cursor
 		allProductsCursor = dbManager.getCursorAll();
+		// Create ProductListAdapter using this Cursor
 		allProductListAdapter = new ProductListAdapter(this, allProductsCursor, false);
+		// Configure ListView to use this ProductListAdapter
 		allProductsListView.setAdapter(allProductListAdapter);
 
 		addProductButton.setOnClickListener(new View.OnClickListener() {
@@ -66,15 +68,13 @@ public class ProductsActivity extends AppCompatActivity {
 			public void onClick(View v) {
 
 				String newName = productNameET.getText().toString();
-				String newQuantity = productQuantityET.getText().toString();
+				String newQuantityString = productQuantityET.getText().toString();
+				int quantity = positiveInteger(newQuantityString);
 
-				if ( newName.length() == 0  || !newQuantity.matches("^\\d+$")) {   //regex validation
-					Toast.makeText(ProductsActivity.this, "Please enter a product name and numerical quantity",
-							Toast.LENGTH_LONG).show();
+				if ( newName.isEmpty() || quantity < 0 ) {
+					Toast.makeText(ProductsActivity.this, "Please enter a product name and numerical quantity", Toast.LENGTH_LONG).show();
 					return;
 				}
-
-				int quantity = Integer.parseInt(newQuantity);
 
 				if (dbManager.addProduct(newName, quantity)) {
 					Toast.makeText(ProductsActivity.this, "Product added to database", Toast.LENGTH_LONG).show();
@@ -98,8 +98,8 @@ public class ProductsActivity extends AppCompatActivity {
 			@Override
 			public void onClick(View v) {
 
-				String searchName = searchNameET.getText().toString();
-				if ( searchName.equals("")) {
+				String searchName = searchNameET.getText().toString().trim();
+				if ( searchName.isEmpty()) {
 					Toast.makeText(ProductsActivity.this, "Please enter a product to search for",
 							Toast.LENGTH_LONG).show();
 					return;
@@ -121,19 +121,18 @@ public class ProductsActivity extends AppCompatActivity {
 			@Override
 			public void onClick(View v) {
 
-				//Ensure a product is selected, and new quantity provided
-				String newQuantityString = updateProductQuantityET.getText().toString();
+				String newQuantityString = updateProductQuantityET.getText().toString().trim();
+				int newQuantity = positiveInteger(newQuantityString);
+
 				String productName = searchNameET.getText().toString();
 
-				if (!newQuantityString.matches("^\\d+$") || productName.length() == 0) {
+				if ( productName.isEmpty() || newQuantity < 0) {
 					Toast.makeText(ProductsActivity.this, "Please enter a numerical quantity and a product name", Toast.LENGTH_LONG).show();
 					return;
 				}
 
-				int newQuantity = Integer.parseInt(updateProductQuantityET.getText().toString());
-
-				// If update successful, show Toast and update ListView's Adapter's Cursor
-				if (dbManager.updateQuantity(productName, newQuantity)){
+				// Call updateQuantity. If update successful, show Toast and update ListView's Adapter's Cursor
+				if ( dbManager.updateQuantity(productName, newQuantity) ){
 					Toast.makeText(ProductsActivity.this, "Quantity updated", Toast.LENGTH_LONG).show();
 					allProductListAdapter.changeCursor(dbManager.getCursorAll());
 				} else {
@@ -180,6 +179,21 @@ public class ProductsActivity extends AppCompatActivity {
 			}
 		});
 
+	}
+
+
+	/* Utility method to assist with validation.
+	Returns a positive int representing the number given by String s.
+	For example, "55" returns the int 55
+	If the number is negative or cannot be converted to a valid integer, return -1.
+	 */
+	private int positiveInteger(String s) {
+		try {
+			int i = Integer.parseInt(s);
+			return (i < 0) ? -1 : i;   // if i < 0 then return -1, otherwise return i
+		} catch (NumberFormatException ne) {
+			return -1;
+		}
 	}
 
 

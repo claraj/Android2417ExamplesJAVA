@@ -54,10 +54,10 @@ public class ProductsActivity extends AppCompatActivity {
 		searchProductsButton = (Button)findViewById(R.id.search_products_button);
 		updateQuantityButton = (Button)findViewById(R.id.update_quantity_button);
 
-		// TODO get reference to ListView
+		// TODO Get reference to ListView
 		// TODO Set up Cursor
-		// TODO create ProductListAdapter using this Cursor
-		// TODO configure ListView to use this ProductListAdapter
+		// TODO Create ProductListAdapter using this Cursor
+		// TODO Configure ListView to use this ProductListAdapter
 
 		addProductButton.setOnClickListener(new View.OnClickListener() {
 
@@ -66,9 +66,9 @@ public class ProductsActivity extends AppCompatActivity {
 
 				String newName = productNameET.getText().toString();
 				String newQuantityString = productQuantityET.getText().toString();
-				int newQuantity = positiveInteger(newQuantityString);
+				int quantity = positiveInteger(newQuantityString);
 
-				if (newName.isEmpty() || newQuantity < 0) {
+				if ( newName.isEmpty() || quantity < 0 ) {
 					Toast.makeText(ProductsActivity.this, "Please enter a product name and numerical quantity", Toast.LENGTH_LONG).show();
 					return;
 				}
