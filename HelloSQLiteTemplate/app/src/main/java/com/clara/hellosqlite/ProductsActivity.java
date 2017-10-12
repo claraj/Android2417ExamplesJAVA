@@ -1,6 +1,7 @@
 package com.clara.hellosqlite;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.database.Cursor;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -53,8 +54,10 @@ public class ProductsActivity extends AppCompatActivity {
 		searchProductsButton = (Button)findViewById(R.id.search_products_button);
 		updateQuantityButton = (Button)findViewById(R.id.update_quantity_button);
 
-		// TODO Set up Cursor, create ProductListAdapter using this Cursor,
-		// TODO configure ListView to use this ProductListAdapter,
+		// TODO get reference to ListView
+		// TODO Set up Cursor
+		// TODO create ProductListAdapter using this Cursor
+		// TODO configure ListView to use this ProductListAdapter
 
 		addProductButton.setOnClickListener(new View.OnClickListener() {
 
@@ -62,17 +65,16 @@ public class ProductsActivity extends AppCompatActivity {
 			public void onClick(View v) {
 
 				String newName = productNameET.getText().toString();
-				String newQuantity = productQuantityET.getText().toString();
+				String newQuantityString = productQuantityET.getText().toString();
+				int newQuantity = positiveInteger(newQuantityString);
 
-				if ( newName.length() == 0  || !newQuantity.matches("^\\d+$")) {   //regex validation
-					Toast.makeText(ProductsActivity.this, "Please enter a product name and numerical quantity",
-							Toast.LENGTH_LONG).show();
+				if (newName.isEmpty() || newQuantity < 0) {
+					Toast.makeText(ProductsActivity.this, "Please enter a product name and numerical quantity", Toast.LENGTH_LONG).show();
 					return;
 				}
 
-				int quantity = Integer.parseInt(newQuantity);
 
-				// TODO Request DB manager add this product
+				// TODO Request dbManager add this product
 			}
 		});
 
@@ -82,14 +84,15 @@ public class ProductsActivity extends AppCompatActivity {
 			@Override
 			public void onClick(View v) {
 
-				String searchName = searchNameET.getText().toString();
-				if ( searchName.equals("")) {
+				String searchName = searchNameET.getText().toString().trim();
+
+				if ( searchName.isEmpty() ) {
 					Toast.makeText(ProductsActivity.this, "Please enter a product to search for",
 							Toast.LENGTH_LONG).show();
 					return;
 				}
 
-				//TODO request quantity of product from dbMananger
+				//TODO request quantity of product from dbManager
 			}
 		});
 
@@ -97,16 +100,18 @@ public class ProductsActivity extends AppCompatActivity {
 			@Override
 			public void onClick(View v) {
 
-				//Ensure a product is selected, and new quantity provided
-				String newQuantityString = updateProductQuantityET.getText().toString();
+				//TODO Ensure a product name is in the searchNameET, and a positive int quantity provided in updateProductQuantityET
+
+				String newQuantityString = updateProductQuantityET.getText().toString().trim();
+				int newQuantity = positiveInteger(newQuantityString);
+
 				String productName = searchNameET.getText().toString();
 
-				if (!newQuantityString.matches("^\\d+$") || productName.length() == 0) {
+				if ( productName.isEmpty() || newQuantity < 0) {
 					Toast.makeText(ProductsActivity.this, "Please enter a numerical quantity and a product name", Toast.LENGTH_LONG).show();
 					return;
 				}
 
-				int newQuantity = Integer.parseInt(updateProductQuantityET.getText().toString());
 
 				// TODO dbMananger update product quantity
 				// TODO If update successful, show Toast and update ListView's Adapter's Cursor
@@ -133,6 +138,20 @@ public class ProductsActivity extends AppCompatActivity {
 			}
 		});
 
+	}
+
+	/* Utility method to assist with validation.
+	Returns a positive int representing the number given by String s.
+	For example, "55" returns the int 55
+	If the number is negative or cannot be converted to a valid integer, return -1.
+	 */
+	private int positiveInteger(String s) {
+		try {
+			int i = Integer.parseInt(s);
+			return (i < 0) ? -1 : i;   // if i < 0 then return -1, otherwise return i
+		} catch (NumberFormatException ne) {
+			return -1;
+		}
 	}
 
 

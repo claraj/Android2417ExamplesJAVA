@@ -21,7 +21,7 @@ public class DatabaseManager {
 	protected static final int DB_VERSION = 1;
 	protected static final String DB_TABLE = "inventory";
 
-	private static final String INT_COL = "_id";
+	private static final String ID_COL = "_id";
 	protected static final String NAME_COL = "product_name";
 	protected static final String QUANTITY_COL = "quantity";
 
@@ -35,7 +35,7 @@ public class DatabaseManager {
 	}
 
 	public void close() {
-		helper.close(); //Closes the database - very important!
+		helper.close(); // Closes the database - very important to ensure all data is saved!
 	}
 
 
@@ -61,7 +61,7 @@ public class DatabaseManager {
 			//Quantity column, int
 
 			String createTable = "CREATE TABLE " + DB_TABLE +
-					" (" + INT_COL + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+					" (" + ID_COL + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
 					NAME_COL +" TEXT UNIQUE, " + QUANTITY_COL +" INTEGER);"  ;
 
 			Log.d(SQL_TAG, createTable);
