@@ -72,12 +72,14 @@ public class ProductsActivity extends AppCompatActivity {
 				int quantity = positiveInteger(newQuantityString);
 
 				if ( newName.isEmpty() || quantity < 0 ) {
-					Toast.makeText(ProductsActivity.this, "Please enter a product name and numerical quantity", Toast.LENGTH_LONG).show();
+					Toast.makeText(ProductsActivity.this, "Please enter a product name and numerical" +
+							" quantity", Toast.LENGTH_LONG).show();
 					return;
 				}
 
 				if (dbManager.addProduct(newName, quantity)) {
-					Toast.makeText(ProductsActivity.this, "Product added to database", Toast.LENGTH_LONG).show();
+					Toast.makeText(ProductsActivity.this, "Product added to database",
+							Toast.LENGTH_LONG).show();
 
 					//Clear form and update ListView
 					productNameET.getText().clear();

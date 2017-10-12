@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">HelloSQLite</string>
+    <string name="app_name">HelloSQLiteDBCursor</string>
 
     <string name="instruction_product_to_search">Name to search</string>
     <string name="button_search_for_product">Search</string>
