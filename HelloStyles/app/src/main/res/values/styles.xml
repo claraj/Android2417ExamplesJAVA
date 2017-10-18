@@ -15,6 +15,16 @@
         <item name="android:textAllCaps">true</item>
     </style>
 
+
+    <style name="GradientFill">
+        <item name="android:background">@drawable/background_orange_yellow_gradient</item>
+    </style>
+
+
+    <style name="OrangeRoundCornerBorder">
+        <item name="android:background">@drawable/background_orange_border_purple_fill</item>
+    </style>
+
 </resources>
 
 

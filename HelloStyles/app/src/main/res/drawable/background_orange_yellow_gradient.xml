@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- Gradient created with http://angrytools.com/gradient/, a very useful tool! -->
+    <shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="rectangle" >
+        <gradient
+            android:type="linear"
+            android:centerX="25%"
+            android:startColor="#FFff0000"
+            android:centerColor="#FFffff00"
+            android:endColor="#FFff0000"
+            android:angle="45"/>
+    </shape>
+
+

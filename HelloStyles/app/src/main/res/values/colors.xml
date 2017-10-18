@@ -5,4 +5,8 @@
     <color name="colorAccent">#ffab40</color>
 
     <color name="buttonBlue">#b5d0e4</color>   <!-- Light blue -->
+
+    <color name="orange">#ff9933</color>
+    <color name="purple">#aa00aa</color>
+
 </resources>
