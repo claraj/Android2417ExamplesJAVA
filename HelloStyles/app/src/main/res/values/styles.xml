@@ -10,6 +10,7 @@
 
 
     <style name="ButtonBlueCapsMonospace">
+        <item name="android:padding">10dp</item>
         <item name="android:background">@color/buttonBlue</item>
         <item name="android:typeface">monospace</item>
         <item name="android:textAllCaps">true</item>
@@ -17,11 +18,13 @@
 
 
     <style name="GradientFill">
+        <item name="android:padding">10dp</item>
         <item name="android:background">@drawable/background_orange_yellow_gradient</item>
     </style>
 
 
     <style name="OrangeRoundCornerBorder">
+        <item name="android:padding">10dp</item>
         <item name="android:background">@drawable/background_orange_border_purple_fill</item>
     </style>
 
