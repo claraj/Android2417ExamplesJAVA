@@ -1,5 +1,6 @@
 package com.clara.moviereviewsfirebase;
 
+
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -14,22 +15,24 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
+import com.google.firebase.database.GenericTypeIndicator;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class MainActivity extends AppCompatActivity {
 
-	EditText mMovieNameET;
-	EditText mMovieReviewTextET;
+	EditText mMovieNameET, mMovieReviewTextET, mSearchMovieET;
 	RatingBar mMovieStars;
-	Button mSaveButton;
-	Button mShowAllReviewsButton;
-	TextView mAllMoviesTV;
+	Button mSaveButton, mShowLatestReviewButton, mShowAllReviewsButton, mSearchMovieButton;
+	TextView mLatestMovieTV, mMovieSearchTV, mAllMoviesTV;
+
+
+	private static final String TAG = "Movie Review Activity";
 
 	private static final String ALL_REVIEWS_KEY = "all_reviews";
-	DatabaseReference dbReference;
+	private DatabaseReference reviewsReference;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -37,34 +40,30 @@ public class MainActivity extends AppCompatActivity {
 		setContentView(R.layout.activity_main);
 
 		//References for components
+		mSaveButton = (Button) findViewById(R.id.save_review_button);
+		//mShowLatestReviewButton = (Button) findViewById(R.id.show_latest_review_button);
+
+		mSearchMovieButton = (Button) findViewById(R.id.search_movie_review_button);  // not needed as UI updates automatically
+		//mShowAllReviewsButton = (Button) findViewById(R.id.show_all_reviews_button);  // not needed as UI updates automatically
+
 		mMovieNameET = (EditText) findViewById(R.id.movie_name_et);
 		mMovieReviewTextET = (EditText) findViewById(R.id.movie_review_et);
+		mSearchMovieET = (EditText) findViewById(R.id.search_name_et);
+
 		mMovieStars = (RatingBar) findViewById(R.id.movie_stars_rb);
-		mSaveButton = (Button) findViewById(R.id.save_review_button);
-		mShowAllReviewsButton = (Button) findViewById(R.id.show_all_reviews_button);
+
+		mLatestMovieTV = (TextView) findViewById(R.id.latest_movie_data_tv);
+		mMovieSearchTV = (TextView) findViewById(R.id.search_movie_result_tv);
 		mAllMoviesTV = (TextView) findViewById(R.id.all_movie_data_tv);
 
- 		//Register listeners for buttons
-		mSaveButton.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View view) {
-				saveReview();
-			}
-		});
+		addListeners();
 
-//		mShowAllReviewsButton.setOnClickListener(new View.OnClickListener() {
-//			@Override
-//			public void onClick(View view) {
-//				fetchAllReviews();
-//			}
-//		});
-
-
-		//Configure Firebase
 		FirebaseDatabase database = FirebaseDatabase.getInstance();
-		dbReference = database.getReference();
+		DatabaseReference dbReference = database.getReference();
+		reviewsReference = dbReference.child(ALL_REVIEWS_KEY);
 
 		fetchAllReviews();
+		fetchLatestReview();
 
 	}
 
@@ -74,52 +73,171 @@ public class MainActivity extends AppCompatActivity {
 		String reviewText = mMovieReviewTextET.getText().toString();
 		float stars = mMovieStars.getRating();
 
+		// Make a new MovieReview object from the data
 		MovieReview review = new MovieReview(name, reviewText, stars);
 
-		DatabaseReference newReview = dbReference.child(ALL_REVIEWS_KEY).push();
-		newReview.setValue(review);
+		// Create a new child reference of reviewReference
+		DatabaseReference newReviewReference = reviewsReference.push();
+		// Set the value of this child to the review object
+		// Firebase will convert the data in this object to key-value pairs
+		newReviewReference.setValue(review);
 
-		Toast.makeText(this, "Review saved", Toast.LENGTH_LONG).show();
+		Toast.makeText(this, "Review saved!", Toast.LENGTH_SHORT).show();
+
 	}
 
 
-	private void fetchAllReviews() {
+	private void fetchLatestReview() {
 
-		//Create a query - what key do you want to get the data for?
-		Query getAllReviews = dbReference.child(ALL_REVIEWS_KEY);
-
-		//But the data may take some time to be retrieved, so need to configure a listener
-		//with callback method that will be called when data is available, AND when it is changed
-		getAllReviews.addValueEventListener(new ValueEventListener() {
+		reviewsReference.limitToLast(1).addValueEventListener(new ValueEventListener() {
 			@Override
 			public void onDataChange(DataSnapshot dataSnapshot) {
+				Log.d(TAG, "Latest Review snapshot: " + dataSnapshot.toString());
 
-				//This is all the data returned - a key with a list of children
-				Log.d("Movie Reviews", dataSnapshot.toString());
+				// Even though we've requested only one result, still have to loop over the results
 
-				ArrayList<MovieReview> reviews = new ArrayList<>();
+				MovieReview latestReview = null;
 
-				//Can iterate over the children of the data returned
-				for (DataSnapshot ds : dataSnapshot.getChildren()) {
-					//Get the value for this child's key. Request the value is converted to a MovieReview object
-					MovieReview review = ds.getValue(MovieReview.class);
-					//Add to a list
-					reviews.add(review);
+				for (DataSnapshot child : dataSnapshot.getChildren()) {
+					latestReview = child.getValue(MovieReview.class);
 				}
 
-				//And then use the data in our app.
-				//TODO - format neatly in a more appropriate UI component!
-				mAllMoviesTV.setText(reviews.toString());
+				String latestMovieText = (latestReview == null) ? "No movies reviewed" : latestReview.toString();
+				mLatestMovieTV.setText(latestMovieText);
 			}
 
 			@Override
 			public void onCancelled(DatabaseError databaseError) {
-				Log.e("Movie Reviews", "Database error fetching all reviews", databaseError.toException());
+				Log.e(TAG, "Firebase error fetching latest review", databaseError.toException());
+			}
+		});
+	}
+
+
+	// Save data in a list to preserve order.
+	// Can use this approach if order is important
+
+	private void fetchAllReviews() {
+
+		// Provide the name of a key that all the children have; to sort by that key
+		reviewsReference.orderByChild("name").addValueEventListener(new ValueEventListener() {
+			@Override
+			public void onDataChange(DataSnapshot dataSnapshot) {
+
+				Log.d(TAG, "All reviews in name order: " + dataSnapshot.toString());
+
+				ArrayList<MovieReview> allReviews = new ArrayList<MovieReview>();
+
+				for (DataSnapshot childSnapshot : dataSnapshot.getChildren()) {
+					MovieReview review = childSnapshot.getValue(MovieReview.class);
+					allReviews.add(review);
+				}
+				mAllMoviesTV.setText(allReviews.toString());
+			}
+
+			@Override
+			public void onCancelled(DatabaseError databaseError) {
+				Log.e(TAG, "Firebase error fetching all reviews", databaseError.toException());
 			}
 		});
 
 	}
 
+
+	/*
+
+	  // Fetch all reviews, marshalls data into a HashMap.
+	  // Can use this approach if it doesn't matter what order the results of a list are in
+
+	private void fetchAllReviews() {
+
+		reviewsReference.addListenerForSingleValueEvent(new ValueEventListener() {
+			@Override
+			public void onDataChange(DataSnapshot dataSnapshot) {
+
+				Log.d(TAG, "All reviews: " + dataSnapshot.toString());
+
+				// Specify how to deserialize the returned data. The empty {} at the end of this line are necessary
+				GenericTypeIndicator<HashMap<String, MovieReview>> movieMapType
+						= new GenericTypeIndicator<HashMap<String, MovieReview>>() {};
+
+				// Get the data from the snapshot, and convert it to the desired type
+				// The order of items is *not* guaranteed
+				HashMap<String, MovieReview> reviews = dataSnapshot.getValue(movieMapType);
+
+				// If the key had no data, reviews will be null
+				if (reviews != null) {
+					mAllMoviesTV.setText(reviews.values().toString());
+				}
+			}
+
+			@Override
+			public void onCancelled(DatabaseError databaseError) {
+				Log.e(TAG, "Firebase error fetching all reviews", databaseError.toException());
+			}
+		});
+
+	}
+
+	*/
+
+
+	private void searchReviews() {
+
+		// Read the data in the search ET and query Firebase
+		String search = mSearchMovieET.getText().toString();
+		// Have to sort by the child key first, then apply equalTo filter
+		reviewsReference.orderByChild("name").equalTo(search).addListenerForSingleValueEvent(new ValueEventListener() {
+			@Override
+			public void onDataChange(DataSnapshot dataSnapshot) {
+
+				Log.d(TAG, "Review search data: " + dataSnapshot);
+
+				ArrayList<MovieReview> matches = new ArrayList<>();
+				for (DataSnapshot childSnapshot : dataSnapshot.getChildren()) {
+					MovieReview review = childSnapshot.getValue(MovieReview.class);
+					matches.add(review);
+				}
+
+				String text = (matches.isEmpty()) ? "No matches" : matches.toString();
+				mMovieSearchTV.setText(text);
+			}
+
+			@Override
+			public void onCancelled(DatabaseError databaseError) {
+				Log.e(TAG, "Firebase error searching reviews", databaseError.toException());
+			}
+		});
+
+	}
+
+
+
+
+	private void addListeners() {
+
+		//Register listeners for buttons
+
+		mSaveButton.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				saveReview();
+			}
+		});
+
+
+		mSearchMovieButton.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				searchReviews();
+			}
+		});
+
+
+
+
+
+	}
+
+
 }
-
-
