@@ -41,9 +41,9 @@ public class AlienActivity extends AppCompatActivity implements
 
 		highScoreDB = new Firebase();
 
-		mGameState = WELCOME_FRAGMENT_TAG;   // First time app starts, should be in the WELCOME state
+		localStorage = new LocalStorage(this);
 
-		Log.d(TAG, "The current fragments that exist for this Activity are (may be null) : " + getSupportFragmentManager().getFragments());
+		mGameState = WELCOME_FRAGMENT_TAG;   // First time app starts, should be in the WELCOME state
 
 		// If this is a configuration change (e.g. device rotation), there is probably state in the GameFragment or the HighScoreFragment
 
