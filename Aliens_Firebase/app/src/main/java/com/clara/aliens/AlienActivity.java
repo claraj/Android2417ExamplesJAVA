@@ -1,7 +1,5 @@
 package com.clara.aliens;
 
-import android.preference.PreferenceManager;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -41,8 +39,7 @@ public class AlienActivity extends AppCompatActivity implements
 
 		Log.d(TAG, "Saved instance state: " + savedInstanceState);
 
-		localStorage = new LocalStorage(this);
-		highScoreDB = new Firebase(localStorage);
+		highScoreDB = new Firebase();
 
 		mGameState = WELCOME_FRAGMENT_TAG;   // First time app starts, should be in the WELCOME state
 
@@ -172,7 +169,7 @@ public class AlienActivity extends AppCompatActivity implements
 			// User has played game before. This score is greater than the previous high score, update local storage
 
 			if (thisGameScore > previousHighScore) {
-				highScoreDB.saveHighScore(userKey, gameScore);
+				highScoreDB.updateHighScore(userKey, gameScore);
 				localStorage.writeHighScore(thisGameScore);
 			}
 
