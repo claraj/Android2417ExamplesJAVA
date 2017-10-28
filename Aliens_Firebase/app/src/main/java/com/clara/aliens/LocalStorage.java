@@ -1,14 +1,13 @@
 package com.clara.aliens;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
 /**
  * Created by clara on 9/28/16.
  *
  *
- * Use SharedPreferences - a persistent storage area, private to this app - to store username and their highest score.
+ * Use SharedPreferences - a persistent storage area, private to this app - to store username and their highest mScore.
  * SharedPreferences is a key-value store.
  *
  */
@@ -30,48 +29,36 @@ public class LocalStorage {
 		this.context = context;
 	}
 
+
 	protected void writeUsername(String username) {
-
-		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
-		preferences.edit().putString(USERNAME_KEY, username).apply();
-
+		PreferenceManager.getDefaultSharedPreferences(context).edit().putString(USERNAME_KEY, username).apply();
 	}
 
 
 	protected String fetchUsername() {
-
-		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
-		return preferences.getString(USERNAME_KEY, null);
-
+		return PreferenceManager.getDefaultSharedPreferences(context).getString(USERNAME_KEY, null);
 	}
+
 
 	protected void writeHighScore(int newScore) {
-
-		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
-		preferences.edit().putInt(HIGHSCORE_KEY, newScore).apply();
-
-
+		PreferenceManager.getDefaultSharedPreferences(context).edit().putInt(HIGHSCORE_KEY, newScore).apply();
 	}
 
+
 	protected int getHighScore() {
-
-		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
-		return preferences.getInt(HIGHSCORE_KEY, NO_SCORE_RECORDED);    // -1 is the default, if no score exists. So if user gets 0 as a score, it will still register as a new high score.
-
+		// By default, it returns 0 if no scores found. For this game, -1 is a better the default if no mScore exists.
+		// since 0 is a valid mScore. -1 can be differentiated from valid scores.
+		return PreferenceManager.getDefaultSharedPreferences(context).getInt(HIGHSCORE_KEY, NO_SCORE_RECORDED);
 	}
 
 
 	public String getFirebaseKey() {
-		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
-		return preferences.getString(FIREBASE_KEY, null);
+		return PreferenceManager.getDefaultSharedPreferences(context).getString(FIREBASE_KEY, null);
 	}
 
 
 	public void writeFirebaseKey(String key) {
-		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
-		preferences.edit().putString(FIREBASE_KEY, key).apply();
-
-
+		PreferenceManager.getDefaultSharedPreferences(context).edit().putString(FIREBASE_KEY, key).apply();
 	}
 
 

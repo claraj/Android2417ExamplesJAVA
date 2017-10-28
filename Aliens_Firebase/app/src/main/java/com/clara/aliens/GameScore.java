@@ -3,21 +3,22 @@ package com.clara.aliens;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-//
+// Represents a score for a user, from one round of the game.
+// Used by Firebase to marshall/unmarshall data from the high score database
 
-public class HighScore implements Parcelable {
+public class GameScore implements Parcelable {
 
 	private int score;
 	private String username;
 
-	public HighScore(String username, int score) {
+	GameScore(String username, int score) {
 		this.username = username;
 		this.score = score;
 	}
 
 	//Empty constructor, and getter and setter methods, required by Firebase
 
-	public HighScore() {}
+	public GameScore() {}
 
 	public String getUsername() {
 		return username;
@@ -41,8 +42,7 @@ public class HighScore implements Parcelable {
 
 
 
-
-	//Things required to make HighScore Parcelable
+	//Things required to make GameScore Parcelable so a score can be sent from one Fragment to another
 
 	@Override
 	public int describeContents() {
@@ -55,20 +55,20 @@ public class HighScore implements Parcelable {
 		parcel.writeString(username);
 	}
 
-	protected HighScore(Parcel in) {
+	protected GameScore(Parcel in) {
 		score = in.readInt();
 		username = in.readString();
 	}
 
-	public static final Creator<HighScore> CREATOR = new Creator<HighScore>() {
+	public static final Creator<GameScore> CREATOR = new Creator<GameScore>() {
 		@Override
-		public HighScore createFromParcel(Parcel in) {
-			return new HighScore(in);
+		public GameScore createFromParcel(Parcel in) {
+			return new GameScore(in);
 		}
 
 		@Override
-		public HighScore[] newArray(int size) {
-			return new HighScore[size];
+		public GameScore[] newArray(int size) {
+			return new GameScore[size];
 		}
 	};
 

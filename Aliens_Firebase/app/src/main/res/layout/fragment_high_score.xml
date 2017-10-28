@@ -3,7 +3,8 @@
                 android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@color/background">
+                android:background="@color/background"
+                >
 
     <!--User's score for this game-->
 
@@ -27,7 +28,6 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/user_score"
         android:layout_centerHorizontal="true"/>
-
 
 
     <ListView

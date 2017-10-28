@@ -1,10 +1,9 @@
 package com.clara.aliens;
 
-import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,7 +16,9 @@ import android.widget.Toast;
 import java.util.ArrayList;
 
 /**
- * Created by admin on 9/28/16.
+ * Created by Clara on 9/28/16.
+ *
+ * Either ask the user for their name, or if they have already set their name, display a welcome message.
  */
 
 public class WelcomeFragment extends Fragment {
@@ -28,7 +29,7 @@ public class WelcomeFragment extends Fragment {
 
 	private ArrayList<String> scores;
 
-	private String username;
+	private String mUsername;
 
 	UsernameListener listener;
 
@@ -36,7 +37,7 @@ public class WelcomeFragment extends Fragment {
 		void userStartsPlay(String username);
 	}
 
-	//Receive list of names and scores
+	// Provide username, if one has been set already
 	public static WelcomeFragment newInstance(String username) {
 		WelcomeFragment fragment = new WelcomeFragment();
 		Bundle bundle = new Bundle();
@@ -46,13 +47,13 @@ public class WelcomeFragment extends Fragment {
 	}
 
 	@Override
-	public void onAttach(Activity activity) {
+	public void onAttach(Context activity) {
 		super.onAttach(activity);
 
 		if (activity instanceof UsernameListener) {
 			listener = (UsernameListener) activity;
 		} else {
-			throw new RuntimeException("Activity must be username listener");
+			throw new RuntimeException("Activity must be UsernameListener");
 		}
 	}
 
@@ -70,8 +71,8 @@ public class WelcomeFragment extends Fragment {
 		// Otherwise, show EditText for username entry, and play button
 
 		if (getArguments() != null && getArguments().getString(USERNAME) != null) {
-			username = getArguments().getString(USERNAME);
-			usernameTV.setText("Welcome, " + username);
+			mUsername = getArguments().getString(USERNAME);
+			usernameTV.setText(getString(R.string.welcome, mUsername));
 			usernameTV.setVisibility(View.VISIBLE);
 		}
 
@@ -82,11 +83,11 @@ public class WelcomeFragment extends Fragment {
 
 		playButton.setOnClickListener(new View.OnClickListener() {
 			@Override
-			public void onClick(View buttonview) {
+			public void onClick(View buttonView) {
 
-				if (username != null) {
+				if (mUsername != null) {
 					hideKeyboard();
-					listener.userStartsPlay(username);
+					listener.userStartsPlay(mUsername);
 				}
 
 				else {
@@ -106,12 +107,17 @@ public class WelcomeFragment extends Fragment {
 
 	}
 
-	//Stack overflow. Why is hiding the keyboard so awkward?
+	//Thank you, Stack Overflow. Why is hiding the keyboard so awkward? I bet this doesn't work on all version of Android.
+	// FIXME Update, nope, works on some, hanging around behavior on Oreo emulator.
+
 	private void hideKeyboard() {
-		InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Activity.INPUT_METHOD_SERVICE);
+
+		InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
 		imm.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0);
-		Log.i(TAG, "Hiding keyboard");
+		Log.i(TAG, "Attempting to hiding keyboard");
 
 	}
+
+
 
 }

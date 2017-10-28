@@ -9,23 +9,29 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
-import java.util.ArrayList;
+import java.util.LinkedList;
 
 
-// Created by clara on 9/28/16. Handles interaction with Firebase.
+/**
+ *
+ * Created by clara on 9/28/16. Handles interaction with Firebase.
+ *
+ */
 
 class Firebase {
 
 	private static final String ALL_SCORES_KEY = "all_high_scores";
 	private static final String TAG = "FIREBASE";
-	private ArrayList<HighScore> highScores;
+	private LinkedList<GameScore> highScores;
 	private DatabaseReference dbReference;
 
-	private LocalStorage localStorage;     //Local high score storage
+	private LocalStorage localStorage;     //Local high mScore storage
+
 
 	interface HighScoreUpdateListener {
-		void highScoresUpdated(ArrayList<HighScore> scores);
+		void highScoresUpdated(LinkedList<GameScore> scores);
 	}
+
 
 	Firebase(LocalStorage localStorage) {
 
@@ -35,32 +41,21 @@ class Firebase {
 
 	}
 
-	//TODO - if user plays game for the first time online, and then connects to the internet,
-	//FIXME - their high score won't be written to Firebase until they beat that score.
+	//FIXME - if user plays game for the first time online, and then connects to the internet,
+	// their high mScore won't be written to Firebase until they beat that mScore.
 
-	//If new high score for this user, replace old score with new score.
-	void saveHighScore(HighScore highScore, boolean updateExisting) {
+	//If new high mScore for this user, replace old mScore with new mScore.
 
-		if (updateExisting) {
 
-			String thisUserKey = localStorage.getFirebaseKey();
+	String addHighScore(GameScore gameScore) {
+		DatabaseReference newUserRef = dbReference.child(ALL_SCORES_KEY).push();
+		newUserRef.setValue(gameScore);
+		return newUserRef.getKey();
+	}
 
-			Log.d(TAG, "Updating score for user with existing key: " + thisUserKey);
 
-			if (thisUserKey != null) {
-				dbReference.child(ALL_SCORES_KEY).child(thisUserKey).setValue(highScore);
-				return;
-			}
-		}
-
-		//If we are adding new, or key not found in local storage, add new
-
-		Log.d(TAG, "Creating new record for user and saving new key");
-
-		DatabaseReference ref = dbReference.child(ALL_SCORES_KEY).push();
-		ref.setValue(highScore);
-		localStorage.writeFirebaseKey(ref.getKey());
-
+	void saveHighScore(String userKey, GameScore gameScore) {
+		dbReference.child(ALL_SCORES_KEY).child(userKey).setValue(gameScore);
 	}
 
 
@@ -68,27 +63,27 @@ class Firebase {
 
 		Log.d(TAG, "Fetching scores from firebase");
 
-		//Query - all scores, sort by score, which sorts lowest to highest.
-		//High score table will display the 20 highest scores, not everything.
-		//As the data is sorted, this is the last 20 results, so limit to the last 20
-		//Sorting in reverse order is currently not supported.
+		// Query - all scores, sort by mScore, which sorts lowest to highest.
+		// Would like the high mScore table to display the 20 highest scores, not everything.
+		// As the data is sorted, we need the last 20 results, so limit to the last 20. - for example, 999, 1000, 1010, ....
+		// Sorting in reverse order is currently not supported. We'll have to sort in code.
 		Query allHighScores = dbReference.child(ALL_SCORES_KEY).orderByChild("score").limitToLast(20);
 
-		allHighScores.addListenerForSingleValueEvent(new ValueEventListener() {
+		allHighScores.addValueEventListener(new ValueEventListener() {
 			@Override
 			public void onDataChange(DataSnapshot dataSnapshot) {
 
 				Log.d(TAG, "onDataChange " + dataSnapshot);
 
-				highScores = new ArrayList<>();
+				highScores = new LinkedList<>();
 
 				for (DataSnapshot ds : dataSnapshot.getChildren()) {
 					
 					Log.d(TAG, "ds: " + ds);
 					
-					HighScore score = ds.getValue(HighScore.class);
+					GameScore score = ds.getValue(GameScore.class);
 					highScores.add(0, score);   // Add to list in reverse order to end up
-					                            // with highest score first
+					                            // with highest mScore first
 				}
 
 				//Notify listener that the scores are ready to display
