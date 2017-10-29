@@ -153,6 +153,8 @@ public class GameFragment extends Fragment {
 	public void onResume() {
 
 		super.onResume();
+
+		Log.d(TAG, "onResume, start game");
 		//Start game
 		gameHandler.postDelayed(gameRunnable, gameSpeed);
 
@@ -166,7 +168,7 @@ public class GameFragment extends Fragment {
 		@Override
 		public void run() {
 
-			Log.d(TAG, "RUNNABLE TICK mAliensShown" + mAliensShown + " mScore " + mScore + " aliens tapped " + mAliensTapped);
+			Log.d(TAG, "RUNNABLE TICK showing or hiding (t/f): " + show +  "  mAliensShown" + mAliensShown + " mScore " + mScore + " aliens tapped " + mAliensTapped);
 
 			//Alternately: clear screen OR display an alien at random
 

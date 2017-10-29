@@ -28,7 +28,6 @@ public class AlienActivity extends AppCompatActivity implements
 
 	private GameFragment gameFragment;  // Have to keep track of gameFragment's state
 
-
 	protected void onCreate(Bundle savedInstanceState) {
 
 		//for testing - uncomment to clear saved username and high score
