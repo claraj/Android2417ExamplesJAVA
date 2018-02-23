@@ -39,13 +39,17 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 		if (mAccelerometer == null) {
 			Toast.makeText(this, "No accelerometer sensor on this device.", Toast.LENGTH_LONG).show();
 		}
-
-		else {
-			sensorsGo();
-		}
 	}
 
 
+
+	@Override
+	protected void onResume(){
+		super.onResume();
+		if (mAccelerometer != null) {
+			sensorsGo();
+		}
+	}
 
 	@Override
 	protected void onPause(){
