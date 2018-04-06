@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">Hello_Compliment_API</string>
+    <string name="get_compliment">Tap here!</string>
+    <string name="app_title">Random Compliment App</string>
+    <string name="compliment_placeholder">Tap the button!</string>
+</resources>
