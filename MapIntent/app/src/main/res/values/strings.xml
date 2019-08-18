@@ -1,6 +1,5 @@
 <resources>
     <string name="app_name">MapIntent</string>
-    <string name="map_instructions">Type location to display</string>
-    <string name="map_button_text">Display map</string>
+    <string name="instructions">Enter place to map</string>
+    <string name="map_button_text">Map</string>
 </resources>
-

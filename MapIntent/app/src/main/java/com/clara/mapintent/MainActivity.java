@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
 import android.net.Uri;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -18,64 +17,66 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-	static final String TAG = "Map Intent";
+    private EditText placeNameText;
+    private Button mapButton;
 
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_main);
+    private static String TAG = "MAP_ACTIVITY";
 
-		final EditText mapSearchBox = (EditText) findViewById(R.id.map_search_box);
-		Button mapSearchButton = (Button) findViewById(R.id.map_search_button);
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
 
-		mapSearchButton.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
+        placeNameText = findViewById(R.id.place_name);
+        mapButton = findViewById(R.id.map_button);
 
-				String mapSearchString = mapSearchBox.getText().toString();
+        mapButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
-				//If mapSearchString is blank, display warning Snackbar and don't launch Map.
-				if (mapSearchString.length() == 0) {
-					Snackbar.make(findViewById(android.R.id.content), "Enter a location", Snackbar.LENGTH_SHORT).show();
-					return;
-				}
+                String placeName = placeNameText.getText().toString();
+                if (placeName.isEmpty()) {
+                    return;
+                }
 
-				Geocoder geocoder = new Geocoder(MainActivity.this);  //Create a Geocoder, tell it what Activity it belongs to
+                Log.d(TAG, "About to geocode this place name: " + placeName);
 
-				try {
-					List<Address> addressList = geocoder.getFromLocationName(mapSearchString, 1);  // Second arg is numer of results requested. We only want the first
-					//Verify that there is at least one result
-					if (addressList.size() == 1) {
+                // Geocode location, launch map app to show location
+                Geocoder geocoder = new Geocoder(MainActivity.this);
 
-						// To launch a mapping application, need a URI in the form geo:lat,long
-						// where lat and long are the latitude and longitude of the location
-						// Various other ways to format the Uri, such as with a street address. see
-						// https://developer.android.com/guide/components/intents-common.html#Maps
-						Address firstAddress = addressList.get(0);
+                try {
+                    List<Address> addresses = geocoder.getFromLocationName(placeName, 1);
 
-						Log.d(TAG, "First address is " + firstAddress);    // No System.out.println() ! Use Log for debugging statements
+                    if (addresses.isEmpty()) {
+                        Toast noResults = Toast.makeText(MainActivity.this, "No places found for this name", Toast.LENGTH_LONG);
+                        noResults.show();
+                        return;
+                    }
 
-						//For the Map, lat and long are needed. A URI of the format geo:lat,long is required
-						String geoUriString = String.format("geo:%f,%f", firstAddress.getLatitude(), firstAddress.getLongitude());
-						Log.d(TAG, "Geo URI string is  " + geoUriString);
+                    Address address = addresses.get(0);
 
-						Uri geoUri = Uri.parse(geoUriString);
-						Intent mapIntent = new Intent(Intent.ACTION_VIEW, geoUri);
+                    Log.d(TAG, "First place found: " + address);
 
-						//Compare and contrast Toast vs. Snackbar - Toast will still be visible while Maps launch; Snackbar is tied to MainActivity
-						Toast.makeText(MainActivity.this, "Launching Map", Toast.LENGTH_LONG);
-						startActivity(mapIntent);
+                    String geoUriString = String.format("geo:%f,%f", address.getLatitude(), address.getLongitude());
 
-					} else {
-						//addressList is empty. Snackbar indicating no results found for location
-						Snackbar.make(findViewById(android.R.id.content), "No results found for that location", Snackbar.LENGTH_LONG).show();
-					}
+                    Log.d(TAG, geoUriString);
 
-				} catch (IOException ioe) {
-					Log.e(TAG, "Error during geocoding", ioe);    //Log also useful for errors.
-					Snackbar.make(findViewById(android.R.id.content), "Sorry, an error occurred", Snackbar.LENGTH_SHORT).show();
-				}
-			}
-		});
-	}
+                    Uri geoUri = Uri.parse(geoUriString);
+                    Intent mapIntent = new Intent(Intent.ACTION_VIEW, geoUri);
+                    startActivity(mapIntent);
+
+                } catch (IOException ioe) {
+
+                    Log.e(TAG, "Geocoder getFromLocationName error", ioe);
+
+                    Toast noResults = Toast.makeText(MainActivity.this, "Can't identify this place", Toast.LENGTH_LONG);
+                    noResults.show();
+                }
+            }
+        });
+
+    }
 }
+
+
+
