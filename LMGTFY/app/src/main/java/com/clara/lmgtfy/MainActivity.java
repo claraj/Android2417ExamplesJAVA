@@ -57,10 +57,17 @@ public class MainActivity extends AppCompatActivity {
                 confirmation.show();
 
                 // Launch web browser with URI for Google search
+
+                // Create a URI in the form of a web address
                 String uriString = "https://www.google.com/search?q=" + search;
                 Uri uri = Uri.parse(uriString);
 
+                // Create a new Intent, provide URI
                 Intent launchBrowserIntent = new Intent(Intent.ACTION_VIEW, uri);
+
+                // And start the Activity - the Android system will examine the Intent
+                // and figure out what Activity to launch. In this case, an Activity belonging to
+                // your web browser app.
                 startActivity(launchBrowserIntent);
 
             }
