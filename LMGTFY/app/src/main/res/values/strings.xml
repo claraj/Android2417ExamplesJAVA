@@ -1,8 +1,16 @@
 <resources>
     <string name="app_name">LMGTFY</string>
-
     <string name="instructions">Type the text to search for</string>
     <string name="search_button_text">Let me Google that for you!</string>
-    <string name="search_display_text">Show search string here</string>
 
+    <string name="search_display_text">Searching for %1$s</string>
+
+
+    <string name="enter_search_text">Enter search text</string>
 </resources>
+
+
+
+
+
+
