@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Seek Bar With Landscape Layout</string>
+    <string name="seekbar_progress_message">The Seekbar value is %1$d</string>
+</resources>
+
