@@ -1,7 +1,5 @@
 <resources>
-    <string name="app_name">GuestList</string>
-    <string name="save">Save</string>
-    <string name="guest_list_will_be_here">Guest list will be displayed here</string>
-    <string name="enter_guest_name_instructions">Enter guest name and click SAVE to add to the list</string>
-    <string name="name">Name</string>
+    <string name="app_name">Guest List</string>
+    <string name="instructions_placeholder">Enter new guest name</string>
+    <string name="add_button_text">Add Guest</string>
 </resources>
