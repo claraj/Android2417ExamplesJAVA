@@ -99,45 +99,39 @@ public class MainActivity extends AppCompatActivity {
 
         RequestQueue queue = Volley.newRequestQueue(this);
 
-        JsonArrayRequest jsonRequest = new JsonArrayRequest(Request.Method.GET, BASE_API_URL, null,
-                new Response.Listener<JSONArray>() {
+        JsonArrayRequest jsonRequest = new JsonArrayRequest(Request.Method.GET, BASE_API_URL, null, new Response.Listener<JSONArray>() {
 
-                    @Override
-                    public void onResponse(JSONArray response) {
-
-                        try {
-
-                            Log.i(TAG, "Received all guests JSON" + response);
-
-                            ArrayList<String> guests = new ArrayList<>();
-                            for (int i = 0; i < response.length(); i++) {
-                                JSONObject ob = response.getJSONObject(i);
-                                String name = ob.getString("name");
-                                guests.add(name);
-                            }
-
-                            mGuests = guests;
-                            updateGuestList();
-
-                        } catch (JSONException e) {
-                            Log.e(TAG, "Get all guests, error processing JSON" + response, e);
-                        }
-
+            @Override
+            public void onResponse(JSONArray response) {
+                Log.i(TAG, "Received all guests JSON" + response);
+                try {
+                    ArrayList<String> guests = new ArrayList<>();
+                    for (int i = 0; i < response.length(); i++) {
+                        JSONObject ob = response.getJSONObject(i);
+                        String name = ob.getString("name");
+                        guests.add(name);
                     }
-                }, new Response.ErrorListener() {
+
+                    mGuests = guests;
+                    updateGuestList();
+
+                } catch (JSONException e) {
+                    Log.e(TAG, "Get all guests, error processing JSON" + response, e);
+                }
+
+            }
+        }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.e(TAG, "Error fetching all guests", error);
             }
         }) {
-
             @Override
             public Map<String, String> getHeaders() {
                 Map<String, String> params = new HashMap<>();
                 params.put("guestlist-key", API_KEY);
                 return params;
             }
-
         };
 
         queue.add(jsonRequest);
@@ -147,33 +141,31 @@ public class MainActivity extends AppCompatActivity {
     private void addGuest(String name) {
 
         final String guestName = name;
-
         RequestQueue queue = Volley.newRequestQueue(this);
-
-        JSONObject obj = new JSONObject();
+        JSONObject newGuest = new JSONObject();
 
         try {
-            obj.put("name", name);
+            newGuest.put("name", name);
         } catch (JSONException e) {
             Log.e(TAG, "Error creating json for new guest name", e);
             return;
         }
 
 
-        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, BASE_API_URL, obj, new Response.Listener<JSONObject>() {
-            @Override
-            public void onResponse(JSONObject response) {
-                Log.i(TAG, "Added guest " + guestName  + "  and received response " + response);
-                getAllGuests();
-            }
-        },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Log.e(TAG, "Error adding new guest", error);
-                    }
-                }) {
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, BASE_API_URL, newGuest, new Response.Listener<JSONObject>() {
+                @Override
+                public void onResponse(JSONObject response) {
+                    Log.i(TAG, "Added guest " + guestName  + "  and received response " + response);
+                    getAllGuests();
+                }
+            },
 
+            new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Log.e(TAG, "Error adding new guest", error);
+                }
+            }) {
 
             @Override
             public Map<String, String> getHeaders() {
@@ -190,6 +182,7 @@ public class MainActivity extends AppCompatActivity {
     private void deleteAllGuests() {
 
         RequestQueue queue = Volley.newRequestQueue(this);
+
         StringRequest request = new StringRequest(Request.Method.DELETE, BASE_API_URL, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
