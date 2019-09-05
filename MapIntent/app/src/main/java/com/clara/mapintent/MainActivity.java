@@ -17,24 +17,24 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-    private EditText placeNameText;
-    private Button mapButton;
+    private EditText mPlaceNameText;
+    private Button mMapButton;
 
-    private static String TAG = "MAP_ACTIVITY";
+    private static final String TAG = "MAP_ACTIVITY";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        placeNameText = findViewById(R.id.place_name);
-        mapButton = findViewById(R.id.map_button);
+        mPlaceNameText = findViewById(R.id.place_name);
+        mMapButton = findViewById(R.id.map_button);
 
-        mapButton.setOnClickListener(new View.OnClickListener() {
+        mMapButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                String placeName = placeNameText.getText().toString();
+                String placeName = mPlaceNameText.getText().toString();
                 if (placeName.isEmpty()) {
                     return;
                 }
