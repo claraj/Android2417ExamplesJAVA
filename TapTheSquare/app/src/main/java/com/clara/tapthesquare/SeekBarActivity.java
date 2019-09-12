@@ -90,8 +90,8 @@ public class SeekBarActivity extends AppCompatActivity {
 
 	/*
 	*
-	// This method may be useful if you wanted to scale the max size of the square to the
-	 // smaller dimension of the screen
+	// This method may be useful if you wanted to scale the max size of the square in relation to
+	// the smaller dimension of the screen
 
  	private int getSmallestDimensionOfScreen() {
 		DisplayMetrics dm = new DisplayMetrics();

@@ -15,6 +15,7 @@ public class MainActivity extends AppCompatActivity {
     EditText mNewGuestNameInput;
     Button mAddGuestButton;
     TextView mGuestList;
+    Button mClearGuestListButton;
 
     ArrayList<String> mGuests;
 
@@ -28,6 +29,7 @@ public class MainActivity extends AppCompatActivity {
         mNewGuestNameInput = findViewById(R.id.new_guest_input);
         mAddGuestButton = findViewById(R.id.add_guest_button);
         mGuestList = findViewById(R.id.list_of_guests);
+        mClearGuestListButton = findViewById(R.id.clear_guest_list_button);
 
         // If there is any saved instance state variable,
         // check for data belonging to the key GUEST_LIST_KEY
@@ -56,6 +58,15 @@ public class MainActivity extends AppCompatActivity {
                 updateGuestList();
             }
         });
+
+        mClearGuestListButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mGuests.clear();
+                updateGuestList();
+            }
+        });
+
     }
 
     private void updateGuestList() {

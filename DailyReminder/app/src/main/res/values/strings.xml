@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">DailyReminder</string>
+    <string name="remind_me_daily">Remind me daily</string>
+    <string name="remind_me_every_5_minutes">Remind me every 5 minutes</string>
+    <string name="task_name">What do you want to do?</string>
+
+
+
+</resources>

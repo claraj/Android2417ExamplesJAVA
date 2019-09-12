@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="task_suggestions">
+        <item>Learn a new word</item>
+        <item>Meditate</item>
+        <item>Take a photograph</item>
+        <item>Pay someone a compliment</item>
+        <item></item>
+    </string-array>
+
+
+</resources>

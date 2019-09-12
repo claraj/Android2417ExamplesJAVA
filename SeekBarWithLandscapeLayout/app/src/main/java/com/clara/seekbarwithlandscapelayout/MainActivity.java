@@ -27,16 +27,22 @@ public class MainActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onStartTrackingTouch(SeekBar seekBar) { }
+            public void onStartTrackingTouch(SeekBar seekBar) {
+                //Don't need to respond to this event so can leave this empty
+            }
 
             @Override
-            public void onStopTrackingTouch(SeekBar seekBar) { }
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                //Don't need to respond to this event so can leave this empty
+            }
         });
 
     }
 
     private void setProgressMessage() {
         int seekbarProgress = mSeekBar.getProgress();
+        // seekbar_progress_message is a format string, need to provide the int value
+        // as the second argument to getString, to fill in the %1$d placeholder
         String progressMessage = getString(R.string.seekbar_progress_message, seekbarProgress);
         mSeekBarValueLabel.setText(progressMessage);
     }
