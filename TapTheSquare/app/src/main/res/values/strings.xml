@@ -1,6 +1,7 @@
 <resources>
-    <string name="app_name">TapTheSquare</string>
-    <string name="display_square">Display a square</string>
-    <string name="title_activity_square">SquareActivity</string>
-    <string name="tap_square_instructions">Try to tap inside the square</string>
+    <string name="app_name">Seek Bar With Landscape Layout</string>
+    <string name="seekbar_progress_message">The Seekbar value is %1$d</string>
+    <string name="show_square">Show square</string>
+    <string name="try_to_tap_the_square">Try to tap the square</string>
 </resources>
+
