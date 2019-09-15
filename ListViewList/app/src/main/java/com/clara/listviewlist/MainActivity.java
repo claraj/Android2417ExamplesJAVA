@@ -16,13 +16,13 @@ public class MainActivity extends AppCompatActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 
-		ListView listView = (ListView) findViewById(R.id.simple_list);
+		ListView listView = findViewById(R.id.simple_list);
 
 		//Create an ArrayList and add some example data
-		ArrayList<String> androidVersions = new ArrayList<String>();
+		List<String> androidVersions = new ArrayList<>();
 		androidVersions.add("Jellybean");
 		androidVersions.add("Kitkat");
-		androidVersions.add("Lollypop");
+		androidVersions.add("Lollipop");
 
 		//Create Adapter: provide Context (typically this Activity), a layout file, and TextView, and List
 		ArrayAdapter<String> arrayAdapter =
