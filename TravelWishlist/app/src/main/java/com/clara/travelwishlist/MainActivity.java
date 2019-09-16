@@ -16,7 +16,7 @@ import android.widget.EditText;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements RecyclerViewClickListener {
+public class MainActivity extends AppCompatActivity implements WishListClickListener {
 
     private RecyclerView mWishListRecyclerView;
     private RecyclerView.Adapter mAdapter;
@@ -68,25 +68,20 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewClick
     }
 
     @Override
-    public void click(int position) {
-        // open maps
+    public void onListClick(int position) {
         String place = mPlaces.get(position);
         Uri locationUri = Uri.parse("geo:0,0?q=" + Uri.encode(place));
         Intent mapIntent = new Intent(Intent.ACTION_VIEW, locationUri );
         startActivity(mapIntent);
-
     }
 
     @Override
-    public void longClick(int position) {
-        // delete
-
+    public void onListLongClick(int position) {
         final int itemPosition = position;
 
-        // are you sure?
         AlertDialog confirmDeleteDialog = new AlertDialog.Builder(this)
                 .setMessage(getString(R.string.delete_place_message, mPlaces.get(position) ))
-                .setTitle(getString(R.string.delete))
+                .setTitle(getString(R.string.delete_dialog_title))
                 .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
@@ -94,10 +89,10 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewClick
                         mAdapter.notifyItemRemoved(itemPosition);
                     }
                 })
-                .setNegativeButton(android.R.string.cancel, null)   // No event handler for the Cancel button, so clicking it dismisses the dialog but does nothing else.
+                .setNegativeButton(android.R.string.cancel, null)    // No event handler needed for Cancel button
                 .create();
 
         confirmDeleteDialog.show();
-
     }
+
 }

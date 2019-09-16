@@ -16,36 +16,40 @@ public class WishListAdapter extends RecyclerView.Adapter<WishListAdapter.WishLi
     private List<String> data;
 
     // Click and long-click listener
-    private RecyclerViewClickListener listener;
+    private WishListClickListener listener;
 
     // Constructor
-    public WishListAdapter(List<String> data, RecyclerViewClickListener listener) {
+    public WishListAdapter(List<String> data, WishListClickListener listener) {
         this.listener = listener;
         this.data = data;
     }
 
     // Objects of this class represent the view for one data item
-    static class WishListViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
+    static class WishListViewHolder extends RecyclerView.ViewHolder implements
+            View.OnClickListener, View.OnLongClickListener {
 
         TextView textView;
-        RecyclerViewClickListener listener;
+        WishListClickListener listener;
 
-        WishListViewHolder(TextView v, RecyclerViewClickListener listener) {
+        WishListViewHolder(TextView v, WishListClickListener listener) {
             super(v);
-            textView = v;
             this.listener = listener;
+            textView = v;
             textView.setOnClickListener(this);
             textView.setOnLongClickListener(this);
         }
 
         @Override
         public void onClick(View view) {
-            listener.click(getAdapterPosition());   // Notify the listener of the event, and which item was clicked
+            // Notify the listener of the event, and which item was clicked
+            listener.onListClick(getAdapterPosition());
         }
+
 
         @Override
         public boolean onLongClick(View view) {
-            listener.longClick(getAdapterPosition());    // Notify the listener of the event, and which item was long-clicked
+            // Notify the listener of the event, and which item was long-clicked
+            listener.onListLongClick(getAdapterPosition());
             return true;   // indicates event is consumed, no further processing.
             // If this is false, in this app, the click event is fired too.
         }
