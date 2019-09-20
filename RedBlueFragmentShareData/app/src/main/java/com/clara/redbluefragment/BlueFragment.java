@@ -52,7 +52,7 @@ public class BlueFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_blue, container, false);
         TextView randomTextView = view.findViewById(R.id.random_number_text_view);
-        randomTextView.setText("Random: " + random);
+        randomTextView.setText("Random: " + mRandomNumber);
 
         return view;
     }

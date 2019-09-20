@@ -24,12 +24,15 @@ public class RedFragment extends Fragment {
     }
 
     OnRandomNumberGeneratedListener listener;
-
     Random random;
 
     public RedFragment() {
         // Required empty public constructor
         random = new Random();
+    }
+
+    public static RedFragment newInstance() {
+        return new RedFragment();
     }
 
 
