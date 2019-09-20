@@ -12,13 +12,12 @@ import android.widget.TextView;
 
 
 /**
- * A simple {@link Fragment} subclass.
+ * A simple {@link Fragment} subclass that shows a random number.
  */
+
 public class BlueFragment extends Fragment {
 
-
-    public final static String ARG_RANDOM = "number argument";
-
+    private final static String ARG_RANDOM = "number argument";
     private int mRandomNumber;
 
     public BlueFragment() {
@@ -33,7 +32,6 @@ public class BlueFragment extends Fragment {
         return fragment;
     }
 
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,21 +39,14 @@ public class BlueFragment extends Fragment {
         if ( getArguments() != null) {
             mRandomNumber = getArguments().getInt(ARG_RANDOM);
         }
-
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-
-
-
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_blue, container, false);
         TextView randomTextView = view.findViewById(R.id.random_number_text_view);
         randomTextView.setText("Random: " + mRandomNumber);
-
         return view;
     }
-
 }
+

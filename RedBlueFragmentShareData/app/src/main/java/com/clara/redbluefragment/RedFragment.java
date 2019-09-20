@@ -20,7 +20,7 @@ import java.util.Random;
 public class RedFragment extends Fragment {
 
     public interface OnRandomNumberGeneratedListener {
-        public void onRandomNumber(int number);
+        void onRandomNumber(int number);
     }
 
     OnRandomNumberGeneratedListener listener;
@@ -35,12 +35,10 @@ public class RedFragment extends Fragment {
         return new RedFragment();
     }
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_red, container, false);
         Button randomButton = view.findViewById(R.id.random_number_button);
         randomButton.setOnClickListener(new View.OnClickListener() {
@@ -57,7 +55,6 @@ public class RedFragment extends Fragment {
     public void setOnRandomNumberGeneratedListener(OnRandomNumberGeneratedListener listener) {
         this.listener = listener;
     }
-
 }
 
 

@@ -28,6 +28,7 @@ public class MainActivity extends AppCompatActivity implements RedFragment.OnRan
 
     @Override
     public void onRandomNumber(int number) {
+        //Create and show new BlueFragment, providing the number in a bundle
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
         BlueFragment blueFragment = BlueFragment.newInstance(number);
@@ -35,5 +36,6 @@ public class MainActivity extends AppCompatActivity implements RedFragment.OnRan
         ft.addToBackStack(null);
         ft.commit();
     }
-
 }
+
+
