@@ -2,14 +2,15 @@ package com.clara.simple_todo_list_with_fragments;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.fragment.app.Fragment;
+
 
 /**
- * Displays a list of to do items. Responds to list updates.
+ * Displays a RecyclerView list of to do items. Responds to list updates.
  */
 
 public class ToDoListFragment extends Fragment {

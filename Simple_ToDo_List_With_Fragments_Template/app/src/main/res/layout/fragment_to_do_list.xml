@@ -5,11 +5,10 @@
              tools:context="com.clara.simple_todo_list_with_fragments.ToDoListFragment"
              android:background="#73AC96">
 
-    <ListView
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/todo_list_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/to_do_listview"/>
-
+        android:layout_height="match_parent" />
 </FrameLayout>
 
 

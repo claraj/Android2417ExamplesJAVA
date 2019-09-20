@@ -1,7 +1,8 @@
 package com.clara.simple_todo_list_with_fragments;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.ArrayList;
 
@@ -36,6 +37,7 @@ public class MainActivity extends AppCompatActivity implements
 
 	@Override
 	public void onSaveInstanceState(Bundle outBundle) {
+		super.onSaveInstanceState(outBundle);
 		//TODO save ArrayList in outBundle
 	}
 
