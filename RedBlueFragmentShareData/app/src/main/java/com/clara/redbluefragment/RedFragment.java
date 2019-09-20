@@ -9,6 +9,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+
+import java.util.Random;
 
 
 /**
@@ -16,9 +19,17 @@ import android.view.ViewGroup;
  */
 public class RedFragment extends Fragment {
 
+    public interface OnRandomNumberGeneratedListener {
+        public void onRandomNumber(int number);
+    }
+
+    OnRandomNumberGeneratedListener listener;
+
+    Random random;
 
     public RedFragment() {
         // Required empty public constructor
+        random = new Random();
     }
 
 
@@ -26,12 +37,22 @@ public class RedFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        Log.d("RED", "Hello red");
-
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_red, container, false);
+        View view = inflater.inflate(R.layout.fragment_red, container, false);
+        Button randomButton = view.findViewById(R.id.random_number_button);
+        randomButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int number = random.nextInt(100);
+                listener.onRandomNumber(number);
+            }
+        });
 
+        return view;
+    }
 
+    public void setOnRandomNumberGeneratedListener(OnRandomNumberGeneratedListener listener) {
+        this.listener = listener;
     }
 
 }
