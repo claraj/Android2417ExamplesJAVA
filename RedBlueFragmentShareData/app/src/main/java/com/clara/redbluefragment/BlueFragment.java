@@ -27,8 +27,9 @@ public class BlueFragment extends Fragment {
 
     public static BlueFragment newInstance(int random) {
         BlueFragment fragment = new BlueFragment();
-        Bundle bundle = new Bundle();
-        bundle.putInt(ARG_RANDOM, random);
+        Bundle args = new Bundle();
+        args.putInt(ARG_RANDOM, random);
+        fragment.setArguments(args);
         return fragment;
     }
 
