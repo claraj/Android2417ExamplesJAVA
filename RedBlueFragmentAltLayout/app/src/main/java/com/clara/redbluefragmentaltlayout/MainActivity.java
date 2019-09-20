@@ -26,16 +26,14 @@ public class MainActivity extends AppCompatActivity implements RedFragment.OnRan
 
         ft.commit();
 
-
     }
 
     @Override
     public void onRandomNumber(int number) {
-        //Create and show new BlueFragment, providing the number in a bundle
-
+        //Find the BlueFragment, expected to be on screen, and send the random number.
         FragmentManager fm = getSupportFragmentManager();
         BlueFragment blueFragment = (BlueFragment) fm.findFragmentById(R.id.blue_fragment_container);
         blueFragment.setRandomNumber(number);
-
     }
 }
+
