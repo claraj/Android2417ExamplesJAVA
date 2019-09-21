@@ -36,13 +36,7 @@ public class ToDoListFragment extends Fragment implements ToDoListAdapter.OnList
 	private List<ToDoItem> mListItems;
 
 
-	public static ToDoListFragment newInstance(ArrayList<ToDoItem> todoItems) {
-		final Bundle args = new Bundle();
-		args.putParcelableArrayList(ARGS_TODO_LIST, todoItems);
-		final ToDoListFragment fragment = new ToDoListFragment();
-		fragment.setArguments(args);
-		return fragment;
-	}
+	// TODO create newInstance method, with the List of ToDoItem objects as an argument
 
 
 	@Override
@@ -67,23 +61,8 @@ public class ToDoListFragment extends Fragment implements ToDoListAdapter.OnList
 
 		View view = inflater.inflate(R.layout.fragment_to_do_list, container, false);
 
-		mListView =  view.findViewById(R.id.to_do_listview);
-		mListView.setHasFixedSize(true);
 
-		LinearLayoutManager layoutManager = new LinearLayoutManager(this.getContext());
-		mListView.setLayoutManager(layoutManager);
-
-		mListItems = new ArrayList<>();
-
-		if (getArguments() != null) {
-			mListItems = getArguments().getParcelableArrayList(ARGS_TODO_LIST);
-		}
-
-		mListAdapter = new ToDoListAdapter(mListItems, this);
-		mListView.setAdapter(mListAdapter);
-		mListAdapter.notifyDataSetChanged();
-
-		Log.d(TAG, "onCreateView, ArrayList: " + mListItems);
+		// TODO Configure the RecyclerView and Adapter to show the items in the list of ToDoItem objects
 
 		return view;
 	}
@@ -91,12 +70,13 @@ public class ToDoListFragment extends Fragment implements ToDoListAdapter.OnList
 
 	@Override
 	public void onListItemClick(int itemPosition) {
-		ToDoItem item = mListItems.get(itemPosition);
-		mItemSelectedListener.itemSelected(item);
+
+		// TODO notify the ListItemSelectedListener, tell it which ToDoItem was selected in the list
 	}
 
 
 	public void notifyItemsChanged() {
+		// Called by the Adapter
 		this.mListView.getAdapter().notifyDataSetChanged();
 	}
 

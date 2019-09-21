@@ -5,12 +5,6 @@
     android:layout_height="wrap_content"
     android:padding="@dimen/list_item_container_padding">
 
-    <!-- This descendantFocusability attribute is necessary otherwise any
-  clickable item(s) - in this case, the CheckBox - in the RecyclerView items
-  will be the component that handles clicks on the RecyclerView items,
-  instead of the whole RecyclerView item. -->
-
-
     <CheckedTextView
         android:id="@+id/todo_list_urgent_checkbox"
         android:layout_width="wrap_content"

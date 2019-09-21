@@ -30,12 +30,7 @@ public class AddToDoItemFragment extends Fragment {
 
 	private NewItemCreatedListener mNewItemListener;
 
-	//Nothing happens here except creating a new Fragment
-	//but this is useful to have in case of needing to send data to this Fragment in the future
-	public static AddToDoItemFragment newInstance() {
-		return new AddToDoItemFragment();
-	}
-
+	// TODO create newInstance method for instantiating an instance of this Fragment
 
 	@Override
 	public void onAttach(@NonNull Context context) {
@@ -43,8 +38,7 @@ public class AddToDoItemFragment extends Fragment {
 
 		Log.d(TAG, "onAttach");
 
-		// Context is the hosting Activity. Set the listener to this Activity.
-		if (context instanceof NewItemCreatedListener){
+		if (context instanceof NewItemCreatedListener){    // Context is the hosting Activity.
 			mNewItemListener = (NewItemCreatedListener) context;
 			Log.d(TAG, "Listener set");
 		} else  {
@@ -64,34 +58,8 @@ public class AddToDoItemFragment extends Fragment {
 		final EditText newItemText = view.findViewById(R.id.new_todo_item_edittext);
 		final CheckBox urgentCheckbox = view.findViewById(R.id.urgent_checkbox);
 
-		addItem.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-
-				String text = newItemText.getText().toString();
-
-				//Validate user has entered some text
-				if (text.isEmpty()) {
-					Toast.makeText(getActivity(), "Please enter some text", Toast.LENGTH_LONG).show();
-					return;
-				}
-
-				boolean urgent = urgentCheckbox.isChecked();
-
-				//Clear input form
-				newItemText.getText().clear();
-				urgentCheckbox.setChecked(false);
-
-				//Create a new to do item
-				ToDoItem newItem = new ToDoItem(text, urgent);
-
-				Log.d(TAG, "New item is " + newItem);
-
-				//Call listener's newItemCreated method to notify it that a newItem was created
-				mNewItemListener.newItemCreated(newItem);
-
-			}
-		});
+		// TODO create onClick event handler for button to create new ToDoItem from the data entered
+		// TODO send NewItemCreatedListener message about the new item
 
 		return view;
 

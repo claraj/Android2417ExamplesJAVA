@@ -35,7 +35,6 @@ public class MainActivity extends AppCompatActivity implements
 		setContentView(R.layout.activity_main);
 
 		if (savedInstanceState == null) {
-
 			//no saved instance state - first time Activity been created
 			//Create new ArrayList, and add Add and List fragments.
 			Log.d(TAG, "onCreate has no instance state. Setting up ArrayList, adding List Fragment and Add Fragment");
@@ -47,25 +46,12 @@ public class MainActivity extends AppCompatActivity implements
 			mTodoItems.add(new ToDoItem("Feed cat", true));
 			mTodoItems.add(new ToDoItem("Grocery shopping", false));
 
-			// Create and add fragments
-			AddToDoItemFragment addToDoItemFragment = AddToDoItemFragment.newInstance();
-			ToDoListFragment toDoListFragment = ToDoListFragment.newInstance(mTodoItems);
-
-			FragmentManager fm = getSupportFragmentManager();
-			FragmentTransaction ft = fm.beginTransaction();
-
-			// Add, including tags to help find the fragments on screen, if they need to be updated
-			ft.add(R.id.add_todo_view_container, addToDoItemFragment, TAG_ADD_NEW_FRAG);
-			ft.add(R.id.todo_list_view_container, toDoListFragment, TAG_LIST_FRAG);
-
-			ft.commit();
+			// TODO create and add initial fragments (Add and List) to screen
 
 		} else {
-
 			//There is saved instance state, so the app has already run,
 			//and the Activity should already have fragments.
 			//Restore saved instance state, the ArrayList
-
 			mTodoItems = savedInstanceState.getParcelableArrayList(BUNDLE_KEY_TODO_ITEMS);
 			Log.d(TAG, "onCreate has saved instance state ArrayList =  " + mTodoItems);
 		}
@@ -84,62 +70,31 @@ public class MainActivity extends AppCompatActivity implements
 
 		Log.d(TAG, "Notified that this new item was created: " + mTodoItems);
 
-		//Add the new item to the ArrayList
-		mTodoItems.add(newItem);
+		// TODO add item to mTodoItems ArrayList
+		// TODO Notify the ToDoListFragment that the list data has changed
 
-		// get reference to ToDoListFragment from the FragmentManager,
-		// and tell this Fragment that the data set has changed
-		FragmentManager fm = getSupportFragmentManager();
-		ToDoListFragment listFragment = (ToDoListFragment) fm.findFragmentByTag(TAG_LIST_FRAG);
-		listFragment.notifyItemsChanged();
-		hideKeyboard();
 	}
-
 
 	@Override
 	public void itemSelected(ToDoItem selected) {
 
 		Log.d(TAG, "Notified that this item was selected: " + selected);
 
-		FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+		// TODO Create new ToDoItemDetailFragment with the selected ToDoItem
+		// TODO show on screen
 
-		// Create new ToDoItemDetailFragment with the selected ToDoItem
-		ToDoItemDetailFragment toDoItemDetailFragment = ToDoItemDetailFragment.newInstance(selected);
-		ft.replace(android.R.id.content, toDoItemDetailFragment, TAG_DETAIL_FRAG);   // Replace anything in the content view with this Fragment
-
-		// Add to the back stack, so if user presses back button from the Detail Fragment,
-		// it will revert this transaction - Activity will remove the Detail Fragment, showing the Add+List fragments
-		ft.addToBackStack(TAG_DETAIL_FRAG);
-
-		ft.commit();
 	}
-
 
 	@Override
 	public void todoItemDone(ToDoItem doneItem) {
 
 		Log.d(TAG, "Notified that this item is done: " + mTodoItems);
 
-		//Remove item from list
-		mTodoItems.remove(doneItem);
+		// TODO Remove item from list
+		// TODO Find ToDoListFragment and tell it that the  data has changed
+		// TODO Find the Detail fragment and remove it, if it is on screen
 
-		//Find ToDoListFragment and tell it that the  data has changed
-		FragmentManager fm = getSupportFragmentManager();
-		ToDoListFragment listFragment = (ToDoListFragment) fm.findFragmentByTag(TAG_LIST_FRAG);
-		listFragment.notifyItemsChanged();
-
-		// Removes the Detail fragment from the Activity, which leaves the Add+List fragments.
-		FragmentTransaction ft = fm.beginTransaction();
-
-		// Find the Detail fragment and remove it, if it is on screen
-		ToDoItemDetailFragment detailFragment = (ToDoItemDetailFragment) fm.findFragmentByTag(TAG_DETAIL_FRAG);
-		if (detailFragment != null) {
-			ft.remove(detailFragment);
-		}
-
-		ft.commit();
 	}
-
 
 	private void hideKeyboard() {
 		View mainView = findViewById(android.R.id.content);

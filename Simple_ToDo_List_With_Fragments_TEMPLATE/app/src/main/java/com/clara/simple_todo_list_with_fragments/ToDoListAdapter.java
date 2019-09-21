@@ -55,7 +55,6 @@ public class ToDoListAdapter extends RecyclerView.Adapter<ToDoListAdapter.ToDoVi
 
 		@Override
 		public void onClick(View view) {
-			int position = getAdapterPosition();
 			listener.onListItemClick(getAdapterPosition());
 		}
 	}

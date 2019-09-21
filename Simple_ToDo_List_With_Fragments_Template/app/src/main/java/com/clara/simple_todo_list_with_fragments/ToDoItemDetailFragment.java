@@ -38,15 +38,7 @@ public class ToDoItemDetailFragment extends Fragment {
 	private Button doneButton;
 
 
-	//Use in place of a constructor. Customize the arguments for this Fragment as needed.
-	// onCreateView will be able to access the arguments.
-	public static ToDoItemDetailFragment newInstance(ToDoItem item) {
-		final Bundle args = new Bundle();
-		args.putParcelable(ARG_TODO_ITEM, item);
-		final ToDoItemDetailFragment fragment = new ToDoItemDetailFragment();
-		fragment.setArguments(args);
-		return fragment;
-	}
+	//TODO create newInstance method, with one argument, the ToDoItem to show
 
 	@Override
 	public void onAttach(@NonNull Context context) {
@@ -68,47 +60,17 @@ public class ToDoItemDetailFragment extends Fragment {
 
 		View view = inflater.inflate(R.layout.fragment_to_do_item_detail, container, false);
 
-		//Get the To Do item from the arguments passed in when this Fragment was created.
+		// TODO Get the To Do item from the arguments passed in when this Fragment was created.
+		// TODO call setTodoItem to set data in view components
 
-		if (getArguments() != null && getArguments().getParcelable(ARG_TODO_ITEM) != null){
-
-			final ToDoItem item = getArguments().getParcelable(ARG_TODO_ITEM);
-			Log.d(TAG, "onCreateView received the following item: " + item);
-
-			textText = view.findViewById(R.id.to_do_detail_text_textview);
-			dateText =  view.findViewById(R.id.to_do_detail_date_created_textview);
-			urgentCheck = view.findViewById(R.id.to_do_detail_urgent_checkbox);
-			doneButton =  view.findViewById(R.id.to_do_detail_done_button);
-
-			setTodoItem(item);
-
-		} else {
-			Log.w(TAG, "Did not receive a ToDoItem");
-		}
 
 		return view;
 	}
 
 	public void setTodoItem(ToDoItem item) {
 
-		final ToDoItem toDoItem = item;
-
-		textText.setText(item.getText());
-		dateText.setText(item.getFormattedDateCreated());
-
-		if (item.isUrgent()) {
-			urgentCheck.setCheckMarkDrawable(android.R.drawable.checkbox_on_background);
-		} else {
-			urgentCheck.setCheckMarkDrawable(android.R.drawable.checkbox_off_background);
-		}
-
-		doneButton.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				//Tell the MarkItemAsDoneListener that this item is done
-				mItemDoneListener.todoItemDone(toDoItem);
-			}
-		});
+		// TODO set data in view components
+		// TODO add Done button event listener - will send message to MarkItemAsDoneListener
 
 	}
 
