@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -21,12 +22,18 @@ import java.util.List;
 
 public class ToDoListFragment extends Fragment implements ToDoListAdapter.OnListItemClickListener {
 
+	public interface ListItemSelectedListener {
+		void itemSelected(ToDoItem selected);
+	}
+
 	private static final String TAG = "TODO LIST FRAGMENT" ;
 	private static final String ARGS_TODO_LIST = "to do list arguments";
 	private ListItemSelectedListener mItemSelectedListener;
 
 	private RecyclerView mListView;
 	private ToDoListAdapter mListAdapter;
+	private List<ToDoItem> mListItems;
+
 
 	public static ToDoListFragment newInstance(ArrayList<ToDoItem> todoItems) {
 		final Bundle args = new Bundle();
@@ -48,47 +55,41 @@ public class ToDoListFragment extends Fragment implements ToDoListAdapter.OnList
 		LinearLayoutManager layoutManager = new LinearLayoutManager(this.getContext());
 		mListView.setLayoutManager(layoutManager);
 
-		List<ToDoItem> listItems = new ArrayList<>();
+		mListItems = new ArrayList<>();
 
 		if (getArguments() != null) {
-			listItems = getArguments().getParcelableArrayList(ARGS_TODO_LIST);
+			mListItems = getArguments().getParcelableArrayList(ARGS_TODO_LIST);
 		}
 
-		mListAdapter = new ToDoListAdapter(listItems, this);
+		mListAdapter = new ToDoListAdapter(mListItems, this);
 		mListView.setAdapter(mListAdapter);
 		mListAdapter.notifyDataSetChanged();
 
-		Log.d(TAG, "onCreateView, ArrayList: " + listItems);
+		Log.d(TAG, "onCreateView, ArrayList: " + mListItems);
 
 		return view;
 	}
 
 
 	@Override
-	public void onAttach(Context context) {
+	public void onAttach(@NonNull Context context) {
 		super.onAttach(context);
 
 		if (context instanceof ListItemSelectedListener) {
 			mItemSelectedListener = (ListItemSelectedListener) context;
 			Log.d(TAG, "On attach configured listener " + mItemSelectedListener);
-
 		} else {
-			throw new RuntimeException(context.toString() + " must implement OnFragmentInteractionListener");
+			throw new RuntimeException(context.toString() + " must implement ListItemSelectedListener");
 		}
 	}
 
 
 	@Override
-	public void onDetach() {
-		super.onDetach();
-		mItemSelectedListener = null;
-	}
-
-
-	@Override
-	public void onListItemClick(ToDoItem item) {
+	public void onListItemClick(int itemPosition) {
+		ToDoItem item = mListItems.get(itemPosition);
 		mItemSelectedListener.itemSelected(item);
 	}
+
 
 	public void notifyItemsChanged() {
 		this.mListView.getAdapter().notifyDataSetChanged();
@@ -96,7 +97,4 @@ public class ToDoListFragment extends Fragment implements ToDoListAdapter.OnList
 
 
 
-	public interface ListItemSelectedListener {
-		void itemSelected(ToDoItem selected);
-	}
 }

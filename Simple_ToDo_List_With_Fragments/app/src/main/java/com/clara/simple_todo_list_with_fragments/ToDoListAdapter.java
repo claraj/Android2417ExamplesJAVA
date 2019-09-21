@@ -19,7 +19,7 @@ public class ToDoListAdapter extends RecyclerView.Adapter<ToDoListAdapter.ToDoVi
     private static final String TAG = "TODO LIST ADAPTER";
 
     interface OnListItemClickListener {
-        void onListItemClick(ToDoItem item);
+        void onListItemClick(int position);
     }
 
     private static List<ToDoItem> mTodoItems;
@@ -56,17 +56,18 @@ public class ToDoListAdapter extends RecyclerView.Adapter<ToDoListAdapter.ToDoVi
         @Override
         public void onClick(View view) {
             int position = getAdapterPosition();
-            listener.onListItemClick(mTodoItems.get(position));
+            listener.onListItemClick(getAdapterPosition());
         }
     }
+
 
     @NonNull
     @Override
     public ToDoViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         ConstraintLayout layout = (ConstraintLayout) LayoutInflater.from(parent.getContext()).inflate(R.layout.todo_list_item_list_element, parent, false);
-        ToDoViewHolder viewHolder = new ToDoViewHolder(layout, listener);
-        return viewHolder;
+        return new ToDoViewHolder(layout, listener);
     }
+
 
     @Override
     public void onBindViewHolder(@NonNull ToDoViewHolder holder, int position) {

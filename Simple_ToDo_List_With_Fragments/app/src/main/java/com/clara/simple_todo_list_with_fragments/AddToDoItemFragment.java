@@ -12,27 +12,33 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 
 /**
  * A Fragment for adding a new To Do item to the list
  */
+
 public class AddToDoItemFragment extends Fragment {
+
+	public interface NewItemCreatedListener {
+		void newItemCreated(ToDoItem newItem);
+	}
 
 	private static final String TAG = "Add To Do Item Fragment";
 
 	private NewItemCreatedListener mNewItemListener;
 
 	//Nothing happens here except creating a new Fragment
-	//but this is nice in case we did need to send any data to this Fragment
+	//but this is nice to have in case we did need to send any data to this Fragment in the future
 	public static AddToDoItemFragment newInstance() {
 		return new AddToDoItemFragment();
 	}
 
 
 	@Override
-	public void onAttach(Context context) {
+	public void onAttach(@NonNull Context context) {
 		super.onAttach(context);
 
 		Log.d(TAG, "onAttach");
@@ -47,8 +53,6 @@ public class AddToDoItemFragment extends Fragment {
 	}
 
 
-
-
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
@@ -56,9 +60,9 @@ public class AddToDoItemFragment extends Fragment {
 
 		Log.d(TAG, "onCreateView");
 
-		Button addItem = (Button) view.findViewById(R.id.add_todo_item_button);
-		final EditText newItemText = (EditText) view.findViewById(R.id.new_todo_item_edittext);
-		final CheckBox urgentCheckbox = (CheckBox) view.findViewById(R.id.urgent_checkbox);
+		Button addItem = view.findViewById(R.id.add_todo_item_button);
+		final EditText newItemText = view.findViewById(R.id.new_todo_item_edittext);
+		final CheckBox urgentCheckbox = view.findViewById(R.id.urgent_checkbox);
 
 		addItem.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -78,7 +82,7 @@ public class AddToDoItemFragment extends Fragment {
 
 					Log.d(TAG, "New item is " + newItem);
 
-					//Return newItem back to calling Activity
+					//Call listener to notify a newItem was created
 					mNewItemListener.newItemCreated(newItem);
 
 				} else {
@@ -90,20 +94,4 @@ public class AddToDoItemFragment extends Fragment {
 		return view;
 
 	}
-
-	@Override
-	public void onDetach() {
-		super.onDetach();
-		Log.d(TAG, "onDetach");
-
-		mNewItemListener = null;
-	}
-
-
-	//Use to notify hosting Activity that a new To Do item has been created.
-	public interface NewItemCreatedListener {
-		void newItemCreated(ToDoItem newItem);
-	}
-
-
 }

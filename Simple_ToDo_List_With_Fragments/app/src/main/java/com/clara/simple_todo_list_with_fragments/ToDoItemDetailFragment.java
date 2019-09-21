@@ -12,6 +12,7 @@ import android.widget.CheckBox;
 import android.widget.CheckedTextView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 
@@ -20,13 +21,17 @@ import androidx.fragment.app.Fragment;
  */
 public class ToDoItemDetailFragment extends Fragment {
 
+	interface MarkItemAsDoneListener {
+		void todoItemDone(ToDoItem doneItem);
+	}
+
 	private static final String ARG_TODO_ITEM = "todo item argument";
 	private static final String TAG = "TODO ITEM DETAIL FRAG";
 
 	private MarkItemAsDoneListener mItemDoneListener;
 
 	@Override
-	public void onAttach(Context context) {
+	public void onAttach(@NonNull Context context) {
 		super.onAttach(context);
 
 		if (context instanceof MarkItemAsDoneListener) {
@@ -88,15 +93,6 @@ public class ToDoItemDetailFragment extends Fragment {
 	}
 
 
-	@Override
-	public void onDetach() {
-		super.onDetach();
-		mItemDoneListener = null;
-	}
 
-
-	interface MarkItemAsDoneListener {
-		void todoItemDone(ToDoItem doneItem);
-	}
 
 }
