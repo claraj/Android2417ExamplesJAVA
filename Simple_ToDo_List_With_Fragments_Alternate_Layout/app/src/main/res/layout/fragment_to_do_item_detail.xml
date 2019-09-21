@@ -1,41 +1,65 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:tools="http://schemas.android.com/tools"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                tools:context="com.clara.simple_todo_list_with_fragments.ToDoItemDetailFragment"
-                android:background="#DA5800">
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/item_detail_background"
+    tools:context="com.clara.simple_todo_list_with_fragments.ToDoItemDetailFragment"
+    android:clickable="true"
+    android:focusable="true">  <!-- because this fragment will sit above other fragments, need to catch click events
+                                        so they are not propagated to the Fragments which may be below -->
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/to_do_detail_text_textview"/>
-
-    <TextView
+    <Button
+        android:id="@+id/to_do_detail_done_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/to_do_detail_date_created_textview"
-        android:layout_below="@+id/to_do_detail_text_textview"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"/>
+        android:layout_below="@+id/to_do_detail_urgent_checkbox"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:text="@string/done"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/to_do_detail_date_created_textview" />
 
     <CheckedTextView
         android:id="@+id/to_do_detail_urgent_checkbox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/to_do_detail_date_created_textview"
-        android:checkMark="@android:drawable/checkbox_on_background"
-        android:text="@string/urgent" />
+        android:text="@string/urgent"
+        app:layout_constraintBottom_toBottomOf="@+id/to_do_detail_date_created_textview"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/to_do_detail_date_created_textview"
+        app:layout_constraintTop_toTopOf="@+id/to_do_detail_date_created_textview" />
 
-    <Button
+    <TextView
+        android:id="@+id/to_do_detail_text_textview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:lines="4"
+        android:padding="@dimen/todo_detail_text_padding"
+        android:shadowColor="@color/colorAccent"
+        app:layout_constraintBottom_toTopOf="@+id/to_do_detail_date_created_textview"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/to_do_detail_date_created_textview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/done"
-        android:id="@+id/to_do_detail_done_button"
-        android:layout_below="@+id/to_do_detail_urgent_checkbox"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"/>
+        android:layout_below="@+id/to_do_detail_text_textview"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        app:layout_constraintBottom_toTopOf="@+id/to_do_detail_done_button"
+        app:layout_constraintEnd_toStartOf="@+id/to_do_detail_urgent_checkbox"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/to_do_detail_text_textview" />
 
-</RelativeLayout>
-
-
-
+</androidx.constraintlayout.widget.ConstraintLayout>

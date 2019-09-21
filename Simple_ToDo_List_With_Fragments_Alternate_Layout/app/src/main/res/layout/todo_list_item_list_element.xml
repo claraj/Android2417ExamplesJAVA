@@ -1,35 +1,33 @@
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_height="match_parent"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:descendantFocusability="blocksDescendants">
-    <!-- This descendantFocusability attribute is necessary otherwise any
-     clickable item(s) - in this case, the CheckBox - in the ListView items
-     will be the component that handles clicks on the ListView items,
-     instead of the whole ListView item. -->
-
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/todo_list_text_textview"/>
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/todo_list_date_textview"
-        android:layout_below="@+id/todo_list_text_textview"/>
+    android:layout_height="wrap_content"
+    android:padding="@dimen/list_item_container_padding">
 
     <CheckedTextView
+        android:id="@+id/todo_list_urgent_checkbox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/todo_list_urgent_checkbox"
         android:layout_below="@+id/todo_list_date_textview"
         android:checkMark="@android:drawable/checkbox_on_background"
-        android:text="@string/urgent" />
+        android:text="@string/urgent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/todo_list_text_textview" />
 
-</RelativeLayout>
+    <TextView
+        android:id="@+id/todo_list_date_textview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/todo_list_text_textview"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/todo_list_text_textview" />
 
+    <TextView
+        android:id="@+id/todo_list_text_textview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout_editor_absoluteX="0dp" />
 
-
-
+</androidx.constraintlayout.widget.ConstraintLayout>

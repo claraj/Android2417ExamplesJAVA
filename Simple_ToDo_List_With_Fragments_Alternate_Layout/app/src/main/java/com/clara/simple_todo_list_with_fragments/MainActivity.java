@@ -1,10 +1,14 @@
 package com.clara.simple_todo_list_with_fragments;
 
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AppCompatActivity;
+import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.view.inputmethod.InputMethodManager;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import java.util.ArrayList;
 
@@ -14,11 +18,11 @@ public class MainActivity extends AppCompatActivity implements
 		ToDoListFragment.ListItemSelectedListener {
 
 
-	private static final String TODO_ITEMS_KEY = "TODO ITEMS ARRAY LIST";
-	private static final String ADD_NEW_FRAG_TAG = "ADD NEW FRAGMENT";
-	private static final String LIST_FRAG_TAG = "LIST FRAGMENT";
-	private static final String DETAIL_FRAG_TAG = "DETAIL FRAGMENT";
+	private static final String BUNDLE_KEY_TODO_ITEMS = "TODO ITEMS ARRAY LIST";
 
+	private static final String TAG_ADD_NEW_FRAG = "ADD NEW FRAGMENT";
+	private static final String TAG_LIST_FRAG = "LIST FRAGMENT";
+	private static final String TAG_DETAIL_FRAG = "DETAIL FRAGMENT";
 
 	private ArrayList<ToDoItem> mTodoItems;
 
@@ -38,6 +42,11 @@ public class MainActivity extends AppCompatActivity implements
 
 			mTodoItems = new ArrayList<>();
 
+			// Add example data for testing. Remove/edit these lines for testing app
+			mTodoItems.add(new ToDoItem("Water plants", false));
+			mTodoItems.add(new ToDoItem("Feed cat", true));
+			mTodoItems.add(new ToDoItem("Grocery shopping", false));
+
 			AddToDoItemFragment addNewFragment = AddToDoItemFragment.newInstance();
 			ToDoListFragment listFragment = ToDoListFragment.newInstance(mTodoItems);
 			ToDoItemDetailFragment detailFragment = ToDoItemDetailFragment.newInstance(new ToDoItem("", false));
@@ -45,9 +54,9 @@ public class MainActivity extends AppCompatActivity implements
 			FragmentManager fm = getSupportFragmentManager();
 			FragmentTransaction ft = fm.beginTransaction();
 
-			ft.add(R.id.add_todo_view_container, addNewFragment, ADD_NEW_FRAG_TAG);
-			ft.add(R.id.todo_list_view_container, listFragment, LIST_FRAG_TAG);
-			ft.add(R.id.todo_detail_view_container, detailFragment);
+			ft.add(R.id.add_todo_view_container, addNewFragment, TAG_ADD_NEW_FRAG);
+			ft.add(R.id.todo_list_view_container, listFragment, TAG_LIST_FRAG);
+			ft.add(R.id.todo_detail_view_container, detailFragment, TAG_DETAIL_FRAG);
 
 			ft.commit();
 
@@ -56,7 +65,7 @@ public class MainActivity extends AppCompatActivity implements
 			//and the Activity should already have fragments.
 			//Restore saved instance state, the ArrayList
 
-			mTodoItems = savedInstanceState.getParcelableArrayList(TODO_ITEMS_KEY);
+			mTodoItems = savedInstanceState.getParcelableArrayList(BUNDLE_KEY_TODO_ITEMS);
 			Log.d(TAG, "onCreate has saved instance state ArrayList =  " + mTodoItems);
 		}
 	}
@@ -64,7 +73,7 @@ public class MainActivity extends AppCompatActivity implements
 	@Override
 	public void onSaveInstanceState(Bundle outBundle) {
 		super.onSaveInstanceState(outBundle);
-		outBundle.putParcelableArrayList(TODO_ITEMS_KEY, mTodoItems);
+		outBundle.putParcelableArrayList(BUNDLE_KEY_TODO_ITEMS, mTodoItems);
 	}
 
 
@@ -76,11 +85,13 @@ public class MainActivity extends AppCompatActivity implements
 
 		Log.d(TAG, "newItemCreated =  " + mTodoItems);
 
-		//get reference to list Fragment from the FragmentMananger,
-		// and tell this Fragment that the data set has changed
+		// Get reference to List Fragment from the FragmentManager,
+		// and tell this Fragment that the data has changed
 		FragmentManager fm = getSupportFragmentManager();
-		ToDoListFragment listFragment = (ToDoListFragment) fm.findFragmentByTag(LIST_FRAG_TAG);
+		ToDoListFragment listFragment = (ToDoListFragment) fm.findFragmentByTag(TAG_LIST_FRAG);
 		listFragment.notifyItemsChanged();
+
+		hideKeyboard();
 	}
 
 
@@ -89,9 +100,11 @@ public class MainActivity extends AppCompatActivity implements
 
 		//Replace the previous Detail fragment with a new Detail Fragment, showing the selected To Do item
 		FragmentManager fm = getSupportFragmentManager();
-		FragmentTransaction ft = fm.beginTransaction();
-		ft.replace(R.id.todo_detail_view_container, ToDoItemDetailFragment.newInstance(selected));
-		ft.commit();
+//		FragmentTransaction ft = fm.beginTransaction();
+//		ft.replace(R.id.todo_detail_view_container, ToDoItemDetailFragment.newInstance(selected));
+//		ft.commit();
+		ToDoItemDetailFragment toDoItemDetailFragment = (ToDoItemDetailFragment) fm.findFragmentByTag(TAG_DETAIL_FRAG);
+		toDoItemDetailFragment.setTodoItem(selected);
 	}
 
 
@@ -99,12 +112,17 @@ public class MainActivity extends AppCompatActivity implements
 	public void todoItemDone(ToDoItem doneItem) {
 
 		mTodoItems.remove(doneItem);
-		//Find List fragment and tell it that the  data has changed
+		//Find List fragment and tell it that the data has changed
 		FragmentManager fm = getSupportFragmentManager();
-		ToDoListFragment listFragment = (ToDoListFragment) fm.findFragmentByTag(LIST_FRAG_TAG);
+		ToDoListFragment listFragment = (ToDoListFragment) fm.findFragmentByTag(TAG_LIST_FRAG);
 		listFragment.notifyItemsChanged();
 
 	}
 
+	private void hideKeyboard() {
+		View mainView = findViewById(android.R.id.content);
+		InputMethodManager manager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+		manager.hideSoftInputFromWindow(mainView.getWindowToken(), 0);
+	}
 
 }
