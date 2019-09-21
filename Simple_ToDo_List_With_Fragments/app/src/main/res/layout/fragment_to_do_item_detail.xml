@@ -4,7 +4,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/item_detail_background"
-    tools:context="com.clara.simple_todo_list_with_fragments.ToDoItemDetailFragment">
+    tools:context="com.clara.simple_todo_list_with_fragments.ToDoItemDetailFragment"
+    android:clickable="true">  <!-- because this fragment will sit above other fragments, need to catch click events
+                                        so they are not propagated to the Fragments which may be below -->
 
     <Button
         android:id="@+id/to_do_detail_done_button"

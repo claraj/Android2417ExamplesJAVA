@@ -17,7 +17,7 @@ import androidx.fragment.app.Fragment;
 
 
 /**
- * A Fragment for adding a new To Do item to the list
+ * Fragment for adding a new To Do item to the list
  */
 
 public class AddToDoItemFragment extends Fragment {
@@ -31,7 +31,7 @@ public class AddToDoItemFragment extends Fragment {
 	private NewItemCreatedListener mNewItemListener;
 
 	//Nothing happens here except creating a new Fragment
-	//but this is nice to have in case we did need to send any data to this Fragment in the future
+	//but this is useful to have in case of needing to send data to this Fragment in the future
 	public static AddToDoItemFragment newInstance() {
 		return new AddToDoItemFragment();
 	}
@@ -43,10 +43,10 @@ public class AddToDoItemFragment extends Fragment {
 
 		Log.d(TAG, "onAttach");
 
+		// Context is the hosting Activity. Set the listener to this Activity.
 		if (context instanceof NewItemCreatedListener){
 			mNewItemListener = (NewItemCreatedListener) context;
-			Log.d(TAG, "set listener");
-
+			Log.d(TAG, "Listener set");
 		} else  {
 			throw new RuntimeException(context.toString() + " must implement NewItemCreatedListener");
 		}
@@ -68,26 +68,28 @@ public class AddToDoItemFragment extends Fragment {
 			@Override
 			public void onClick(View v) {
 
+				String text = newItemText.getText().toString();
+
 				//Validate user has entered some text
-				if (newItemText.getText().length() > 0) {
-					String text = newItemText.getText().toString();
-					boolean urgent = urgentCheckbox.isChecked();
-
-					//Clear input form
-					newItemText.getText().clear();
-					urgentCheckbox.setChecked(false);
-
-					//Create a new to do item
-					ToDoItem newItem = new ToDoItem(text, urgent);
-
-					Log.d(TAG, "New item is " + newItem);
-
-					//Call listener to notify a newItem was created
-					mNewItemListener.newItemCreated(newItem);
-
-				} else {
+				if (text.isEmpty()) {
 					Toast.makeText(getActivity(), "Please enter some text", Toast.LENGTH_LONG).show();
+					return;
 				}
+
+				boolean urgent = urgentCheckbox.isChecked();
+
+				//Clear input form
+				newItemText.getText().clear();
+				urgentCheckbox.setChecked(false);
+
+				//Create a new to do item
+				ToDoItem newItem = new ToDoItem(text, urgent);
+
+				Log.d(TAG, "New item is " + newItem);
+
+				//Call listener's newItemCreated method to notify it that a newItem was created
+				mNewItemListener.newItemCreated(newItem);
+
 			}
 		});
 

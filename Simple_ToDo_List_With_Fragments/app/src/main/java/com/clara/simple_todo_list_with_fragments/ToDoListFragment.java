@@ -26,9 +26,10 @@ public class ToDoListFragment extends Fragment implements ToDoListAdapter.OnList
 		void itemSelected(ToDoItem selected);
 	}
 
+	private ListItemSelectedListener mItemSelectedListener;
+
 	private static final String TAG = "TODO LIST FRAGMENT" ;
 	private static final String ARGS_TODO_LIST = "to do list arguments";
-	private ListItemSelectedListener mItemSelectedListener;
 
 	private RecyclerView mListView;
 	private ToDoListAdapter mListAdapter;
@@ -45,7 +46,24 @@ public class ToDoListFragment extends Fragment implements ToDoListAdapter.OnList
 
 
 	@Override
+	public void onAttach(@NonNull Context context) {
+
+		Log.d(TAG, "onAttach");
+
+		super.onAttach(context);
+
+		if (context instanceof ListItemSelectedListener) {
+			mItemSelectedListener = (ListItemSelectedListener) context;
+			Log.d(TAG, "On attach configured listener " + mItemSelectedListener);
+		} else {
+			throw new RuntimeException(context.toString() + " must implement ListItemSelectedListener");
+		}
+	}
+
+	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
+		Log.d(TAG, "onCreateView");
 
 		View view = inflater.inflate(R.layout.fragment_to_do_list, container, false);
 
@@ -68,19 +86,6 @@ public class ToDoListFragment extends Fragment implements ToDoListAdapter.OnList
 		Log.d(TAG, "onCreateView, ArrayList: " + mListItems);
 
 		return view;
-	}
-
-
-	@Override
-	public void onAttach(@NonNull Context context) {
-		super.onAttach(context);
-
-		if (context instanceof ListItemSelectedListener) {
-			mItemSelectedListener = (ListItemSelectedListener) context;
-			Log.d(TAG, "On attach configured listener " + mItemSelectedListener);
-		} else {
-			throw new RuntimeException(context.toString() + " must implement ListItemSelectedListener");
-		}
 	}
 
 

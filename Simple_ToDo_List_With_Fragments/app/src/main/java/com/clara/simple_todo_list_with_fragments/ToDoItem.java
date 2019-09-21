@@ -4,9 +4,11 @@ package com.clara.simple_todo_list_with_fragments;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import androidx.annotation.NonNull;
+
 import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.Date;
+
 
 public class ToDoItem implements Parcelable {
 
@@ -16,22 +18,17 @@ public class ToDoItem implements Parcelable {
 	private Date dateCreated;
 	private boolean urgent;
 
-	public ToDoItem(Parcel in) {
-		text = in.readString();
-		dateCreated = (Date) in.readSerializable();
-		urgent = (in.readInt() == 1) ;
-	}
-
 	public ToDoItem(String text, boolean urgent) {
 		this.text = text;
 		this.urgent = urgent;
 		dateCreated = new Date();
 	}
 
-	public String getFormattedDateCreated() {
-		return df.format(dateCreated);
+	public ToDoItem(Parcel in) {    // Constructor needed for un-parceling ToDoItem objects
+		text = in.readString();
+		dateCreated = (Date) in.readSerializable();
+		urgent = in.readInt() == 1;  // true if a 1 was written, false otherwise
 	}
-
 
 	public String getText() {
 		return text;
@@ -49,6 +46,10 @@ public class ToDoItem implements Parcelable {
 		this.dateCreated = dateCreated;
 	}
 
+	public String getFormattedDateCreated() {
+		return df.format(dateCreated);          // Convenience method to return a String in the format "September 20 2019"
+	}
+
 	public boolean isUrgent() {
 		return urgent;
 	}
@@ -57,12 +58,15 @@ public class ToDoItem implements Parcelable {
 		this.urgent = urgent;
 	}
 
+	@NonNull
 	@Override
 	public String toString() {
-		return text + " " + dateCreated.toString() + " is urgent? " + urgent;
+		return text + " " + dateCreated + " is urgent? " + urgent;
 	}
 
-	//Code required by the Parcelable interface. If ToDoItem is parcelable, can send as an Extra between Fragments/Activities
+
+	// Code required by the Parcelable interface.
+	// If ToDoItem is parcelable, can send as an Extra between Fragments/Activities
 
 	static final Parcelable.Creator<ToDoItem> CREATOR = new Parcelable.Creator<ToDoItem>() {
 		public ToDoItem createFromParcel(Parcel in) {
@@ -84,8 +88,6 @@ public class ToDoItem implements Parcelable {
 	public void writeToParcel(Parcel dest, int flags) {
 		dest.writeString(text);
 		dest.writeSerializable(dateCreated);
-		// Write 0 for false, 1 for true
-		int urg = urgent ? 1 : 0;
-		dest.writeInt(urg);  //Why doesn't Parcel have a writeBoolean method?
+		dest.writeInt( urgent ? 1 : 0);   // Write 1 if urgent == true, 0 otherwise
 	}
 }
