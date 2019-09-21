@@ -85,8 +85,7 @@ public class MainActivity extends AppCompatActivity implements
 
 		Log.d(TAG, "newItemCreated =  " + mTodoItems);
 
-		// Get reference to List Fragment from the FragmentManager,
-		// and tell this Fragment that the data has changed
+		// Get reference to List Fragment from the FragmentManager, tell this Fragment that the data has changed
 		FragmentManager fm = getSupportFragmentManager();
 		ToDoListFragment listFragment = (ToDoListFragment) fm.findFragmentByTag(TAG_LIST_FRAG);
 		listFragment.notifyItemsChanged();
@@ -97,12 +96,7 @@ public class MainActivity extends AppCompatActivity implements
 
 	@Override
 	public void itemSelected(ToDoItem selected) {
-
-		//Replace the previous Detail fragment with a new Detail Fragment, showing the selected To Do item
 		FragmentManager fm = getSupportFragmentManager();
-//		FragmentTransaction ft = fm.beginTransaction();
-//		ft.replace(R.id.todo_detail_view_container, ToDoItemDetailFragment.newInstance(selected));
-//		ft.commit();
 		ToDoItemDetailFragment toDoItemDetailFragment = (ToDoItemDetailFragment) fm.findFragmentByTag(TAG_DETAIL_FRAG);
 		toDoItemDetailFragment.setTodoItem(selected);
 	}
