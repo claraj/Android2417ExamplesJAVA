@@ -6,29 +6,31 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ListView;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 
 /**
  * Displays a list of to do items. Responds to list updates.
   */
 
-public class ToDoListFragment extends Fragment {
+public class ToDoListFragment extends Fragment implements ToDoListAdapter.OnListItemClickListener {
 
 	private static final String TAG = "TODO LIST FRAGMENT" ;
-	private static final String TODO_LIST_ARGS = "to do list arguments";
+	private static final String ARGS_TODO_LIST = "to do list arguments";
 	private ListItemSelectedListener mItemSelectedListener;
 
-	private ToDoListArrayAdapter mListAdapter;
+	private RecyclerView mListView;
+	private ToDoListAdapter mListAdapter;
 
-	public static ToDoListFragment newInstance(ArrayList todoItems) {
+	public static ToDoListFragment newInstance(ArrayList<ToDoItem> todoItems) {
 		final Bundle args = new Bundle();
-		args.putParcelableArrayList(TODO_LIST_ARGS, todoItems);
+		args.putParcelableArrayList(ARGS_TODO_LIST, todoItems);
 		final ToDoListFragment fragment = new ToDoListFragment();
 		fragment.setArguments(args);
 		return fragment;
@@ -40,24 +42,23 @@ public class ToDoListFragment extends Fragment {
 
 		View view = inflater.inflate(R.layout.fragment_to_do_list, container, false);
 
-		ListView mListView = (ListView) view.findViewById(R.id.to_do_listview);
-		ArrayList<ToDoItem> listItems = getArguments().getParcelableArrayList(TODO_LIST_ARGS);
+		mListView =  view.findViewById(R.id.to_do_listview);
+		mListView.setHasFixedSize(true);
 
-		Log.d(TAG, "onCreateView, ArrayList: " + listItems);
+		LinearLayoutManager layoutManager = new LinearLayoutManager(this.getContext());
+		mListView.setLayoutManager(layoutManager);
 
-		mListAdapter = new ToDoListArrayAdapter(getActivity(), R.layout.todo_list_item_list_element, listItems);
+		List<ToDoItem> listItems = new ArrayList<>();
 
+		if (getArguments() != null) {
+			listItems = getArguments().getParcelableArrayList(ARGS_TODO_LIST);
+		}
+
+		mListAdapter = new ToDoListAdapter(listItems, this);
 		mListView.setAdapter(mListAdapter);
 		mListAdapter.notifyDataSetChanged();
 
-		mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-			@Override
-			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-				//Notify the listener that the user has clicked on a list item. Send the item clicked on.
-				Log.d(TAG, "List item " + position + " clicked, the todo item is " + mListAdapter.getItem(position) );
-				mItemSelectedListener.itemSelected(mListAdapter.getItem(position));
-			}
-		});
+		Log.d(TAG, "onCreateView, ArrayList: " + listItems);
 
 		return view;
 	}
@@ -83,11 +84,16 @@ public class ToDoListFragment extends Fragment {
 		mItemSelectedListener = null;
 	}
 
-	public void notifyItemsChanged() {
-		Log.d(TAG, "Notified that the list of to do items has changed, update view");
-		//Tell the list to update.
-		mListAdapter.notifyDataSetChanged();
+
+	@Override
+	public void onListItemClick(ToDoItem item) {
+		mItemSelectedListener.itemSelected(item);
 	}
+
+	public void notifyItemsChanged() {
+		this.mListView.getAdapter().notifyDataSetChanged();
+	}
+
 
 
 	public interface ListItemSelectedListener {

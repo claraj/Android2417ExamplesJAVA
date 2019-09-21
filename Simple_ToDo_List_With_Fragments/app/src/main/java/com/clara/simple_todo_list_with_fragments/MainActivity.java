@@ -1,8 +1,11 @@
 package com.clara.simple_todo_list_with_fragments;
 
 
+import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
@@ -77,11 +80,12 @@ public class MainActivity extends AppCompatActivity implements
 
 		Log.d(TAG, "newItemCreated =  " + mTodoItems);
 
-		//get reference to list Fragment from the FragmentMananger,
+		//get reference to list Fragment from the FragmentManager,
 		// and tell this Fragment that the data set has changed
 		FragmentManager fm = getSupportFragmentManager();
 		ToDoListFragment listFragment = (ToDoListFragment) fm.findFragmentByTag(LIST_FRAG_TAG);
 		listFragment.notifyItemsChanged();
+		hideKeyboard();
 	}
 
 
@@ -125,5 +129,11 @@ public class MainActivity extends AppCompatActivity implements
 		ft.commit();
 	}
 
+
+	private void hideKeyboard() {
+		View mainView = findViewById(android.R.id.content);
+		InputMethodManager manager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+		manager.hideSoftInputFromWindow(mainView.getWindowToken(), 0);
+	}
 
 }

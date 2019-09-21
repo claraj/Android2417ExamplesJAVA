@@ -4,9 +4,13 @@ package com.clara.simple_todo_list_with_fragments;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class ToDoItem implements Parcelable {
+
+	private static DateFormat df = DateFormat.getDateInstance();
 
 	private String text;
 	private Date dateCreated;
@@ -23,6 +27,11 @@ public class ToDoItem implements Parcelable {
 		this.urgent = urgent;
 		dateCreated = new Date();
 	}
+
+	public String getFormattedDateCreated() {
+		return df.format(dateCreated);
+	}
+
 
 	public String getText() {
 		return text;
