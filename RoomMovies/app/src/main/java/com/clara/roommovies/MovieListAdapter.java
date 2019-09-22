@@ -49,7 +49,7 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.Movi
     public void onBindViewHolder(@NonNull MovieViewHolder holder, int position) {
         if (movies != null) {
             Movie movie = movies.get(position);
-            holder.movieNameView.setText(movie.getName());
+            holder.bind(movie);
         } else {
             holder.bind(null);
         }

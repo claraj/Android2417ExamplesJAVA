@@ -68,6 +68,11 @@ public class MainActivity extends AppCompatActivity implements MovieListFragment
         ft.addToBackStack(null);
         ft.commit();
     }
+
+    @Override
+    public void requestUpdateMovie(Movie movie) {
+        mvm.update(movie);
+    }
 }
 
 

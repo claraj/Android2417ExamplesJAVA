@@ -33,9 +33,11 @@ public class MovieListFragment extends Fragment implements MovieListAdapter.List
     public void onMovieRatingChanged(int position, float newRating) {
 
         Movie movie = movies.get(position);
+        movie.setRating(newRating);
 
-        MovieDatabase db = MovieDatabase.getDatabase(this.getContext());
-        db.movieDAO().update(movie);
+//        MovieDatabase db = MovieDatabase.getDatabase(this.getContext());
+      //  db.movieDAO().update(movie);
+        listener.requestUpdateMovie(movie);
 
     }
 

@@ -31,7 +31,7 @@ that it will only be created one time, even if two threads try to access it at t
 
 */
 
-@Database(entities = {Movie.class}, version = 1)
+@Database(entities = {Movie.class}, version = 1, exportSchema = false)
 public abstract class MovieDatabase extends RoomDatabase {
 
     private static volatile MovieDatabase INSTANCE;
