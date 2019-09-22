@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProviders;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,9 +14,13 @@ import android.widget.Button;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
+import com.clara.roommovies.db.Movie;
+
 public class AddMovieFragment extends Fragment {
 
     private OnMovieAddedListener newMovieListener;
+
+    private MovieViewModel movieModel;
 
     public AddMovieFragment() {
         // Required empty public constructor
@@ -29,9 +34,6 @@ public class AddMovieFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-
-
     }
 
     @Override
@@ -49,7 +51,8 @@ public class AddMovieFragment extends Fragment {
                 String name = movieName.getText().toString();
                 float rating = movieRating.getRating();   //how many stars selected!
                 Movie movie = new Movie(name, rating);
-                newMovieListener.onMovieAdded(movie);
+                movieModel.insert(movie);
+                newMovieListener.onMovieAdded(movie);  // notifies Activity so fragments can be swapped
 
                 InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
                 imm.hideSoftInputFromWindow(view.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
@@ -59,11 +62,6 @@ public class AddMovieFragment extends Fragment {
         return view;
     }
 
-//    public void onButtonPressed(Movie movie) {
-//        if (newMovieListener != null) {
-//            newMovieListener.onMovieAdded(movie);
-//        }
-//    }
 
     @Override
     public void onAttach(Context context) {
@@ -76,11 +74,20 @@ public class AddMovieFragment extends Fragment {
         }
     }
 
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        movieModel = ViewModelProviders.of(this).get(MovieViewModel.class);
+    }
+
     @Override
     public void onDetach() {
         super.onDetach();
         newMovieListener = null;
     }
+
+
 
     public interface OnMovieAddedListener {
         void onMovieAdded(Movie movie);

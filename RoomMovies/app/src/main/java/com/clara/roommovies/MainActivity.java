@@ -9,6 +9,8 @@ import androidx.lifecycle.Observer;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.clara.roommovies.db.Movie;
+
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements MovieListFragment.MovieListFragmentListener, AddMovieFragment.OnMovieAddedListener{
@@ -33,12 +35,14 @@ public class MainActivity extends AppCompatActivity implements MovieListFragment
         ft.add(android.R.id.content, movieListFragment, TAG_MOVIE_LIST);
         ft.commit();
 
-        // Add example movie to the DB
-       // Movie m = new Movie("Hidden Figures");
+        // Add some example movies to the DB
+        Movie m1 = new Movie("Star Wars", 3.5f);
+        Movie m2 = new Movie("Black Panther", 5);
+        Movie m3 = new Movie("Back to the Future", 4);
 
         mvm = new MovieViewModel(getApplication());
 
-       // repository.insert(m);  // insert is asynchronous - in the background
+        mvm.insert( m1, m2, m3 );
 
         LiveData<List<Movie>> movieList = mvm.getAllMovies();
 
@@ -52,7 +56,7 @@ public class MainActivity extends AppCompatActivity implements MovieListFragment
 
     @Override
     public void onMovieAdded(Movie movie) {
-        mvm.insert(movie);
+        //mvm.insert(movie);
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
         MovieListFragment movieListFragment = (MovieListFragment) fm.findFragmentByTag(TAG_MOVIE_LIST);
@@ -69,15 +73,15 @@ public class MainActivity extends AppCompatActivity implements MovieListFragment
         ft.commit();
     }
 
-    @Override
-    public void requestUpdateMovie(Movie movie) {
-        mvm.update(movie);
-    }
-
-    @Override
-    public void requestDeleteMovie(Movie movie) {
-        mvm.delete(movie);
-    }
+//    @Override
+//    public void requestUpdateMovie(Movie movie) {
+//        mvm.update(movie);
+//    }
+//
+//    @Override
+//    public void requestDeleteMovie(Movie movie) {
+//        mvm.delete(movie);
+//    }
 }
 
 

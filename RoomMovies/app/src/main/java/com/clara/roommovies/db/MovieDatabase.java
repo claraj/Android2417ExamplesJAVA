@@ -1,4 +1,4 @@
-package com.clara.roommovies;
+package com.clara.roommovies.db;
 
 import android.content.Context;
 
@@ -28,6 +28,13 @@ Only one thread can run the code in a synchronized block at any time
 
 So, by making the INSTANCE volatile, and the code that modifies it Synchronized, it guarantees
 that it will only be created one time, even if two threads try to access it at the same time.
+
+
+This class is set up as a singleton. This means that only one instance - one object - of the
+class can ever be created. There is only one DB on the device, so only one object that can
+talk to it, is safest.
+
+To get a reference to the MovieDatabase object, call MovieDatabase.getInstance(context);
 
 */
 

@@ -1,4 +1,4 @@
-package com.clara.roommovies;
+package com.clara.roommovies.db;
 
 /*
 * "A Repository manages query threads and allows you to use multiple backends.
@@ -14,12 +14,15 @@ import androidx.lifecycle.LiveData;
 
 import java.util.List;
 
+/*
+* */
+
 public class MovieRepository {
 
     private MovieDAO movieDAO;
     private LiveData<List<Movie>> allMovies;
 
-    MovieRepository(Application application) {
+    public MovieRepository(Application application) {
         MovieDatabase db = MovieDatabase.getDatabase(application);
         movieDAO = db.movieDAO();
         allMovies = movieDAO.getAllMovies();
@@ -33,9 +36,24 @@ public class MovieRepository {
         new InsertAsyncTask(movieDAO).execute(movie);
     }
 
+
     public void update(Movie movie) { new UpdateAsyncTask(movieDAO).execute(movie); }
 
     public void delete(Movie movie) { new DeleteAsyncTask(movieDAO).execute(movie); }
+
+
+    public void update(Movie... movies) {
+        new UpdateAsyncTask(movieDAO).execute(movies);
+    }
+
+    public void insert(Movie... movies) {
+        new InsertAsyncTask(movieDAO).execute(movies);
+    }
+
+    public void delete(Movie... movies) {
+        new DeleteAsyncTask(movieDAO).execute(movies);
+    }
+
 
     private static class InsertAsyncTask extends AsyncTask<Movie, Void, Void> {
 
@@ -47,7 +65,7 @@ public class MovieRepository {
 
         @Override
         protected Void doInBackground(Movie... movies) {   // varargs
-            asyncTaskDAO.insert(movies[0]);
+            asyncTaskDAO.insert(movies);
             return null;
         }
     }
@@ -62,7 +80,7 @@ public class MovieRepository {
 
         @Override
         protected Void doInBackground(Movie... movies) {   // varargs
-            asyncTaskDAO.update(movies[0]);
+            asyncTaskDAO.update(movies);
             return null;
         }
     }
@@ -77,7 +95,7 @@ public class MovieRepository {
 
         @Override
         protected Void doInBackground(Movie... movies) {   // varargs
-            asyncTaskDAO.delete(movies[0]);
+            asyncTaskDAO.delete(movies);
             return null;
         }
     }

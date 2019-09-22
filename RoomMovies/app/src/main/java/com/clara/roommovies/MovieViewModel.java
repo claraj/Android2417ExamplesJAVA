@@ -6,7 +6,13 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
+import com.clara.roommovies.db.Movie;
+import com.clara.roommovies.db.MovieRepository;
+
 import java.util.List;
+
+/*application-aware viewmodel. all components can get a
+ref to the same viewmodel via the application */
 
 public class MovieViewModel extends AndroidViewModel {
 
@@ -30,5 +36,7 @@ public class MovieViewModel extends AndroidViewModel {
     public void update(Movie movie) { repository.update(movie);}
 
     public void delete(Movie movie) { repository.delete(movie); }
+
+    public void insert(Movie... movies) { repository.insert(movies);  }
 
 }

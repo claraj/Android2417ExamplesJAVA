@@ -1,8 +1,19 @@
-package com.clara.roommovies;
+package com.clara.roommovies.db;
 
 import androidx.annotation.NonNull;
+import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
+
+
+/* Model class. Describe the columns in the table, by creating fields (instance variables) in
+a Java class.  Every public variable, or every variable with a public getter, will be mapped
+to a column in the database.
+
+By default, the table name will be the same as the class name,
+the column names will be the same as the field names.
+
+*/
 
 @Entity
 public class Movie {

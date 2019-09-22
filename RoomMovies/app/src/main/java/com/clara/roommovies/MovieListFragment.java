@@ -3,7 +3,6 @@ package com.clara.roommovies;
 import android.content.Context;
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
@@ -12,10 +11,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.clara.roommovies.db.Movie;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.List;
@@ -23,6 +22,8 @@ import java.util.List;
 
 public class MovieListFragment extends Fragment implements MovieListAdapter.ListEventListener {
 
+
+    MovieViewModel movieModel;
     List<Movie> movies;
 
     private static final String TAG = "MOVIELISTFRAGMENT";
@@ -34,24 +35,18 @@ public class MovieListFragment extends Fragment implements MovieListAdapter.List
 
         Movie movie = movies.get(position);
         movie.setRating(newRating);
-
-//        MovieDatabase db = MovieDatabase.getDatabase(this.getContext());
-      //  db.movieDAO().update(movie);
-        listener.requestUpdateMovie(movie);
+        movieModel.update(movie);
 
     }
 
     @Override
     public void onDeleteMovie(int position) {
         Movie movie = movies.get(position);
-        listener.requestDeleteMovie(movie);
+        movieModel.delete(movie);
     }
 
     interface MovieListFragmentListener {
         void requestMakeNewMovie();
-        void requestUpdateMovie(Movie movie);
-        void requestDeleteMovie(Movie movie);
-
     }
 
     private MovieListAdapter movieListAdapter;
@@ -127,6 +122,13 @@ public class MovieListFragment extends Fragment implements MovieListAdapter.List
             throw new RuntimeException(context.getClass().getName() + " should implement MovieListFragmentListener");
         }
 
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        movieModel = ViewModelProviders.of(this).get(MovieViewModel.class);
     }
 
 
