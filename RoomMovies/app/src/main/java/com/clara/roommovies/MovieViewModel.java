@@ -29,4 +29,6 @@ public class MovieViewModel extends AndroidViewModel {
 
     public void update(Movie movie) { repository.update(movie);}
 
+    public void delete(Movie movie) { repository.delete(movie); }
+
 }

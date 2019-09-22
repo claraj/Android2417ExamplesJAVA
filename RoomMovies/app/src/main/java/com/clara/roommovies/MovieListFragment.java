@@ -41,9 +41,16 @@ public class MovieListFragment extends Fragment implements MovieListAdapter.List
 
     }
 
+    @Override
+    public void onDeleteMovie(int position) {
+        Movie movie = movies.get(position);
+        listener.requestDeleteMovie(movie);
+    }
+
     interface MovieListFragmentListener {
         void requestMakeNewMovie();
         void requestUpdateMovie(Movie movie);
+        void requestDeleteMovie(Movie movie);
 
     }
 

@@ -1,19 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/linearLayout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical">
+    android:layout_margin="10dp">
 
-    <TextView
-        android:id="@+id/movie_name"
-        android:layout_width="match_parent"
+    <ImageButton
+        android:id="@+id/delete_movie_button"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="" />
+        android:src="@drawable/ic_clear_yellow_24dp"
+        app:layout_constraintBottom_toBottomOf="@+id/movie_rating"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/movie_rating"
+        app:layout_constraintTop_toTopOf="@+id/movie_rating" />
+
 
     <RatingBar
         android:id="@+id/movie_rating"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:max="5" />
+        android:max="5"
+        app:layout_constraintEnd_toStartOf="@+id/delete_movie_button"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_chainStyle="spread_inside"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/movie_name" />
 
-</LinearLayout>
+    <TextView
+        android:id="@+id/movie_name"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -73,6 +73,11 @@ public class MainActivity extends AppCompatActivity implements MovieListFragment
     public void requestUpdateMovie(Movie movie) {
         mvm.update(movie);
     }
+
+    @Override
+    public void requestDeleteMovie(Movie movie) {
+        mvm.delete(movie);
+    }
 }
 
 

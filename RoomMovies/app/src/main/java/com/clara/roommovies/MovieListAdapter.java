@@ -5,6 +5,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
@@ -19,6 +21,7 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.Movi
 
     interface ListEventListener {
         void onMovieRatingChanged(int position, float newRating);
+        void onDeleteMovie(int position);
     }
 
     ListEventListener listener;
@@ -69,11 +72,13 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.Movi
 
         private final TextView movieNameView;
         private final RatingBar ratingBar;
+        private final ImageButton deleteButton;
 
         public MovieViewHolder(@NonNull View itemView) {
             super(itemView);
             movieNameView = itemView.findViewById(R.id.movie_name);
             ratingBar = itemView.findViewById(R.id.movie_rating);
+            deleteButton = itemView.findViewById(R.id.delete_movie_button);
 
             ratingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
                 @Override
@@ -81,6 +86,13 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.Movi
                     if (fromUser) {
                         listener.onMovieRatingChanged(getAdapterPosition(), value);
                     }
+                }
+            });
+
+            deleteButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    listener.onDeleteMovie(getAdapterPosition());
                 }
             });
         }
