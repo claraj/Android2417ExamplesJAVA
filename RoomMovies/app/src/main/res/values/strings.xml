@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Room Movies</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="add">Add Movie</string>
+    <string name="new_movies_name_hint">Enter movie\'s name</string>
+</resources>
