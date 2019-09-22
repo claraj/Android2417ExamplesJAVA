@@ -18,19 +18,26 @@ public class WaterRepository {
     }
 
     public void update(WaterRecord record) {
-        new UpdateWaterAsync().execute(record);
+        new UpdateWaterAsync(waterDAO).execute(record);
     }
 
     public void insert(WaterRecord record) {
-        new InsertWaterAsync().execute(record);
-    }
-
-    public LiveData<WaterRecord> getRecordForDay(String day) {
-        return waterDAO.getRecordForDate(day);
+        new InsertWaterAsync(waterDAO).execute(record);
     }
 
 
-    class InsertWaterAsync extends AsyncTask<WaterRecord, Void, Void> {
+    public LiveData<List<WaterRecord>> getAllRecords() {
+        return waterDAO.getAllRecords();
+    }
+
+
+    static class InsertWaterAsync extends AsyncTask<WaterRecord, Void, Void> {
+
+        private WaterDAO waterDAO;
+
+        InsertWaterAsync(WaterDAO waterDAO) {
+            this.waterDAO = waterDAO;
+        }
 
         @Override
         protected Void doInBackground(WaterRecord... waterRecords) {
@@ -40,7 +47,13 @@ public class WaterRepository {
     }
 
 
-    class UpdateWaterAsync extends AsyncTask<WaterRecord, Void, Void> {
+    static class UpdateWaterAsync extends AsyncTask<WaterRecord, Void, Void> {
+
+        private WaterDAO waterDAO;
+
+        UpdateWaterAsync(WaterDAO waterDAO) {
+            this.waterDAO = waterDAO;
+        }
 
         @Override
         protected Void doInBackground(WaterRecord... waterRecords) {

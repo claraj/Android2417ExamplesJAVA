@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">BasicHydration</string>
+    <string name="add_glass">Add Glass</string>
+    <string name="reset_count">Reset Count</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

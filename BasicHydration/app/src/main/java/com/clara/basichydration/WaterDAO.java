@@ -24,6 +24,6 @@ public interface WaterDAO {
     LiveData<WaterRecord> getRecordForDate(String day);
 
     @Query("SELECT * FROM WaterRecord")
-    List<WaterRecord> getAllRecords();
+    LiveData<List<WaterRecord>> getAllRecords();
 
 }

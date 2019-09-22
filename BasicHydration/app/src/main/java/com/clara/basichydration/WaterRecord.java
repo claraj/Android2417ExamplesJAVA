@@ -2,12 +2,7 @@ package com.clara.basichydration;
 
 import androidx.annotation.NonNull;
 import androidx.room.Entity;
-import androidx.room.Ignore;
-import androidx.room.Index;
 import androidx.room.PrimaryKey;
-
-import java.time.LocalDate;
-import java.util.Date;
 
 @Entity
 public class WaterRecord {
