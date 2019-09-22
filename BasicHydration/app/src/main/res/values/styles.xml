@@ -7,11 +7,12 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
     </style>
-    <style name="AppTheme.NoActionBar">
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
+
+    <style name="GlassRating" parent="@android:style/Widget.RatingBar">
+        <item name="android:minHeight">32dip</item>
+        <item name="android:minWidth">36dip</item>
+        <item name="android:progressDrawable">@drawable/water_rating_bar</item>
     </style>
-    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
-    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
 
 </resources>
