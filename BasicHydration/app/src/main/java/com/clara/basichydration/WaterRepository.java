@@ -5,8 +5,12 @@ import android.os.AsyncTask;
 
 import androidx.lifecycle.LiveData;
 
-import java.time.LocalDate;
 import java.util.List;
+
+/* Manages the connection from the app to the datastore
+Can talk to other Entities here, or to an API, or some other data store.
+App shouldn't care where data comes from.
+ */
 
 public class WaterRepository {
 
@@ -30,7 +34,11 @@ public class WaterRepository {
         return waterDAO.getAllRecords();
     }
 
+    public LiveData<WaterRecord> getRecordForDay(String day) {
+        return waterDAO.getRecordForDay(day);
+    }
 
+    // Database tasks must run the background, not on the UI thread
     static class InsertWaterAsync extends AsyncTask<WaterRecord, Void, Void> {
 
         private WaterDAO waterDAO;

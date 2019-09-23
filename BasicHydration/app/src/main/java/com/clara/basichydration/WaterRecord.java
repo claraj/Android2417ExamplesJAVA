@@ -2,28 +2,31 @@ package com.clara.basichydration;
 
 import androidx.annotation.NonNull;
 import androidx.room.Entity;
+import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
-@Entity
+@Entity(indices = { @Index( value = "day", unique = true )})   // Day of the week should be unique
 public class WaterRecord {
 
-    @NonNull
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
     private int id;
 
     private int glasses;
 
-    private String dayOfWeek;
+    @NonNull
+    private String day;
 
-    public WaterRecord() {
+    public WaterRecord(@NonNull String day, int glasses) {
+        this.day = day;
+        this.glasses = glasses;
     }
 
-    public String getDayOfWeek() {
-        return dayOfWeek;
+    public String getDay() {
+        return day;
     }
 
-    public void setDayOfWeek(String dayOfWeek) {
-        this.dayOfWeek = dayOfWeek;
+    public void setDayOfWeek(String day) {
+        this.day = day;
     }
 
     public int getId() {
@@ -46,7 +49,7 @@ public class WaterRecord {
     public String toString() {
         return "WaterRecord{" +
                 "glasses=" + glasses +
-                ", date=" + dayOfWeek +
+                ", day=" + day +
                 '}';
     }
 }
