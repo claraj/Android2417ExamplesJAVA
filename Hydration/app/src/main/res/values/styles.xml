@@ -9,10 +9,10 @@
     </style>
 
     <style name="GlassRating" parent="@android:style/Widget.RatingBar">
-        <item name="android:minHeight">26dip</item>
-        <item name="android:minWidth">30dip</item>
+        <item name="android:minHeight">30dip</item>
+        <item name="android:minWidth">22dip</item>
         <item name="android:progressDrawable">@drawable/water_rating_bar</item>
     </style>
 
-
 </resources>
+

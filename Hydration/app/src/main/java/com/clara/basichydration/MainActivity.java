@@ -1,7 +1,6 @@
 package com.clara.basichydration;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.Observer;
 import androidx.viewpager.widget.ViewPager;
 
@@ -12,7 +11,7 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-    private static String TAG = "MAINACTIVITY";
+    private static String TAG = "MAIN_ACTIVITY";
 
     private WaterViewModel waterViewModel;
 
