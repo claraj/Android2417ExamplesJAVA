@@ -15,6 +15,7 @@ import androidx.lifecycle.LiveData;
 import java.util.List;
 
 /*
+Can potentially manage several data sources - more than one entity, data from a server...
 * */
 
 public class MovieRepository {

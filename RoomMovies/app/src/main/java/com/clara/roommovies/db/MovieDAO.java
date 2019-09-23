@@ -15,7 +15,9 @@ import java.util.List;
 * Maps SQL queries to functions.
 *
 * Insert, Update and Delete don't need SQL written - Room can figure out the SQL
-* Other queries, like select,
+* Other queries, like select, need the specifc SQL
+*
+* This is an interface. Room will fill in the actual implementation of the methods
 *
 * */
 
