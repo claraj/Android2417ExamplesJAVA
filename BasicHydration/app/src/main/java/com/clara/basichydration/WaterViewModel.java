@@ -11,7 +11,9 @@ import java.util.List;
 public class WaterViewModel extends AndroidViewModel {
 
     private WaterRepository repository;
-    private LiveData<List<WaterRecord>> allRecords;   // Cache a copy here so don't need to re-query on re-request
+
+    // Common to cache a copy of results of common queries here
+    private LiveData<List<WaterRecord>> allRecords;
 
     public WaterViewModel(@NonNull Application application) {
         super(application);
@@ -33,5 +35,5 @@ public class WaterViewModel extends AndroidViewModel {
     public void update(WaterRecord record) {
         repository.update(record);
     }
-
 }
+

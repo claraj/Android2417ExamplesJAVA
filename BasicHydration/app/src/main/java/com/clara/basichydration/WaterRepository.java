@@ -21,21 +21,9 @@ public class WaterRepository {
         waterDAO = db.waterDAO();
     }
 
-    public void update(WaterRecord record) {
-        new UpdateWaterAsync(waterDAO).execute(record);
-    }
-
     public void insert(WaterRecord record) {
+        // insert record asynchronously (in the background)
         new InsertWaterAsync(waterDAO).execute(record);
-    }
-
-
-    public LiveData<List<WaterRecord>> getAllRecords() {
-        return waterDAO.getAllRecords();
-    }
-
-    public LiveData<WaterRecord> getRecordForDay(String day) {
-        return waterDAO.getRecordForDay(day);
     }
 
     // Database tasks must run the background, not on the UI thread
@@ -54,6 +42,10 @@ public class WaterRepository {
         }
     }
 
+    public void update(WaterRecord record) {
+        // update record asynchronously (in the background)
+        new UpdateWaterAsync(waterDAO).execute(record);
+    }
 
     static class UpdateWaterAsync extends AsyncTask<WaterRecord, Void, Void> {
 
@@ -70,4 +62,16 @@ public class WaterRepository {
         }
     }
 
+    public LiveData<List<WaterRecord>> getAllRecords() {
+        return waterDAO.getAllRecords();
+    }
+
+    public LiveData<WaterRecord> getRecordForDay(String day) {
+        return waterDAO.getRecordForDay(day);
+    }
+
+
 }
+
+
+

@@ -2,7 +2,6 @@ package com.clara.basichydration;
 
 import android.content.Context;
 
-
 import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
@@ -14,16 +13,18 @@ public abstract class WaterDatabase extends RoomDatabase {
 
     public abstract WaterDAO waterDAO();  // Abstract method
 
-    static WaterDatabase getDatabase(final Context contex) {
+    static WaterDatabase getDatabase(final Context context) {
         if (INSTANCE == null) {
-            synchronized (WaterDatabase.class) {   // Only one thread can run this code at one time
+            synchronized (WaterDatabase.class) {   // Only one thread can run this code at once
                 if (INSTANCE == null) {
-                    INSTANCE = Room.databaseBuilder(contex.getApplicationContext(),
+                    INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
                             WaterDatabase.class, "Water").build();
                 }
             }
         }
         return INSTANCE;
     }
-
 }
+
+
+
