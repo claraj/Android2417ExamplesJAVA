@@ -25,3 +25,5 @@ public class WaterViewPagerAdapter extends FragmentPagerAdapter {
         return days.length;
     }
 }
+
+

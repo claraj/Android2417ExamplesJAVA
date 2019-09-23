@@ -22,7 +22,7 @@ import android.widget.TextView;
  * Has buttons for adding a glass for a day, and reset the count to zero
  * Updates the WaterViewModel as the user edits the number of glasses
  *
- * Uses livedata to keep the number of glasses up to date
+ * Uses LiveData to keep the number of glasses up to date
  *
  * Use the {@link WaterFragment#newInstance} factory method to
  * create an instance of this fragment.
@@ -45,14 +45,7 @@ public class WaterFragment extends Fragment {
 
     private static final String ARG_DAY_STRING = "arg_day_string";
 
-    public WaterFragment() {
-        // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of WaterFragment
-     * Provide a day (e.g. Monday) which should be a day in the database.
-     */
+    public WaterFragment() { } // Required empty public constructor
 
     public static WaterFragment newInstance(String day) {
         WaterFragment fragment = new WaterFragment();
@@ -99,12 +92,11 @@ public class WaterFragment extends Fragment {
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 if (waterRecord == null) { return; }
 
                 int glasses = waterRecord.getGlasses();
                 if (glasses < MAX_GLASSES) {
-                    waterRecord.setGlasses(++glasses);   // prefix increment, increase before variable is passed to method
+                    waterRecord.setGlasses(++glasses);   // prefix increment, increase before use
                     waterViewModel.update(waterRecord);
                 }
             }
@@ -113,7 +105,6 @@ public class WaterFragment extends Fragment {
         resetButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 if (waterRecord == null) { return; }
 
                 waterRecord.setGlasses(0);
@@ -123,5 +114,4 @@ public class WaterFragment extends Fragment {
 
         return view;
     }
-
 }

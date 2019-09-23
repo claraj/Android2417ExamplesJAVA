@@ -15,7 +15,8 @@ public class MainActivity extends AppCompatActivity {
 
     private WaterViewModel waterViewModel;
 
-    private static final String[] DAYS = {"Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"};
+    private static final String[] DAYS = {"Monday", "Tuesday", "Wednesday",
+            "Thursday", "Friday", "Saturday", "Sunday"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,7 +27,7 @@ public class MainActivity extends AppCompatActivity {
         // The fragment will also be able to access it
         waterViewModel = new WaterViewModel(getApplication());
 
-        // For debugging only - not used in this Activity
+        // For debugging only - otherwise not used in this Activity
         waterViewModel.getAllRecords().observe(this, new Observer<List<WaterRecord>>() {
             @Override
             public void onChanged(List<WaterRecord> waterRecords) {
@@ -36,8 +37,8 @@ public class MainActivity extends AppCompatActivity {
 
         // Insert blank days, so there is a record in the database for each day of the week.
         // DAO has conflict strategy = ignore for duplicate days, so if any of the
-        // days are already in the database, they will be ignored, not set to zero glasses
-        for (String day: DAYS) {
+        // days are already in the database, they will be ignored, not added again
+        for (String day : DAYS) {
             WaterRecord record = new WaterRecord(day, 0);
             Log.d(TAG, "Inserting" + record);
             waterViewModel.insert(record);
@@ -47,6 +48,8 @@ public class MainActivity extends AppCompatActivity {
         ViewPager viewPager = findViewById(R.id.water_view_pager);
         WaterViewPagerAdapter waterViewPagerAdapter = new WaterViewPagerAdapter(getSupportFragmentManager(), DAYS);
         viewPager.setAdapter(waterViewPagerAdapter);
+    }
+}
 
         /*
         // Original version with one day - create and add the fragment directly to the Activity
@@ -57,5 +60,5 @@ public class MainActivity extends AppCompatActivity {
         ft.commit();
         */
 
-    }
-}
+  //  }
+//}
