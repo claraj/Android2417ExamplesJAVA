@@ -23,26 +23,26 @@ import java.util.List;
 public class MovieListFragment extends Fragment implements MovieListAdapter.ListEventListener {
 
 
-    MovieViewModel movieModel;
-    List<Movie> movies;
+    private MovieViewModel mMovieModel;
+    private List<Movie> mMovies;
 
-    private static final String TAG = "MOVIELISTFRAGMENT";
+    private static final String TAG = "MOVIE_LIST_FRAGMENT";
 
-    MovieListFragmentListener listener;
+    private MovieListFragmentListener mListener;
 
     @Override
     public void onMovieRatingChanged(int position, float newRating) {
 
-        Movie movie = movies.get(position);
+        Movie movie = mMovies.get(position);
         movie.setRating(newRating);
-        movieModel.update(movie);
+        mMovieModel.update(movie);
 
     }
 
     @Override
     public void onDeleteMovie(int position) {
-        Movie movie = movies.get(position);
-        movieModel.delete(movie);
+        Movie movie = mMovies.get(position);
+        mMovieModel.delete(movie);
     }
 
     interface MovieListFragmentListener {
@@ -72,7 +72,7 @@ public class MovieListFragment extends Fragment implements MovieListAdapter.List
             @Override
             public void onChanged(List<Movie> movies) {
                 Log.d(TAG, "Movies changed" +movies);
-                MovieListFragment.this.movies = movies;
+                MovieListFragment.this.mMovies = movies;
                 MovieListFragment.this.movieListAdapter.setMovies(movies);
                 MovieListFragment.this.movieListAdapter.notifyDataSetChanged();
             }
@@ -92,18 +92,15 @@ public class MovieListFragment extends Fragment implements MovieListAdapter.List
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this.getContext());
         recyclerView.setLayoutManager(layoutManager);
         movieListAdapter = new MovieListAdapter(this.getContext(), this);
-        movieListAdapter.setMovies(movies);
+        movieListAdapter.setMovies(mMovies);
         recyclerView.setAdapter(movieListAdapter);
 
-
         final FloatingActionButton addMovieFAB = view.findViewById(R.id.add_movie_fab);
-       // addMovieFAB.show();
         addMovieFAB.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View view) {
-                listener.requestMakeNewMovie();
-               // addMovieFAB.hide();
+                mListener.requestMakeNewMovie();
             }
         });
 
@@ -116,7 +113,7 @@ public class MovieListFragment extends Fragment implements MovieListAdapter.List
         super.onAttach(context);
 
         if (context instanceof MovieListFragmentListener) {
-            listener = (MovieListFragmentListener) context;
+            mListener = (MovieListFragmentListener) context;
         }
         else {
             throw new RuntimeException(context.getClass().getName() + " should implement MovieListFragmentListener");
@@ -128,7 +125,7 @@ public class MovieListFragment extends Fragment implements MovieListAdapter.List
     public void onStart() {
         super.onStart();
 
-        movieModel = ViewModelProviders.of(this).get(MovieViewModel.class);
+        mMovieModel = ViewModelProviders.of(this).get(MovieViewModel.class);
     }
 
 

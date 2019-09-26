@@ -37,7 +37,6 @@ public class MovieRepository {
         new InsertAsyncTask(movieDAO).execute(movie);
     }
 
-
     public void update(Movie movie) { new UpdateAsyncTask(movieDAO).execute(movie); }
 
     public void delete(Movie movie) { new DeleteAsyncTask(movieDAO).execute(movie); }

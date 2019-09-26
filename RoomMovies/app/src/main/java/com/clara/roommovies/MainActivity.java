@@ -20,8 +20,6 @@ public class MainActivity extends AppCompatActivity implements MovieListFragment
     private static final String TAG_MOVIE_LIST = "MovieListFragment";
     private static final String TAG_ADD_MOVIE = "AddMovieFragment";
 
-    private MovieViewModel mvm;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,12 +38,13 @@ public class MainActivity extends AppCompatActivity implements MovieListFragment
         Movie m2 = new Movie("Black Panther", 5);
         Movie m3 = new Movie("Back to the Future", 4);
 
-        mvm = new MovieViewModel(getApplication());
+        MovieViewModel mvm = new MovieViewModel(getApplication());
 
         mvm.insert( m1, m2, m3 );
 
         LiveData<List<Movie>> movieList = mvm.getAllMovies();
 
+        // This doesn't do anything for the app, but can be helpful for debugging.
         movieList.observe(this, new Observer<List<Movie>>() {
             @Override
             public void onChanged(List<Movie> movies) {
@@ -73,15 +72,6 @@ public class MainActivity extends AppCompatActivity implements MovieListFragment
         ft.commit();
     }
 
-//    @Override
-//    public void requestUpdateMovie(Movie movie) {
-//        mvm.update(movie);
-//    }
-//
-//    @Override
-//    public void requestDeleteMovie(Movie movie) {
-//        mvm.delete(movie);
-//    }
 }
 
 

@@ -25,34 +25,30 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.Movi
         void onDeleteMovie(int position);
     }
 
-    ListEventListener listener;
+    private ListEventListener mListener;
 
-    private final LayoutInflater inflater;
-
-    List<Movie> movies;  // cached copy
+    private List<Movie> mMovies;  // reference to list of movies. cached copy in the Adapter // TODO better comment
 
     MovieListAdapter(Context context, ListEventListener eventListener) {
-        inflater = LayoutInflater.from(context);
-        this.listener = eventListener;
+        this.mListener = eventListener;
     }
 
-
     void setMovies(List<Movie> movies) {
-        this.movies = movies;
+        this.mMovies = movies;
         notifyDataSetChanged();
     }
 
     @NonNull
     @Override
     public MovieViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View viewItem = inflater.inflate(R.layout.movie_list_item, parent, false);
+        View viewItem = LayoutInflater.from(parent.getContext()).inflate(R.layout.movie_list_item, parent, false);
         return new MovieViewHolder(viewItem);
     }
 
     @Override
     public void onBindViewHolder(@NonNull MovieViewHolder holder, int position) {
-        if (movies != null) {
-            Movie movie = movies.get(position);
+        if (mMovies != null) {
+            Movie movie = mMovies.get(position);
             holder.bind(movie);
         } else {
             holder.bind(null);
@@ -62,11 +58,10 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.Movi
     @Override
     public int getItemCount() {
 
-        Log.d(TAG, "get count " + movies);
-        if (movies == null) {
+        if (mMovies == null) {
             return 0;
         }
-        return movies.size();
+        return mMovies.size();
     }
 
     public class MovieViewHolder extends RecyclerView.ViewHolder {
@@ -85,7 +80,7 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.Movi
                 @Override
                 public void onRatingChanged(RatingBar ratingBar, float value, boolean fromUser) {
                     if (fromUser) {
-                        listener.onMovieRatingChanged(getAdapterPosition(), value);
+                        mListener.onMovieRatingChanged(getAdapterPosition(), value);
                     }
                 }
             });
@@ -93,15 +88,15 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.Movi
             deleteButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    listener.onDeleteMovie(getAdapterPosition());
+                    mListener.onDeleteMovie(getAdapterPosition());
                 }
             });
         }
 
         void bind(Movie movie) {
-
+            //Helper method to update the data shown in a ViewHolder
             Log.d(TAG, "binding movie " + movie);
-            if (movie == null) { movieNameView.setText("No data"); ratingBar.setNumStars(0); }
+            if (movie == null) { movieNameView.setText(""); ratingBar.setNumStars(0); }
             else {
                 movieNameView.setText(movie.getName());
                 ratingBar.setRating(movie.getRating());

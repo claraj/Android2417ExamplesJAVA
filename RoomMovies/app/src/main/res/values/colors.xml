@@ -6,5 +6,7 @@
 
     <color name="addBackground">#D8ED8B</color>
     <color name="listBackground">#BDDFDC</color>
-
+    <color name="deleteIcon">#ffff00</color>
+    <color name="deleteButtonBackground">#040453</color>
+    <color name="fab_background_tint">#9C27B0</color>
 </resources>

@@ -34,7 +34,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-
     <RatingBar
         android:id="@+id/new_movie_rating"
         android:layout_width="wrap_content"

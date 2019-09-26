@@ -11,32 +11,32 @@ import com.clara.roommovies.db.MovieRepository;
 
 import java.util.List;
 
-/*application-aware viewmodel. all components can get a
-ref to the same viewmodel via the application */
+/* Application-aware ViewModel. Connects the UI to the database.
+All components can get a reference to the same ViewModel object via the application */
 
 public class MovieViewModel extends AndroidViewModel {
 
-    private MovieRepository repository;
-    private LiveData<List<Movie>> allMovies;
+    private MovieRepository mMovieRepository;
+    private LiveData<List<Movie>> mAllMovies;
 
     public MovieViewModel(@NonNull Application application) {
         super(application);
-        repository = new MovieRepository(application);
-        allMovies = repository.getAllMovies();
+        mMovieRepository = new MovieRepository(application);
+        mAllMovies = mMovieRepository.getAllMovies();
     }
 
     public LiveData<List<Movie>> getAllMovies() {
-        return allMovies;
+        return mAllMovies;
     }
 
     public void insert(Movie movie) {
-        repository.insert(movie);
+        mMovieRepository.insert(movie);
     }
 
-    public void update(Movie movie) { repository.update(movie);}
+    public void update(Movie movie) { mMovieRepository.update(movie);}
 
-    public void delete(Movie movie) { repository.delete(movie); }
+    public void delete(Movie movie) { mMovieRepository.delete(movie); }
 
-    public void insert(Movie... movies) { repository.insert(movies);  }
+    public void insert(Movie... movies) { mMovieRepository.insert(movies);  }
 
 }
