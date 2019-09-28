@@ -249,7 +249,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                         if (task.isSuccessful()) {
                             Log.d(TAG, "Got location ");
                             mLastKnownLocation = (Location) task.getResult();
-                            if (callback != null || mLastKnownLocation != null) {
+                            if (callback != null && mLastKnownLocation != null) {
                                 callback.haveLocation();
                                 updateMapLocationUI();   // draws location controls on map
                                 return;
