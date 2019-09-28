@@ -14,7 +14,6 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 
 import android.os.Bundle;
-import android.os.Looper;
 import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.View;
@@ -40,9 +39,7 @@ import java.util.List;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-public class MainActivity extends AppCompatActivity implements
-        OnMapReadyCallback,
-        Observer<List<Bee>>,
+public class MainActivity extends AppCompatActivity implements OnMapReadyCallback,
         GoogleMap.OnInfoWindowLongClickListener {
 
     private static final String TAG = "MAIN_ACTIVITY";
@@ -64,6 +61,11 @@ public class MainActivity extends AppCompatActivity implements
 
     private FloatingActionButton addFab ;
 
+    interface BeeLocationCallback {
+        void haveLocation();
+        void noLocation();
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -82,8 +84,16 @@ public class MainActivity extends AppCompatActivity implements
         getLocationPermission();
 
         mBeeModel = new BeeViewModel(getApplication());
-        requestMarkersForMap();
-       // addExample();
+
+        Log.d(TAG, "Request markers " );
+        LiveData<List<Bee>> liveBees = mBeeModel.getRecentBees(100);  // number of results to return
+        liveBees.observe(this, new Observer<List<Bee>>() {
+            @Override
+            public void onChanged(List<Bee> updatedBees) {
+                bees = updatedBees;
+                drawMarkers();
+            }
+        });
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.google_map_fragment);
         mapFragment.getMapAsync(this);
@@ -95,49 +105,47 @@ public class MainActivity extends AppCompatActivity implements
 
         this.map = googleMap;
 
-        getDeviceLocation();
-        updateLocationUI();
+        updateMapLocationUI();
+
+        map.getUiSettings().setZoomControlsEnabled(true);
+        map.getUiSettings().setMapToolbarEnabled(false); // no directions
 
         map.moveCamera(CameraUpdateFactory.newLatLngZoom(
                 mMinneapolis, mDefaultZoom));
 
-        // Set location bounds to minneapolis
+        // Set location bounds to Minneapolis
         map.setLatLngBoundsForCameraTarget(mMinneapolisBounds);
         map.setMinZoomPreference(8);
 
         map.setOnInfoWindowLongClickListener(this);
-         }
-
-
-    @Override
-    public void onChanged(List<Bee> bees) {
-        Log.d(TAG, "Bees: " + bees );
-        this.bees = bees;
-        drawMarkers();
     }
-
 
     private void addBee() {
 
-        if (mLastKnownLocation == null) {
-            Log.d(TAG, "No location known");
-            return;
-        }
+        getDeviceLocation(new BeeLocationCallback() {
+            @Override
+            public void haveLocation() {
 
-        Bee bee = new Bee(
-                mLastKnownLocation.getLatitude(),
-                mLastKnownLocation.getLongitude(),
-                new Date()    //now
-                );
+                if ( mLastKnownLocation != null) {
+                    Bee bee = new Bee(
+                            mLastKnownLocation.getLatitude(),
+                            mLastKnownLocation.getLongitude(),
+                            new Date());   //now
 
-        Log.d(TAG, "Added bee: " + bee);
+                    Log.d(TAG, "Added bee: " + bee);
 
-        mBeeModel.insert(bee);
-        Toast.makeText(this, "Added bee!", Toast.LENGTH_SHORT).show();
+                    mBeeModel.insert(bee);
+                    Toast.makeText(MainActivity.this, "Added bee!", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(MainActivity.this, "Error adding bee, no location available", Toast.LENGTH_SHORT).show();
+                }
+            }
 
-       // addMarkerForBee(bee);
+            public void noLocation() {
+                Toast.makeText(MainActivity.this, "Error adding bee, no location available", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
-
 
     private void drawMarkers() {
         if (map == null) { Log.d(TAG, "Map not ready");  return; }
@@ -152,24 +160,8 @@ public class MainActivity extends AppCompatActivity implements
         }
     }
 
-    private void addExample() {
-        mBeeModel.insert(new Bee(45, -93, new Date()));
-        mBeeModel.insert(new Bee(45.1, -93.3, new Date()));
-        mBeeModel.insert(new Bee(45.2, -93.2, new Date()));
-        mBeeModel.insert(new Bee(45.3, -93.1, new Date()));
-    }
-
-    private void requestMarkersForMap() {
-        Log.d(TAG, "Request markers " );
-
-      // = mBeeModel.getRecentBees(location.latitude, location.longitude, 5);
-        LiveData<List<Bee>> liveBees = mBeeModel.getRecentBees(100);  // number of results to return
-        liveBees.observe(this, this);
-    }
-
     private void addMarkerForBee(Bee bee) {
 
-        Log.d(TAG, bee.toString());
         LatLng position = new LatLng(bee.getLatitude(), bee.getLongitude());
         Date date = bee.getDate();
 
@@ -184,7 +176,13 @@ public class MainActivity extends AppCompatActivity implements
 
         marker.setTag(bee.getId());
         Log.d(TAG, "Marker added " + marker.getTag());
+    }
 
+    @Override
+    public void onInfoWindowLongClick(Marker marker) {
+        int tag = (int) marker.getTag();
+        Log.d(TAG, "Marker long press with tag " + tag);
+        mBeeModel.delete((int)marker.getTag());
     }
 
     private void getLocationPermission() {
@@ -194,8 +192,8 @@ public class MainActivity extends AppCompatActivity implements
 
             addFab.setEnabled(true);
 
-            getDeviceLocation();
-            updateLocationUI();
+            getDeviceLocation(null);
+            updateMapLocationUI();
            // requestMarkersForMap();
 
         } else {
@@ -215,8 +213,9 @@ public class MainActivity extends AppCompatActivity implements
                 mLocationPermission = true;
                 addFab.setEnabled(true);
 
-                getDeviceLocation();
-                updateLocationUI();
+                getDeviceLocation(null);
+               // getLocationUpdates();
+                updateMapLocationUI();
 
             } else {
                 Toast.makeText(this, "Location permission must be granted for Bee Map to work. Please enable in settings.", Toast.LENGTH_LONG).show();
@@ -224,71 +223,50 @@ public class MainActivity extends AppCompatActivity implements
         }
     }
 
-
-    private void updateLocationUI() {
+    private void updateMapLocationUI() {
 
         if (map == null) { return; }
 
         Log.d(TAG, "update location ui" );
 
-        map.getUiSettings().setZoomControlsEnabled(true);
-        map.getUiSettings().setMapToolbarEnabled(false); // no directions
 
-        try {
             if (mLocationPermission) {
                 map.setMyLocationEnabled(true);
                 map.getUiSettings().setMyLocationButtonEnabled(true);
             } else {
                 map.setMyLocationEnabled(false);
                 map.getUiSettings().setMyLocationButtonEnabled(false);
-                mLastKnownLocation = null;
-               // getLocationPermission();
             }
-        } catch (SecurityException e) {
-            Log.e(TAG, "Error attempting to show user location controls on map ", e);
-        }
     }
 
-
-    private void getDeviceLocation() {
+    private void getDeviceLocation(final BeeLocationCallback callback) {
         try {
             if (mLocationPermission) {
                 FusedLocationProviderClient fusedLocationProviderClient = new FusedLocationProviderClient(this);
-                Task locationResult = fusedLocationProviderClient.getLastLocation();
-                locationResult.addOnCompleteListener(this, new OnCompleteListener() {
+                fusedLocationProviderClient.getLastLocation().addOnCompleteListener(this, new OnCompleteListener<Location>() {
                     @Override
                     public void onComplete(@NonNull Task task) {
                         if (task.isSuccessful()) {
                             Log.d(TAG, "Got location ");
                             mLastKnownLocation = (Location) task.getResult();
+                            if (callback != null || mLastKnownLocation != null) {
+                                callback.haveLocation();
+                                updateMapLocationUI();   // draws location controls on map
+                                return;
+                            }
                         }
-                        else {
-                            mLastKnownLocation = null;
-                        }
-                        //moveMap();   // move to location or default
-                        updateLocationUI();   // draws location stuff on map
+
+                        mLastKnownLocation = null;
+                        if (callback != null) { callback.noLocation(); }
+                        updateMapLocationUI();   // draws location controls on map
                     }
                 });
+            } else {
+                mLastKnownLocation = null;
             }
         } catch (SecurityException se) {
             Log.e(TAG, "Error getting device location ", se);
+            mLastKnownLocation = null;
         }
     }
-
-
-
-
-
-
-    @Override
-    public void onInfoWindowLongClick(Marker marker) {
-        int tag = (int) marker.getTag();
-        Log.d(TAG, "Marker long press with tag " + tag);
-
-        mBeeModel.delete((int)marker.getTag());
-
-       // marker.remove();
-    }
-
-
 }
