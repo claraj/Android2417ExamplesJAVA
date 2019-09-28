@@ -8,4 +8,6 @@
     <dimen name="movie_name_in_list">24sp</dimen>
     <dimen name="button_padding">10dp</dimen>
     <dimen name="fab_margin">32dp</dimen>
+    <dimen name="movie_list_text_start_margin">10dp</dimen>
+    <dimen name="movie_list_margin">10dp</dimen>
 </resources>

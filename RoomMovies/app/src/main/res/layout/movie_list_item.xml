@@ -5,7 +5,7 @@
     android:id="@+id/linearLayout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="10dp">
+    android:layout_margin="@dimen/movie_list_margin">
 
     <ImageButton
         android:id="@+id/delete_movie_button"
@@ -35,6 +35,8 @@
         android:id="@+id/movie_name"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/movie_list_text_start_margin"
+        android:layout_marginLeft="@dimen/movie_list_text_start_margin"
         android:text=""
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
         android:textSize="@dimen/movie_name_in_list"
