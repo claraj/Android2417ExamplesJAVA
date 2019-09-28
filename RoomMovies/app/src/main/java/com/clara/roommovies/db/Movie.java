@@ -19,7 +19,6 @@ the column names will be the same as the field names.
 public class Movie {
 
     @PrimaryKey(autoGenerate = true)
-    @NonNull
     private int id;
 
     @NonNull

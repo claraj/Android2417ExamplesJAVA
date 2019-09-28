@@ -45,11 +45,11 @@ public abstract class MovieDatabase extends RoomDatabase {
 
     public abstract MovieDAO movieDAO();  // Abstract method
 
-    static MovieDatabase getDatabase(final Context contex) {
+    static MovieDatabase getDatabase(final Context context) {
         if (INSTANCE == null) {
             synchronized (MovieDatabase.class) {   // Only one thread can run this code at one time
                 if (INSTANCE == null) {
-                    INSTANCE = Room.databaseBuilder(contex.getApplicationContext(),
+                    INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
                             MovieDatabase.class, "Movie").build();
                 }
             }

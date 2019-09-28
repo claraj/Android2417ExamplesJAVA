@@ -11,8 +11,8 @@
         android:id="@+id/delete_movie_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/ic_clear_yellow_24dp"
-        android:background="@color/deleteButtonBackground"
+        android:background="@android:color/transparent"
+        android:src="@drawable/icons8_remove_64"
         app:layout_constraintBottom_toBottomOf="@+id/movie_rating"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
@@ -37,6 +37,7 @@
         android:layout_height="wrap_content"
         android:text=""
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        android:textSize="@dimen/movie_name_in_list"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

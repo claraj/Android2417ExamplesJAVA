@@ -5,13 +5,13 @@
     android:id="@+id/frameLayout2"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/main_background"
     tools:context=".MovieListFragment">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/movie_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/listBackground"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
@@ -25,10 +25,10 @@
         android:layout_marginEnd="32dp"
         android:layout_marginRight="32dp"
         android:layout_marginBottom="32dp"
+        android:backgroundTint="@color/button_background_tint"
         android:clickable="true"
         android:focusable="true"
         android:src="@drawable/ic_add_white_24dp"
-        android:backgroundTint="@color/fab_background_tint"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

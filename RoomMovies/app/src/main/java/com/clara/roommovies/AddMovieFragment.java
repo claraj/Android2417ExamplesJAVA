@@ -13,6 +13,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.clara.roommovies.db.Movie;
 
@@ -49,7 +50,11 @@ public class AddMovieFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 String name = movieName.getText().toString();
-                float rating = movieRating.getRating();   //how many stars selected!
+                if (name.isEmpty()) {
+                    Toast.makeText(AddMovieFragment.this.getContext(), "Enter a name", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                float rating = movieRating.getRating();   //how many stars selected
                 Movie movie = new Movie(name, rating);
                 movieModel.insert(movie);
                 newMovieListener.onMovieAdded(movie);  // notifies Activity so fragments can be swapped
@@ -61,7 +66,6 @@ public class AddMovieFragment extends Fragment {
 
         return view;
     }
-
 
     @Override
     public void onAttach(Context context) {
@@ -86,8 +90,6 @@ public class AddMovieFragment extends Fragment {
         super.onDetach();
         newMovieListener = null;
     }
-
-
 
     public interface OnMovieAddedListener {
         void onMovieAdded(Movie movie);
