@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">BeeMap</string>
+    <string name="bee_map_title">%1$s on %2$s</string>
+    <string name="number_of_bees">Number of bees</string>
+    <string name="set">Set</string>
+    <string name="bee_number_error">Enter a positive number</string>
+    <plurals name="number_of_bees">
+        <item quantity="one">%d bee</item>
+        <item quantity="other">%d bees</item>
+    </plurals>
+</resources>
