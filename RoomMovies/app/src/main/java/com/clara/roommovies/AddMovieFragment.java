@@ -23,6 +23,10 @@ public class AddMovieFragment extends Fragment {
 
     private MovieViewModel movieModel;
 
+    public interface OnMovieAddedListener {
+        void onMovieAdded(Movie movie);
+    }
+
     public AddMovieFragment() {
         // Required empty public constructor
     }
@@ -78,7 +82,6 @@ public class AddMovieFragment extends Fragment {
         }
     }
 
-
     @Override
     public void onStart() {
         super.onStart();
@@ -89,9 +92,5 @@ public class AddMovieFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         newMovieListener = null;
-    }
-
-    public interface OnMovieAddedListener {
-        void onMovieAdded(Movie movie);
     }
 }

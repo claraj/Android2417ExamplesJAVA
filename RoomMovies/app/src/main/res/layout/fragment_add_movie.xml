@@ -14,7 +14,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@color/button_background_tint"
-        android:padding="10dp"
+        android:padding="@dimen/button_padding"
         android:text="@string/save"
         android:textAllCaps="false"
         android:textColor="@color/button_text"
@@ -38,7 +38,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:importantForAutofill="no" />
 
     <RatingBar
         android:id="@+id/new_movie_rating"
@@ -54,9 +55,9 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/header_text_size"
+        android:layout_marginTop="@dimen/header_margin"
         android:text="@string/add_new_movie"
-        android:textSize="30sp"
+        android:textSize="@dimen/header_text_size"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

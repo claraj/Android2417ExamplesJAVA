@@ -30,31 +30,15 @@ public class MovieListFragment extends Fragment implements MovieListAdapter.List
 
     private MovieListFragmentListener mListener;
 
-    @Override
-    public void onMovieRatingChanged(int position, float newRating) {
-
-        Movie movie = mMovies.get(position);
-        movie.setRating(newRating);
-        mMovieModel.update(movie);
-
-    }
-
-    @Override
-    public void onDeleteMovie(int position) {
-        Movie movie = mMovies.get(position);
-        mMovieModel.delete(movie);
-    }
+    private MovieListAdapter movieListAdapter;
 
     interface MovieListFragmentListener {
         void requestMakeNewMovie();
     }
 
-    private MovieListAdapter movieListAdapter;
-
     public MovieListFragment() {
         // Required empty public constructor
     }
-
 
     public static MovieListFragment newInstance() {
         MovieListFragment fragment = new MovieListFragment();
@@ -65,13 +49,12 @@ public class MovieListFragment extends Fragment implements MovieListAdapter.List
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // observe data
         final MovieViewModel movieViewModel = ViewModelProviders.of(this).get(MovieViewModel.class);
 
         final Observer<List<Movie>> movieListObserver = new Observer<List<Movie>>() {
             @Override
             public void onChanged(List<Movie> movies) {
-                Log.d(TAG, "Movies changed" +movies);
+                Log.d(TAG, "Movies changed: " + movies);
                 MovieListFragment.this.mMovies = movies;
                 MovieListFragment.this.movieListAdapter.setMovies(movies);
                 MovieListFragment.this.movieListAdapter.notifyDataSetChanged();
@@ -80,7 +63,6 @@ public class MovieListFragment extends Fragment implements MovieListAdapter.List
 
         movieViewModel.getAllMovies().observe(this, movieListObserver);
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -107,7 +89,6 @@ public class MovieListFragment extends Fragment implements MovieListAdapter.List
         return view;
     }
 
-
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -118,15 +99,24 @@ public class MovieListFragment extends Fragment implements MovieListAdapter.List
         else {
             throw new RuntimeException(context.getClass().getName() + " should implement MovieListFragmentListener");
         }
-
     }
 
     @Override
     public void onStart() {
         super.onStart();
-
         mMovieModel = ViewModelProviders.of(this).get(MovieViewModel.class);
     }
 
+    @Override
+    public void onMovieRatingChanged(int position, float newRating) {
+        Movie movie = mMovies.get(position);
+        movie.setRating(newRating);
+        mMovieModel.update(movie);
+    }
 
+    @Override
+    public void onDeleteMovie(int position) {
+        Movie movie = mMovies.get(position);
+        mMovieModel.delete(movie);
+    }
 }

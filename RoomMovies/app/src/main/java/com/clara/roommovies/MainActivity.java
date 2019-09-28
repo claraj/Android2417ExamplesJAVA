@@ -33,14 +33,18 @@ public class MainActivity extends AppCompatActivity implements MovieListFragment
         ft.add(android.R.id.content, movieListFragment, TAG_MOVIE_LIST);
         ft.commit();
 
-        // Add some example movies to the DB
+
+        MovieViewModel mvm = new MovieViewModel(getApplication());
+
+        // Uncomment to add some example movies to the DB
+        /*
+
         Movie m1 = new Movie("Star Wars", 3.5f);
         Movie m2 = new Movie("Black Panther", 5);
         Movie m3 = new Movie("Back to the Future", 4);
 
-        MovieViewModel mvm = new MovieViewModel(getApplication());
-
         mvm.insert( m1, m2, m3 );
+        */
 
         LiveData<List<Movie>> movieList = mvm.getAllMovies();
 
@@ -55,12 +59,15 @@ public class MainActivity extends AppCompatActivity implements MovieListFragment
 
     @Override
     public void onMovieAdded(Movie movie) {
-        //mvm.insert(movie);
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
         MovieListFragment movieListFragment = (MovieListFragment) fm.findFragmentByTag(TAG_MOVIE_LIST);
-        ft.replace(android.R.id.content, movieListFragment);
-        ft.commit();
+        if (movieListFragment != null) {
+            ft.replace(android.R.id.content, movieListFragment);
+            ft.commit();
+        } else {
+            Log.w(TAG, "Movie list fragment not found");
+        }
     }
 
     @Override
