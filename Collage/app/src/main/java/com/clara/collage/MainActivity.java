@@ -68,11 +68,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
+
     @Override
     public void onClick(View view) {
 
-        // Use the position in the arraylist as the request code
-        // When the image capture acivity returns, can read the request code and work out which ImageButton was clicked.
+        // Use the position in the ArrayList as the request code
+        // When the image capture Activity returns, can read the request code and work out which ImageButton was clicked.
         int requestCodeButtonIndex = mImageButtons.indexOf(view);
         Log.d(TAG, "Click on image button at index " + requestCodeButtonIndex);
 
