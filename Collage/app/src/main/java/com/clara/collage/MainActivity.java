@@ -32,9 +32,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private List<ImageButton> mImageButtons;
     private ArrayList<String> mImageFilePaths;
 
-    private String mCurrentImagePath;
+    private String mCurrentImagePath = "";
 
     private final static String BUNDLE_KEY_IMAGE_FILE_PATHS = "bundle key image file paths";
+    private final static String BUNDLE_KEY_MOST_RECENT_FILE_PATH = "bundle key most recent file path";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,10 +51,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         if (savedInstanceState != null) {
             mImageFilePaths = savedInstanceState.getStringArrayList(BUNDLE_KEY_IMAGE_FILE_PATHS);
+            mCurrentImagePath = savedInstanceState.getString(BUNDLE_KEY_MOST_RECENT_FILE_PATH);
         }
 
         if (mImageFilePaths == null) {
             mImageFilePaths = new ArrayList<>(Arrays.asList( "", "", "", ""));
+        }
+
+        if (mCurrentImagePath == null) {
+            mCurrentImagePath = "";
         }
 
         for (ImageButton button: mImageButtons) {
@@ -100,11 +106,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onSaveInstanceState(Bundle outBundle) {
         super.onSaveInstanceState(outBundle);
         outBundle.putStringArrayList(BUNDLE_KEY_IMAGE_FILE_PATHS, mImageFilePaths);
+        outBundle.putString(BUNDLE_KEY_MOST_RECENT_FILE_PATH, mCurrentImagePath);
     }
 
 
     private File createImageFile() throws IOException {
-        String imageFilename = "COLLAGE_" + new Date().getTime();    // Unique filename with timestamp
+        String imageFilename = "COLLAGE_" + new Date().getTime();    // Unique filename created with timestamp
         File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
         File imageFile = File.createTempFile(
                 imageFilename,
@@ -121,13 +128,32 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == RESULT_OK) {
-            Log.d(TAG, "onActivityResult for code (mImageButton index) " + requestCode);
+            Log.d(TAG, "onActivityResult for code (mImageButton index) " + requestCode + " current path " + mCurrentImagePath);
             mImageFilePaths.set(requestCode, mCurrentImagePath);    // Save the path in mImageFilePaths
-            loadImage(requestCode);
         }
     }
 
-    private void loadImage(int index) {
+
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+
+        // The view hasn't loaded in onActivityResult if the device is rotated when the picture is taken
+        // onWindowFocusedChanged is called after onActivityResult and the view has loaded, so override this
+        // method to display the images.
+
+        Log.d(TAG, "focus changed " + hasFocus);
+        if (hasFocus) {
+            for (int index = 0; index < mImageFilePaths.size(); index++) {
+                String path = mImageFilePaths.get(index);
+                if (path != null && !path.isEmpty()) {
+                    loadImage(index);
+                }
+            }
+        }
+    }
+
+
+    private void loadImage(final int index) {
         ImageButton imageButton = mImageButtons.get(index);
         String path = mImageFilePaths.get(index);
 
@@ -140,7 +166,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     .into(imageButton, new Callback() {
                         @Override
                         public void onSuccess() {
-                            Log.d(TAG, "Image loaded");
+                            Log.d(TAG, "Image " + index + " loaded");
                         }
                         @Override
                         public void onError(Exception e) {
@@ -162,4 +188,5 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         }
     }
+
 }
