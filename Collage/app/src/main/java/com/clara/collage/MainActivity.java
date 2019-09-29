@@ -1,9 +1,13 @@
 package com.clara.collage;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -11,6 +15,7 @@ import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
@@ -130,6 +135,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if (resultCode == RESULT_OK) {
             Log.d(TAG, "onActivityResult for code (mImageButton index) " + requestCode + " current path " + mCurrentImagePath);
             mImageFilePaths.set(requestCode, mCurrentImagePath);    // Save the path in mImageFilePaths
+            requestSaveImageToMediaStore();
         }
     }
 
@@ -189,4 +195,30 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
+
+    private void requestSaveImageToMediaStore() {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) ==
+                PackageManager.PERMISSION_GRANTED) {
+            saveImage();
+        } else {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 100);
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults){
+        if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            saveImage();
+        } else {
+            Toast.makeText(this, "Images will NOT be saved to media store", Toast.LENGTH_SHORT).show();;
+        }
+    }
+
+    private void saveImage() {
+        try {
+            MediaStore.Images.Media.insertImage(getContentResolver(), mCurrentImagePath, "Collage", "Collage");
+        } catch (IOException e) {
+            Log.e(TAG, "Image file not found", e);
+        }
+    }
 }
