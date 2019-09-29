@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/relativeLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.clara.simplecamerathumbnailphoto.MainActivity">
@@ -10,12 +11,22 @@
         android:id="@+id/take_picture_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Take a picture"/>
+        android:text="@string/take_a_picture"
+        app:layout_constraintBottom_toTopOf="@+id/camera_picture"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
         android:id="@+id/camera_picture"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/take_picture_button"/>
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/take_picture_button"
+        app:srcCompat="@android:drawable/ic_menu_gallery" />
 
-</RelativeLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
