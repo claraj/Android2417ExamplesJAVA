@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 
@@ -48,15 +49,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     private boolean mLocationPermission = false;
     private int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 0;
-    private Location mLastKnownLocation;
-
-    private float mDefaultZoom = 11;
-
-    private float lat = 44.97f, lng = -93.26f;      // minneapolis
-    private LatLng mMinneapolis = new LatLng(lat, lng);
-    private LatLngBounds mMinneapolisBounds = new LatLngBounds( new LatLng(lat-1, lng-1), new LatLng(lat+1, lng+1));
-
-    private GoogleMap map;
 
     private List<Marker> beeMarkers;
 
@@ -112,8 +104,12 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         beeMarkers = new LinkedList<>();
 
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.google_map_fragment);
-        mapFragment.getMapAsync(this);
+        GoogleMapFragment googleMapFragment = (GoogleMapFragment) GoogleMapFragment.newInstance();
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        ft.add( R.id.fragment_container, googleMapFragment);
+
+//        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.google_map_fragment);
+       // mapFragment.getMapAsync(this);
     }
 
     @Override
@@ -229,73 +225,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         mBeeModel.delete((int)marker.getTag());
     }
 
-    private void getLocationPermission() {
-        if (ContextCompat.checkSelfPermission(this.getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-            Log.d(TAG, "Have location permission");
-            mLocationPermission = true;
 
-            addFab.setEnabled(true);   // Only add bee if location will be available
-
-            getDeviceLocation(null);
-            updateMapLocationUI();
-
-        } else {
-            Log.d(TAG, "About to request permission");
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION },
-                    PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
-        }
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        mLocationPermission = false;
-        if (requestCode == PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION) {
-            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                Log.d(TAG, "Location permission granted" );
-
-                mLocationPermission = true;
-                addFab.setEnabled(true);
-
-                getDeviceLocation(null);
-               // getLocationUpdates();
-                updateMapLocationUI();
-
-            } else {
-                Toast.makeText(this, "Location permission must be granted for Bee Map to work. Please enable in settings.", Toast.LENGTH_LONG).show();
-            }
-        }
-    }
-
-    private void getDeviceLocation(final BeeLocationCallback callback) {
-        try {
-            if (mLocationPermission) {
-                FusedLocationProviderClient fusedLocationProviderClient = new FusedLocationProviderClient(this);
-                fusedLocationProviderClient.getLastLocation().addOnCompleteListener(this, new OnCompleteListener<Location>() {
-                    @Override
-                    public void onComplete(@NonNull Task task) {
-                        if (task.isSuccessful()) {
-                            Log.d(TAG, "Got location ");
-                            mLastKnownLocation = (Location) task.getResult();
-                            if (callback != null && mLastKnownLocation != null) {
-                                callback.haveLocation();
-                                updateMapLocationUI();   // draws location controls on map
-                                return;
-                            }
-                        }
-
-                        mLastKnownLocation = null;
-                        if (callback != null) { callback.noLocation(); }
-                        updateMapLocationUI();   // draws location controls on map
-                    }
-                });
-            } else {
-                mLastKnownLocation = null;
-            }
-        } catch (SecurityException se) {
-            Log.e(TAG, "Error getting device location ", se);
-            mLastKnownLocation = null;
-        }
-    }
 
     private void updateMapLocationUI() {
         if (map == null) { return; }
