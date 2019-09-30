@@ -31,7 +31,6 @@ public class BeeRepository {
     public void delete(int id) { new DeleteBeeIDAsyncTask(mBeeDAO).execute(id); }
 
     private static class InsertBeeAsyncTask extends AsyncTask<Bee, Void, Void> {
-
         BeeDAO dao;
 
         public InsertBeeAsyncTask(BeeDAO dao) {
@@ -47,7 +46,6 @@ public class BeeRepository {
 
 
     private static class DeleteBeeAsyncTask extends AsyncTask<Bee, Void, Void> {
-
         BeeDAO dao;
 
         public DeleteBeeAsyncTask(BeeDAO dao) {

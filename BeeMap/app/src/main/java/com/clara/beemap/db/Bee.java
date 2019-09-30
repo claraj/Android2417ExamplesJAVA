@@ -2,7 +2,6 @@ package com.clara.beemap.db;
 
 import androidx.room.Entity;
 import androidx.room.Ignore;
-import androidx.room.Insert;
 import androidx.room.PrimaryKey;
 
 import java.util.Date;

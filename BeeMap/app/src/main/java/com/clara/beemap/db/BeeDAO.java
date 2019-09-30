@@ -11,7 +11,7 @@ import java.util.List;
 @Dao
 public interface BeeDAO {
 
-    @Query("SELECT * FROM bee ORDER BY date LIMIT :results")
+    @Query("SELECT * FROM bee ORDER BY date DESC LIMIT :results")
     LiveData<List<Bee>> getRecentBees(int results);
 
     @Insert
@@ -22,9 +22,5 @@ public interface BeeDAO {
 
     @Query("DELETE FROM bee WHERE id = :id")
     void delete(int id);
-
-    // TODO add your insert method here
-
-
 
 }
