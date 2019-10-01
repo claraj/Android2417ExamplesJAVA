@@ -50,6 +50,8 @@ public class BeeMapFragment extends SupportMapFragment implements OnMapReadyCall
 
     private GoogleMap map;
 
+    private boolean hasLocationPermission = false;
+
     public static BeeMapFragment newInstance() {
         return new BeeMapFragment();
     }
@@ -89,10 +91,10 @@ public class BeeMapFragment extends SupportMapFragment implements OnMapReadyCall
         Log.d(TAG, "Map is ready");
         this.map = googleMap;
 
-        hasLocationPermission(false);
-
         map.getUiSettings().setZoomControlsEnabled(true);
         map.getUiSettings().setMapToolbarEnabled(false); // no directions
+
+        updateLocationUI();
 
         map.moveCamera(CameraUpdateFactory.newLatLngZoom(mMinneapolis, mDefaultZoom));
 
@@ -103,9 +105,16 @@ public class BeeMapFragment extends SupportMapFragment implements OnMapReadyCall
     }
 
 
-    public void hasLocationPermission(boolean shouldShowLocation) {
-        map.setMyLocationEnabled(shouldShowLocation);
-        map.getUiSettings().setMyLocationButtonEnabled(shouldShowLocation);
+    public void hasLocationPermission(boolean hasPermission) {
+        this.hasLocationPermission = hasPermission;
+        updateLocationUI();
+    }
+
+    private void updateLocationUI() {
+        if (map != null) {
+            map.setMyLocationEnabled(hasLocationPermission);
+            map.getUiSettings().setMyLocationButtonEnabled(hasLocationPermission);
+        }
     }
 
 
