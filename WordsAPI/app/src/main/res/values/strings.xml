@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">WordsAPI</string>
+    <string name="enter_word">Enter Word</string>
+    <string name="search">Search!</string>
+</resources>
