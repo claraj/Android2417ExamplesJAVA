@@ -26,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
 
 	private static final String url = "https://random-compliment.herokuapp.com/random";
 
-	private static final String TAG = "Random Compliment Activity";
+	private static final String TAG = "RANDOM_COMPLIMENT";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
