@@ -1,11 +1,12 @@
 package com.clara.hello_compliment_api;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -23,7 +24,7 @@ public class MainActivity extends AppCompatActivity {
 	private Button mGetComplimentButton;
 	private TextView mShowComplimentText;
 
-	private static final String url = "";  // Insert your URL here e.g. "https://happy-kitten-234.herokuapp.com/random"
+	private static final String url = "https://random-compliment.herokuapp.com/random";
 
 	private static final String TAG = "Random Compliment Activity";
 
