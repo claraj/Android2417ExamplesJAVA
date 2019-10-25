@@ -8,6 +8,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -23,6 +24,7 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 import static android.view.View.GONE;
+import static android.view.View.VISIBLE;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -32,6 +34,7 @@ public class MainActivity extends AppCompatActivity {
     EditText enterWord;
     TextView wordDefinition;
     ImageView wordImage;
+    ProgressBar loading;
 
     WordService wordService;
 
@@ -51,6 +54,9 @@ public class MainActivity extends AppCompatActivity {
         enterWord = findViewById(R.id.enter_word);
         wordDefinition = findViewById(R.id.word_definition);
         wordImage = findViewById(R.id.word_image);
+        loading = findViewById(R.id.loading);
+
+        setSearchEnabled(true);
 
         // Hide ImageView until an image is available
         wordImage.setVisibility(GONE);
@@ -65,6 +71,7 @@ public class MainActivity extends AppCompatActivity {
                 }
 
                 hideKeyboard();
+                setSearchEnabled(false);
                 getDefinitionForWord(word);
             }
         });
@@ -75,6 +82,8 @@ public class MainActivity extends AppCompatActivity {
         wordService.getDefinition(word, BuildConfig.OWLBOT_TOKEN).enqueue(new Callback<Word>() {
             @Override
             public void onResponse(@NonNull Call<Word> call, @NonNull Response<Word> response) {
+
+                setSearchEnabled(true);
 
                 Word wordResponse = response.body();
                 Log.d(TAG, "Word Response: " + wordResponse);
@@ -96,6 +105,8 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(@NonNull Call<Word> call, @NonNull Throwable t) {
+
+                setSearchEnabled(true);
                 Log.e(TAG, "Error fetching definition", t);
                 Toast.makeText(MainActivity.this, "Unable to fetch definition", Toast.LENGTH_SHORT).show();
             }
@@ -106,6 +117,12 @@ public class MainActivity extends AppCompatActivity {
         View mainView = findViewById(android.R.id.content);
         InputMethodManager manager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         manager.hideSoftInputFromWindow(mainView.getWindowToken(), 0);
+    }
+
+    private void setSearchEnabled(boolean isEnabled) {
+        loading.setVisibility( isEnabled ? GONE : VISIBLE);
+        searchButton.setEnabled(isEnabled);
+        enterWord.setEnabled(isEnabled);
     }
 
 }
