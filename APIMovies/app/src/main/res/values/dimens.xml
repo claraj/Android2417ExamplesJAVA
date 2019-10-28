@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="new_movie_text_margin">36dp</dimen>
+    <dimen name="button_text_size">24sp</dimen>
+    <dimen name="header_text_size">30sp</dimen>
+    <dimen name="header_margin">24dp</dimen>
+    <dimen name="secondary_header_text_size">8dp</dimen>
+    <dimen name="movie_name_in_list">24sp</dimen>
+    <dimen name="button_padding">10dp</dimen>
+    <dimen name="fab_margin">32dp</dimen>
+    <dimen name="movie_list_text_start_margin">10dp</dimen>
+    <dimen name="movie_list_margin">10dp</dimen>
+</resources>

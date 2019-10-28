@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">API Movies</string>
+
+    <string name="save">Save</string>
+    <string name="new_movies_name_hint">Movie name</string>
+    <string name="add_new_movie">Add New Movie</string>
+    <string name="your_rating">Your Rating?</string>
+</resources>
