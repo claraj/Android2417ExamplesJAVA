@@ -21,7 +21,7 @@ public class AddMovieFragment extends Fragment {
 
     private OnMovieAddedListener newMovieListener;
 
-    private MovieViewModel movieModel;
+    private MovieViewModel mMovieModel;
 
     public interface OnMovieAddedListener {
         void onMovieAdded(Movie movie);
@@ -39,6 +39,7 @@ public class AddMovieFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mMovieModel = ViewModelProviders.of(getActivity()).get(MovieViewModel.class);
     }
 
     @Override
@@ -60,7 +61,7 @@ public class AddMovieFragment extends Fragment {
                 }
                 float rating = movieRating.getRating();   //how many stars selected
                 Movie movie = new Movie(name, rating);
-                movieModel.insert(movie);
+                mMovieModel.insert(movie);
                 newMovieListener.onMovieAdded(movie);  // notifies Activity so fragments can be swapped
 
                 InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -82,15 +83,4 @@ public class AddMovieFragment extends Fragment {
         }
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-        movieModel = ViewModelProviders.of(this).get(MovieViewModel.class);
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        newMovieListener = null;
-    }
 }

@@ -22,7 +22,6 @@ import java.util.List;
 
 public class MovieListFragment extends Fragment implements MovieListAdapter.ListEventListener {
 
-
     private MovieViewModel mMovieModel;
     private List<Movie> mMovies;
 
@@ -49,7 +48,7 @@ public class MovieListFragment extends Fragment implements MovieListAdapter.List
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        final MovieViewModel movieViewModel = ViewModelProviders.of(this).get(MovieViewModel.class);
+        mMovieModel = ViewModelProviders.of(getActivity()).get(MovieViewModel.class);
 
         final Observer<List<Movie>> movieListObserver = new Observer<List<Movie>>() {
             @Override
@@ -61,7 +60,7 @@ public class MovieListFragment extends Fragment implements MovieListAdapter.List
             }
         };
 
-        movieViewModel.getAllMovies().observe(this, movieListObserver);
+        mMovieModel.getAllMovies().observe(this, movieListObserver);
     }
 
     @Override
@@ -101,11 +100,6 @@ public class MovieListFragment extends Fragment implements MovieListAdapter.List
         }
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-        mMovieModel = ViewModelProviders.of(this).get(MovieViewModel.class);
-    }
 
     @Override
     public void onMovieRatingChanged(int position, float newRating) {
@@ -119,4 +113,5 @@ public class MovieListFragment extends Fragment implements MovieListAdapter.List
         Movie movie = mMovies.get(position);
         mMovieModel.delete(movie);
     }
+
 }
