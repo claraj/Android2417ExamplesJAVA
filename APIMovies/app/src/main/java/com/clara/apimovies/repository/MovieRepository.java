@@ -24,10 +24,10 @@ public class MovieRepository {
 
     private MovieService movieService;
     private String baseURL = "https://movies-2417.herokuapp.com/api/";
-
     final MutableLiveData<List<Movie>> allMovies;
 
     public MovieRepository() {
+
         OkHttpClient client = new OkHttpClient.Builder()
                 .addInterceptor(new AuthorizationHeaderInterceptor())
                 .build();
@@ -71,7 +71,11 @@ public class MovieRepository {
             @Override
             public void onResponse(Call<Movie> call, Response<Movie> response) {
                 if (response.isSuccessful()) {
+                    Log.d(TAG, "fetched movie " + response.body());
                     movie.setValue(response.body());
+                } else {
+                    Log.e(TAG, "Error getting movie id " + id + " because " + response.message());
+                    movie.setValue(null);
                 }
             }
 
@@ -89,8 +93,10 @@ public class MovieRepository {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
                 if (response.isSuccessful()) {
-                    Log.d(TAG, "Inserted " + movie);
+                    Log.d(TAG, "inserted " + movie);
                     getAllMovies();
+                } else {
+                    Log.e(TAG, "Error inserting movie, message from server: " + response.message());
                 }
             }
 
@@ -105,8 +111,13 @@ public class MovieRepository {
         movieService.update(movie, movie.getId()).enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
-                Log.d(TAG, "Updated movie " + movie);
-                getAllMovies();
+                if (response.isSuccessful()) {
+                    Log.d(TAG, "updated movie " + movie);
+                    getAllMovies();
+                }
+                else {
+                    Log.e(TAG, "Error updating movie, message from server: " + response.message());
+                }
             }
 
             @Override
@@ -120,8 +131,12 @@ public class MovieRepository {
         movieService.delete(movie.getId()).enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
-                Log.d(TAG, "Deleted movie " + movie);
-                getAllMovies();
+                if (response.isSuccessful()) {
+                    Log.d(TAG, "deleted movie " + movie);
+                    getAllMovies();
+                } else {
+                    Log.e(TAG, "Error deleting movie, message from server: " + response.message());
+                }
             }
 
             @Override
