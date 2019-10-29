@@ -23,7 +23,7 @@ import java.util.List;
 
 public class MovieListFragment extends Fragment implements MovieListAdapter.ListEventListener {
 
-    private MovieViewModel mMovieModel;
+    private MovieViewModel mMovieViewModel;
     private List<Movie> mMovies;
 
     private static final String TAG = "MOVIE_LIST_FRAGMENT";
@@ -49,9 +49,9 @@ public class MovieListFragment extends Fragment implements MovieListAdapter.List
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mMovieModel = ViewModelProviders.of(getActivity()).get(MovieViewModel.class);
+        mMovieViewModel = ViewModelProviders.of(getActivity()).get(MovieViewModel.class);
 
-        mMovieModel.getAllMovies().observe(this, new Observer<List<Movie>>() {
+        mMovieViewModel.getAllMovies().observe(this, new Observer<List<Movie>>() {
             @Override
             public void onChanged(List<Movie> movies) {
                 Log.d(TAG, "Movies changed: " + movies);
@@ -108,12 +108,12 @@ public class MovieListFragment extends Fragment implements MovieListAdapter.List
     public void onMovieRatingChanged(int position, float newRating) {
         Movie movie = mMovies.get(position);
         movie.setRating(newRating);
-        mMovieModel.update(movie);
+        mMovieViewModel.update(movie);
     }
 
     @Override
     public void onDeleteMovie(int position) {
         Movie movie = mMovies.get(position);
-        mMovieModel.delete(movie);
+        mMovieViewModel.delete(movie);
     }
 }

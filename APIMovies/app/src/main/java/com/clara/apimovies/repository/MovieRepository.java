@@ -22,7 +22,7 @@ public class MovieRepository {
 
     private static final String TAG = "MOVIE_REPOSITORY";
 
-    private MovieService movieService;
+    private MovieService mMovieService;
     private String baseURL = "https://movies-2417.herokuapp.com/api/";
     final MutableLiveData<List<Movie>> allMovies;
 
@@ -38,13 +38,13 @@ public class MovieRepository {
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
-        movieService = retrofit.create(MovieService.class);
+        mMovieService = retrofit.create(MovieService.class);
         allMovies = new MutableLiveData<>();
     }
 
     public MutableLiveData<List<Movie>> getAllMovies() {
 
-        movieService.getAllMovies().enqueue(new Callback<List<Movie>>() {
+        mMovieService.getAllMovies().enqueue(new Callback<List<Movie>>() {
             @Override
             public void onResponse(Call<List<Movie>> call, Response<List<Movie>> response) {
                 if (response.isSuccessful()) {
@@ -67,7 +67,7 @@ public class MovieRepository {
 
         final MutableLiveData<Movie> movie = new MutableLiveData<>();
 
-        movieService.get(id).enqueue(new Callback<Movie>() {
+        mMovieService.get(id).enqueue(new Callback<Movie>() {
             @Override
             public void onResponse(Call<Movie> call, Response<Movie> response) {
                 if (response.isSuccessful()) {
@@ -89,7 +89,7 @@ public class MovieRepository {
     }
 
     public void insert(final Movie movie) {
-        movieService.insert(movie).enqueue(new Callback<Void>() {
+        mMovieService.insert(movie).enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
                 if (response.isSuccessful()) {
@@ -108,7 +108,7 @@ public class MovieRepository {
     }
 
     public void update(final Movie movie) {
-        movieService.update(movie, movie.getId()).enqueue(new Callback<Void>() {
+        mMovieService.update(movie, movie.getId()).enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
                 if (response.isSuccessful()) {
@@ -128,7 +128,7 @@ public class MovieRepository {
     }
 
     public void delete(final Movie movie) {
-        movieService.delete(movie.getId()).enqueue(new Callback<Void>() {
+        mMovieService.delete(movie.getId()).enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
                 if (response.isSuccessful()) {
