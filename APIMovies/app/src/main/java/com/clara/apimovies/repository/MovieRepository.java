@@ -23,8 +23,8 @@ public class MovieRepository {
     private static final String TAG = "MOVIE_REPOSITORY";
 
     private MovieService mMovieService;
-    private String baseURL = "https://movies-2417.herokuapp.com/api/";
-    final MutableLiveData<List<Movie>> allMovies;
+    private final String baseURL = "https://movies-2417.herokuapp.com/api/";
+    private MutableLiveData<List<Movie>> mAllMovies;
 
     public MovieRepository() {
 
@@ -39,7 +39,7 @@ public class MovieRepository {
                 .build();
 
         mMovieService = retrofit.create(MovieService.class);
-        allMovies = new MutableLiveData<>();
+        mAllMovies = new MutableLiveData<>();
     }
 
     public MutableLiveData<List<Movie>> getAllMovies() {
@@ -49,7 +49,7 @@ public class MovieRepository {
             public void onResponse(Call<List<Movie>> call, Response<List<Movie>> response) {
                 if (response.isSuccessful()) {
                     Log.d(TAG, "getAllMovies response body: " + response.body());
-                    allMovies.setValue(response.body());
+                    mAllMovies.setValue(response.body());
                 } else {
                     Log.e(TAG, "Error getting all movies, message from server: " + response.message());
                 }
@@ -60,7 +60,7 @@ public class MovieRepository {
                 Log.e(TAG, "Error fetching all movies", t);
             }
         });
-        return allMovies;
+        return mAllMovies;
     }
 
     public MutableLiveData<Movie> getMovie(final int id) {
