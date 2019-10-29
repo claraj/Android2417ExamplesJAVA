@@ -1,6 +1,6 @@
 package com.clara.apimovies.service;
 
-import com.clara.apimovies.Movie;
+import com.clara.apimovies.model.Movie;
 
 import java.util.List;
 

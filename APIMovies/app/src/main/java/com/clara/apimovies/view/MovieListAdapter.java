@@ -13,7 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 
-import com.clara.apimovies.Movie;
+import com.clara.apimovies.model.Movie;
 import com.clara.apimovies.R;
 
 import java.util.List;
@@ -96,9 +96,12 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.Movi
         }
 
         void bind(Movie movie) {
-            //Helper method to update the data shown in a ViewHolder
+            // Helper method to update the data shown in a ViewHolder
             Log.d(TAG, "binding movie " + movie);
-            if (movie == null) { movieNameView.setText(""); ratingBar.setNumStars(0); }
+            if (movie == null) {
+                movieNameView.setText("");
+                ratingBar.setNumStars(0);
+            }
             else {
                 movieNameView.setText(movie.getName());
                 ratingBar.setRating(movie.getRating());

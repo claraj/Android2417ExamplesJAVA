@@ -13,8 +13,8 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.clara.apimovies.Movie;
-import com.clara.apimovies.MovieViewModel;
+import com.clara.apimovies.model.Movie;
+import com.clara.apimovies.viewmodel.MovieViewModel;
 import com.clara.apimovies.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 

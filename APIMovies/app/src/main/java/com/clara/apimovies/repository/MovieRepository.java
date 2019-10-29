@@ -1,11 +1,10 @@
-package com.clara.apimovies;
+package com.clara.apimovies.repository;
 
-import android.app.Application;
 import android.util.Log;
-
 
 import androidx.lifecycle.MutableLiveData;
 
+import com.clara.apimovies.model.Movie;
 import com.clara.apimovies.service.AuthorizationHeaderInterceptor;
 import com.clara.apimovies.service.MovieService;
 
@@ -25,11 +24,10 @@ public class MovieRepository {
 
     private MovieService movieService;
     private String baseURL = "https://movies-2417.herokuapp.com/api/";
-//    List<Movie> allMovies;
+
     final MutableLiveData<List<Movie>> allMovies;
 
-    public MovieRepository(Application application) {/* String baseURL*/
-
+    public MovieRepository() {
         OkHttpClient client = new OkHttpClient.Builder()
                 .addInterceptor(new AuthorizationHeaderInterceptor())
                 .build();
@@ -91,7 +89,7 @@ public class MovieRepository {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
                 if (response.isSuccessful()) {
-                    Log.d(TAG, "inserted " + movie);
+                    Log.d(TAG, "Inserted " + movie);
                     getAllMovies();
                 }
             }
@@ -107,7 +105,7 @@ public class MovieRepository {
         movieService.update(movie, movie.getId()).enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
-                Log.d(TAG, "updated movie " + movie);
+                Log.d(TAG, "Updated movie " + movie);
                 getAllMovies();
             }
 
@@ -122,7 +120,7 @@ public class MovieRepository {
         movieService.delete(movie.getId()).enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
-                Log.d(TAG, "deleted movie " + movie);
+                Log.d(TAG, "Deleted movie " + movie);
                 getAllMovies();
             }
 

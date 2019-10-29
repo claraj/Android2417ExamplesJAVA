@@ -8,6 +8,8 @@ import okhttp3.Interceptor;
 import okhttp3.Request;
 import okhttp3.Response;
 
+/* Used to add the same header to each request */
+
 public class AuthorizationHeaderInterceptor implements Interceptor {
 
     @Override

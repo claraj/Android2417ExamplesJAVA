@@ -1,4 +1,4 @@
-package com.clara.apimovies;
+package com.clara.apimovies.model;
 
 import androidx.annotation.NonNull;
 
