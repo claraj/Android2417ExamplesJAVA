@@ -8,6 +8,7 @@ import com.clara.apimovies.model.Movie;
 import com.clara.apimovies.service.AuthorizationHeaderInterceptor;
 import com.clara.apimovies.service.MovieService;
 
+
 import java.util.List;
 
 import okhttp3.OkHttpClient;
@@ -35,6 +36,7 @@ public class MovieRepository {
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(baseURL)
                 .client(client)
+             //   .addConverterFactory(ScalarsConverterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
@@ -88,23 +90,40 @@ public class MovieRepository {
         return movie;
     }
 
-    public void insert(final Movie movie) {
+    public MutableLiveData<String> insert(final Movie movie) {
+
+        final MutableLiveData<String> insertResult = new MutableLiveData<>();
+
         mMovieService.insert(movie).enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
+                Log.d(TAG, "insert call" + call + "response body " + response.body() + " msg " + response.message());
                 if (response.isSuccessful()) {
                     Log.d(TAG, "inserted " + movie);
+                    insertResult.setValue("success");
                     getAllMovies();
                 } else {
-                    Log.e(TAG, "Error inserting movie, message from server: " + response.message());
+                    String error;
+                    try {
+                        error = response.errorBody().string();
+                        insertResult.setValue(error);
+                        Log.e(TAG, "Error inserting movie, response from server: " + error + " message " + response.message());
+
+                    } catch (Exception e) {
+                        insertResult.setValue("error");
+                        Log.e(TAG, "Error inserting movie, message from server: " + response.message());
+                    }
                 }
             }
 
             @Override
             public void onFailure(Call<Void> call, Throwable t) {
+                insertResult.setValue("error");
                 Log.e(TAG, "Error inserting movie " + movie , t);
             }
         });
+
+        return insertResult;
     }
 
     public void update(final Movie movie) {
