@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Hello Calculator Testing</string>
+    <string name="answer">The sum is %1$d</string>
+    <string name="answer_placeholder">Answer goes here</string>
+    <string name="error_enter_two_numbers">Enter two numbers</string>
+    <string name="number_1">number 1</string>
+    <string name="number_2">number 2</string>
+    <string name="add">Add!</string>
+</resources>
