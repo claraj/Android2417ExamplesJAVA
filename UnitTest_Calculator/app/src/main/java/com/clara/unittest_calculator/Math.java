@@ -6,13 +6,13 @@ package com.clara.unittest_calculator;
 
 public class Math {
 
-	/** The central function of this calculator app. Adds two numbers.
+	/** The very important function of this calculator app. Adds two numbers.
 	 * @param number1 a number to add
 	 * @param number2 the other number to add
 	 * @return the sum of number1 and number2
 	 * */
 	static int add(Integer number1, Integer number2) {
-		return number1 + number2;
+		return number1 * number2;
 		// Oh dear, there's a bug in this method. Hopefully, a unit test will catch it!
 	}
 
