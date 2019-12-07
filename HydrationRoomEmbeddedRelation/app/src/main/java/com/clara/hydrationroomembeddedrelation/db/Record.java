@@ -3,6 +3,7 @@ package com.clara.hydrationroomembeddedrelation.db;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
 import androidx.room.Ignore;
+import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
 import static androidx.room.ForeignKey.CASCADE;
@@ -11,7 +12,9 @@ import static androidx.room.ForeignKey.CASCADE;
         entity = Person.class,
         parentColumns = "id",
         childColumns = "personId",
-        onDelete = CASCADE))
+        onDelete = CASCADE),
+        indices = { @Index("id"),  @Index("personId") }      // Makes queries faster
+)
 public class Record {
 
     @PrimaryKey(autoGenerate = true)

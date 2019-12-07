@@ -31,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
         viewModel.insertPerson(bob);
 
         Record monday = new Record(4, "2019-12-09", 1);     // Assuming Alice has id = 1
-        Record tuesday = new Record(4, "2019-12-10", 1);     // Get an actual ID for a real app
+        Record tuesday = new Record(4, "2019-12-10", 1);     // TODO Get an actual ID for a real app
         Record wednesday = new Record(2, "2019-12-11", 1);
 
         Record[] records = { monday, tuesday, wednesday};
